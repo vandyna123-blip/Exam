@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធប្រឡងអន្តរកម្ម៖ មុខវិជ្ជា ផែនការស្ថិតិ</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for beautiful interactive charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- SheetJS library for generating professional Excel files client-side -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- Google Fonts for Khmer and Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Hanuman:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Hanuman', sans-serif;
+            background-color: #f8fafc;
+        }
+        .khmer-title {
+            font-family: 'Hanuman', sans-serif;
+            font-weight: 700;
+        }
+        /* Custom scrollbar for beautiful UI */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        @media print {
+            body {
+                background-color: #fff !important;
+                color: #000 !important;
+            }
+            header, main, aside, footer, section, button, #answer-key-section, #custom-alert-modal, #custom-confirm-modal, #custom-pin-modal {
+                display: none !important;
+                height: 0 !important;
+                overflow: hidden !important;
+            }
+            #print-certificate-area {
+                display: block !important;
+                visibility: visible !important;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                padding: 40px;
+                box-sizing: border-box;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col text-slate-800">
+
+    <!-- Official Printable Certificate Container (Only visible during print action) -->
+    <div id="print-certificate-area" class="hidden">
+        <div style="border: 10px double #002060; padding: 40px; text-align: center; background-color: #fff; min-height: 800px; position: relative;">
+            <!-- Corner Decorations -->
+            <div style="position: absolute; top: 15px; left: 15px; border-top: 4px solid #D4AF37; border-left: 4px solid #D4AF37; width: 30px; height: 30px;"></div>
+            <div style="position: absolute; top: 15px; right: 15px; border-top: 4px solid #D4AF37; border-right: 4px solid #D4AF37; width: 30px; height: 30px;"></div>
+            <div style="position: absolute; bottom: 15px; left: 15px; border-bottom: 4px solid #D4AF37; border-left: 4px solid #D4AF37; width: 30px; height: 30px;"></div>
+            <div style="position: absolute; bottom: 15px; right: 15px; border-bottom: 4px solid #D4AF37; border-right: 4px solid #D4AF37; width: 30px; height: 30px;"></div>
+
+            <!-- University Emblem Placeholder -->
+            <div style="margin: 0 auto 20px auto; width: 90px; height: 90px; border-radius: 50%; border: 3px solid #D4AF37; background-color: #002060; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 18px;">
+                SRBU
+            </div>
+            
+            <h1 class="khmer-title" style="font-size: 20px; color: #002060; margin: 0 0 5px 0;">សាខាពុទ្ធិកសាកលវិទ្យាល័យព្រះសីហនុរាជ ខេត្តកំពង់ឆ្នាំង</h1>
+            <p class="khmer-title" style="font-size: 13px; color: #D4AF37; letter-spacing: 1px; margin: 0 0 30px 0; font-weight: bold;">INTERACTIVE EXAMINATION SYSTEM</p>
+            
+            <h2 class="khmer-title" style="font-size: 28px; color: #1e293b; margin: 20px 0;">លិខិតបញ្ជាក់លទ្ធផលការប្រឡង</h2>
+            <p style="font-size: 15px; color: #475569; margin-bottom: 40px;">ប្រព័ន្ធគ្រប់គ្រងការសិក្សាបញ្ជាក់ថា និស្សិតដែលមានឈ្មោះដូចខាងក្រោម បានចូលរួមការប្រឡងវាស់ស្ទង់សមត្ថភាព លើមុខវិជ្ជា៖ <strong class="khmer-title" style="color: #002060;">« ផែនការស្ថិតិ »</strong> យ៉ាងជោគជ័យ។</p>
+            
+            <table style="width: 80%; margin: 0 auto 40px auto; border-collapse: collapse; text-align: left; font-size: 16px;">
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #475569;" class="khmer-title">ឈ្មោះនិស្សិត (Student Name)៖</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #002060; font-size: 18px;" id="print-student-name">...</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #475569;" class="khmer-title">លទ្ធផលទទួលបាន (Total Score)៖</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #10b981; font-size: 18px;" id="print-student-score">...</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #475569;" class="khmer-title">កម្រិតវាយតម្លៃ (Evaluation Grade)៖</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #d97706;" id="print-student-grade">...</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #475569;" class="khmer-title">រយៈពេលប្រើប្រាស់ (Time Elapsed)៖</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;" id="print-student-time">...</td>
+                </tr>
+                <tr>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0; font-weight: bold; color: #475569;" class="khmer-title">កាលបរិច្ឆេទប្រឡង (Exam Date)៖</td>
+                    <td style="padding: 10px; border-bottom: 1px solid #e2e8f0;" id="print-student-date">...</td>
+                </tr>
+            </table>
+            
+            <div style="margin-top: 60px; display: flex; justify-content: space-between; padding: 0 40px;">
+                <div style="text-align: center;">
+                    <p style="font-size: 14px; color: #64748b; margin-bottom: 60px;" class="khmer-title">ស្នាមមេដៃ/ហត្ថលេខានិស្សិត</p>
+                    <p style="font-size: 15px; font-weight: bold; color: #1e293b;" id="print-student-sign">...</p>
+                </div>
+                <div style="text-align: center;">
+                    <p style="font-size: 14px; color: #64748b; margin-bottom: 60px;" class="khmer-title">ហត្ថលេខា និងត្រាគ្រូឧទ្ទេស</p>
+                    <p style="font-size: 15px; font-weight: bold; color: #1e293b;" class="khmer-title">លោកគ្រូ ឌន វណ្ណឌីណា</p>
+                </div>
+            </div>
+            
+            <div style="position: absolute; bottom: 30px; left: 0; right: 0; text-align: center; font-size: 11px; color: #94a3b8;">
+                លិខិតនេះត្រូវបានបង្កើតឡើងដោយស្វ័យប្រវត្តិតាមរយៈប្រព័ន្ធប្រឡងវាស់ស្ទង់សមត្ថភាពអន្តរកម្ម សាខាពុទ្ធិកសាកលវិទ្យាល័យព្រះសីហនុរាជ ខេត្តកំពង់ឆ្នាំង
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation Header with Sihanouk Raja Buddhist University Colors (Navy & Gold Accent) -->
+    <header class="bg-[#002060] text-white shadow-lg sticky top-0 z-50 border-b-4 border-[#D4AF37]">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-white p-1 rounded-full border border-[#D4AF37] shadow-inner">
+                    <!-- Placeholder representing University Crest -->
+                    <div class="w-12 h-12 rounded-full bg-[#002060] flex items-center justify-center text-white text-xs font-bold border-2 border-[#D4AF37]">
+                        SRBU
+                    </div>
+                </div>
+                <div>
+                    <h1 class="text-lg md:text-xl font-bold khmer-title text-[#E2E8F0]">សាខាពុទ្ធិកសាកលវិទ្យាល័យព្រះសីហនុរាជ ខេត្តកំពង់ឆ្នាំង</h1>
+                    <p class="text-xs text-[#D4AF37] uppercase tracking-wider font-semibold">interactive examination &amp; learning system</p>
+                </div>
+            </div>
+            <div class="text-center sm:text-right">
+                <span class="block text-sm font-semibold text-slate-200">មុខវិជ្ជា៖ <span class="text-[#D4AF37] font-bold">ផែនការស្ថិតិ (Planning Statistics)</span></span>
+                <span class="block text-xs text-slate-300">រៀបរៀងដោយ៖ លោកគ្រូ ឌន វណ្ណឌីណា</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:py-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Left panel - Main Content Area (Quiz or Dashboard) -->
+        <section class="lg:col-span-8 flex flex-col gap-6">
+            
+            <!-- Dashboard / Welcome Screen -->
+            <div id="welcome-screen" class="bg-white rounded-2xl shadow-md p-6 border border-slate-100 transition duration-300">
+                <div class="text-center max-w-2xl mx-auto py-6">
+                    <div class="w-20 h-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-inner">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+                    <h2 class="text-2xl md:text-3xl font-bold khmer-title text-slate-800 mb-4">ប្រព័ន្ធប្រឡងវាស់ស្ទង់សមត្ថភាព «ផែនការស្ថិតិ»</h2>
+                    <p class="text-slate-600 leading-relaxed mb-8">
+                        សូមស្វាគមន៍មកកាន់ប្រព័ន្ធអន្តរកម្មសម្រាប់ការសិក្សា និងប្រឡងវាស់ស្ទង់សមត្ថភាពលើមុខវិជ្ជា <span class="font-semibold text-blue-600">ផែនការស្ថិតិ</span>។ សំណួរទាំងអស់ចំនួន ៦០ ត្រូវបានរៀបចំឡើងយ៉ាងសម្រិតសម្រាំងស្របតាមខ្លឹមសារមេរៀននីមួយៗ ដើម្បីជួយពង្រឹងការយល់ដឹង និងរៀបចំខ្លួនសម្រាប់ការប្រឡងបញ្ចប់ការសិក្សា។
+                    </p>
+                    
+                    <!-- Chapter Breakdown Cards -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-left mb-8">
+                        <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 flex items-start gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-blue-500 text-white flex items-center justify-center font-bold text-sm shrink-0">១</span>
+                            <div>
+                                <h4 class="font-semibold text-sm text-slate-800 khmer-title">មេរៀនទី១៖ លំនាំដើម ស្ថិតិ</h4>
+                                <p class="text-xs text-slate-500">និយមន័យ ប្រភេទស្ថិតិ សាកល និងសំណាកគំរូ រង្វាស់ស្ថិតិ</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 flex items-start gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-indigo-500 text-white flex items-center justify-center font-bold text-sm shrink-0">២</span>
+                            <div>
+                                <h4 class="font-semibold text-sm text-slate-800 khmer-title">មេរៀនទី២៖ ការរចនា និងការរៀបចំផែនការ</h4>
+                                <p class="text-xs text-slate-500">ជំហានស៊ើបអង្កេតទាំង ១៦, ថវិកា, រចនាសម្ព័ន្ធ និងច្បាប់</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 flex items-start gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-emerald-500 text-white flex items-center justify-center font-bold text-sm shrink-0">៣</span>
+                            <div>
+                                <h4 class="font-semibold text-sm text-slate-800 khmer-title">មេរៀនទី៣៖ បញ្ជីសំណួរ និងការជ្រើសរើសសំណាក</h4>
+                                <p class="text-xs text-slate-500">ទម្រង់សំណួរ, វិធីសាស្ត្រជ្រើសសំណាក, រូបមន្ត Yamane Taro</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 flex items-start gap-3">
+                            <span class="w-8 h-8 rounded-lg bg-amber-500 text-white flex items-center justify-center font-bold text-sm shrink-0">៤</span>
+                            <div>
+                                <h4 class="font-semibold text-sm text-slate-800 khmer-title">មេរៀនទី៤៖ ការប្រមូលទិន្នន័យ និង SPSS</h4>
+                                <p class="text-xs text-slate-500">Primary/Secondary Data, SPSS Data &amp; Variable View</p>
+                            </div>
+                        </div>
+                        <div class="p-4 rounded-xl border border-slate-100 bg-slate-50 flex items-start gap-3 sm:col-span-2">
+                            <span class="w-8 h-8 rounded-lg bg-rose-500 text-white flex items-center justify-center font-bold text-sm shrink-0">៥</span>
+                            <div>
+                                <h4 class="font-semibold text-sm text-slate-800 khmer-title">មេរៀនទី៥៖ បកស្រាយទិន្នន័យ និងរបាយការណ៍</h4>
+                                <p class="text-xs text-slate-500">ការវិភាគតារាង-ក្រាហ្វ, រចនាសម្ព័ន្ធរបាយការណ៍ស្រាវជ្រាវ និងគោលការណ៍សរសេរ</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Config Panel with Student Name Input -->
+                    <div class="bg-blue-50/50 p-6 rounded-2xl border border-blue-100 mb-8 text-left">
+                        <h3 class="font-bold text-blue-950 mb-3 flex items-center gap-2 khmer-title"><i class="fa-solid fa-sliders"></i> កំណត់ការប្រឡង និងព័ត៌មាននិស្សិត៖</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1 khmer-title">ឈ្មោះនិស្សិត (Student Name) <span class="text-rose-500">*</span></label>
+                                <input type="text" id="student-name-input" placeholder="សូមវាយបញ្ចូលឈ្មោះរបស់អ្នក..." class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1 khmer-title">របៀបប្រឡង (Mode)</label>
+                                <select id="quiz-mode-select" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="practice">របៀបសិក្សា (Practice - បង្ហាញចម្លើយភ្លាមៗ)</option>
+                                    <option value="exam">របៀបប្រឡង (Exam - បង្ហាញពិន្ទុបន្ទាប់ពីបញ្ចប់)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-slate-700 mb-1 khmer-title">ជ្រើសរើសមេរៀនប្រឡង</label>
+                                <select id="quiz-filter-select" class="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                    <option value="all">គ្រប់មេរៀនទាំងអស់ (៦០ សំណួរ)</option>
+                                    <option value="1">មេរៀនទី១៖ លំនាំដើម ស្ថិតិ</option>
+                                    <option value="2">មេរៀនទី២៖ ការរចនា និងការរៀបចំផែនការ</option>
+                                    <option value="3">មេរៀនទី៣៖ បញ្ជីសំណួរ និងការជ្រើសរើសសំណាក</option>
+                                    <option value="4">មេរៀនទី៤៖ ការប្រមូលទិន្នន័យ និង SPSS</option>
+                                    <option value="5">មេរៀនទី៥៖ បកស្រាយទិន្នន័យ និងរបាយការណ៍</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="checkAndStartQuiz()" class="px-8 py-3.5 bg-blue-600 hover:bg-blue-700 active:bg-blue-800 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2 mx-auto khmer-title text-base">
+                        <i class="fa-solid fa-play"></i> ត្រៀមខ្លួនរួចរាល់! ចាប់ផ្តើមឥឡូវនេះ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Container (Hidden initially) -->
+            <div id="quiz-container" class="hidden bg-white rounded-2xl shadow-md p-6 border border-slate-100 transition duration-300">
+                <!-- Header of active question -->
+                <div class="flex justify-between items-center border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-wider text-blue-600 khmer-title" id="chapter-badge">មេរៀនទី ១</span>
+                        <h3 class="text-sm font-semibold text-slate-500 khmer-title" id="question-index-display">សំណួរទី ១ នៃ ៦០</h3>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <span id="score-counter" class="text-xs bg-emerald-50 text-emerald-700 px-3 py-1.5 rounded-full font-bold">ត្រូវ៖ ០ / ០</span>
+                        <button onclick="toggleFlag()" id="flag-btn" class="w-8 h-8 rounded-full border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-amber-500 transition-colors flex items-center justify-center" title="ចំណាំទុកត្រួតពិនិត្យឡើងវិញ">
+                            <i class="fa-solid fa-flag"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Active Question text -->
+                <div class="mb-6">
+                    <p class="text-base md:text-lg text-slate-800 font-semibold leading-relaxed" id="question-text">
+                        Loading question text...
+                    </p>
+                </div>
+
+                <!-- Answer options -->
+                <div class="flex flex-col gap-3" id="options-container">
+                    <!-- Dynamic choices load here -->
+                </div>
+
+                <!-- Explanation / Feedback Container (Practice Mode) -->
+                <div id="feedback-container" class="hidden mt-6 p-4 rounded-xl border transition-all duration-300">
+                    <div class="flex items-start gap-3">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0" id="feedback-icon-bg">
+                            <i class="fa-solid" id="feedback-icon"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-sm mb-1 khmer-title" id="feedback-title">លទ្ធផលចម្លើយ</h4>
+                            <p class="text-sm text-slate-600 leading-relaxed" id="feedback-explanation">Explanation</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action buttons -->
+                <div class="flex justify-between items-center border-t border-slate-100 pt-6 mt-8 gap-4">
+                    <button onclick="prevQuestion()" id="prev-btn" class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 disabled:opacity-50 disabled:pointer-events-none transition flex items-center gap-2 text-sm font-semibold">
+                        <i class="fa-solid fa-chevron-left"></i> ត្រឡប់ក្រោយ
+                    </button>
+                    <div class="flex gap-2">
+                        <button onclick="revealAnswer()" id="reveal-btn" class="hidden px-4 py-2 rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200 transition text-sm font-semibold">
+                            <i class="fa-solid fa-eye"></i> មើលចម្លើយ
+                        </button>
+                        <button onclick="nextQuestion()" id="next-btn" class="px-5 py-2 rounded-xl bg-blue-600 text-white hover:bg-blue-700 active:bg-blue-800 transition flex items-center gap-2 text-sm font-semibold">
+                            សំណួរបន្ទាប់ <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="results-screen" class="hidden bg-white rounded-2xl shadow-md p-6 border border-slate-100 transition duration-300">
+                <div class="text-center mb-8 border-b border-slate-100 pb-6">
+                    <h2 class="text-2xl md:text-3xl font-bold khmer-title text-slate-800 mb-2">លទ្ធផលនៃការវាស់ស្ទង់សមត្ថភាព</h2>
+                    <p class="text-slate-500 text-sm">របាយការណ៍វិភាគលម្អិតអំពីចំណុចខ្លាំង និងចំណុចខ្សោយរបស់អ្នក</p>
+                    <div class="mt-4 inline-flex items-center gap-2 bg-blue-50 text-blue-900 px-5 py-2.5 rounded-2xl border border-blue-100 shadow-sm">
+                        <i class="fa-solid fa-user-graduate text-blue-600 text-lg"></i>
+                        <span class="font-semibold khmer-title text-slate-700">ឈ្មោះនិស្សិត៖</span> 
+                        <span id="result-student-name" class="font-bold text-lg text-[#002060]">...</span>
+                    </div>
+                </div>
+
+                <!-- Score Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="p-4 rounded-xl bg-blue-50/50 border border-blue-100 text-center">
+                        <span class="text-xs font-bold text-blue-600 uppercase tracking-wider khmer-title block mb-1">ពិន្ទុសរុប</span>
+                        <span class="text-2xl md:text-3xl font-extrabold text-blue-950" id="result-score-percentage">0%</span>
+                        <span class="block text-xs text-slate-500 mt-1" id="result-score-fraction">0 / 60 សំណួរ</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-emerald-50/50 border border-emerald-100 text-center">
+                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider khmer-title block mb-1">ឆ្លើយត្រឹមត្រូវ</span>
+                        <span class="text-2xl md:text-3xl font-extrabold text-emerald-700" id="result-correct-count">0</span>
+                        <span class="block text-xs text-slate-500 mt-1">សំណួរ</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-rose-50/50 border border-rose-100 text-center">
+                        <span class="text-xs font-bold text-rose-600 uppercase tracking-wider khmer-title block mb-1">ឆ្លើយខុស</span>
+                        <span class="text-2xl md:text-3xl font-extrabold text-rose-700" id="result-wrong-count">0</span>
+                        <span class="block text-xs text-slate-500 mt-1">សំណួរ</span>
+                    </div>
+                    <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                        <span class="text-xs font-bold text-slate-600 uppercase tracking-wider khmer-title block mb-1">ពេលវេលាប្រើប្រាស់</span>
+                        <span class="text-2xl md:text-3xl font-extrabold text-slate-700" id="result-timer">00:00</span>
+                        <span class="block text-xs text-slate-500 mt-1">នាទី : វិនាទី</span>
+                    </div>
+                </div>
+
+                <!-- Graphical Representation Section -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center mb-8 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
+                    <div>
+                        <h4 class="font-bold text-slate-800 khmer-title mb-1">វិភាគលទ្ធផលតាមជំពូកនីមួយៗ</h4>
+                        <p class="text-xs text-slate-500 mb-4">ក្រាហ្វិកខាងស្តាំបង្ហាញពីកម្រិតយល់ដឹងប្រៀបធៀបក្នុងមេរៀននីមួយៗ</p>
+                        
+                        <div class="space-y-3" id="chapter-bars-container">
+                            <!-- Dynamic chapter progress bars load here -->
+                        </div>
+                    </div>
+                    <div class="flex justify-center items-center p-4 bg-white rounded-xl shadow-sm border border-slate-100 h-64 relative">
+                        <!-- Canvas for Chart.js -->
+                        <canvas id="performance-chart" class="w-full h-full max-h-[220px]"></canvas>
+                    </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button onclick="exportToExcel()" class="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 khmer-title shadow-md hover:shadow-lg">
+                        <i class="fa-solid fa-file-excel"></i> ទាញយកជា File Excel
+                    </button>
+                    <button onclick="printResult()" class="px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 khmer-title shadow-md hover:shadow-lg">
+                        <i class="fa-solid fa-file-pdf"></i> បោះពុម្ព / សង្គ្រោះជា PDF
+                    </button>
+                    <button onclick="resetQuiz()" class="px-6 py-2.5 bg-[#002060] hover:bg-blue-900 text-white font-bold rounded-xl transition flex items-center justify-center gap-2 khmer-title">
+                        <i class="fa-solid fa-rotate-right"></i> សាកល្បងឡើងវិញ
+                    </button>
+                    <button onclick="goToWelcome()" class="px-6 py-2.5 bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold rounded-xl transition flex items-center justify-center gap-2 khmer-title">
+                        <i class="fa-solid fa-house"></i> ទំព័រដើម
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Right panel - Sidebar Question Navigator -->
+        <aside class="lg:col-span-4 flex flex-col gap-6">
+            
+            <!-- Quick Info / Timer Widget -->
+            <div class="bg-white rounded-2xl shadow-md p-4 border border-slate-100 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <span class="w-10 h-10 bg-indigo-50 text-indigo-600 rounded-xl flex items-center justify-center text-lg shadow-sm">
+                        <i class="fa-regular fa-clock"></i>
+                    </span>
+                    <div>
+                        <span class="text-xs text-slate-400 font-semibold block uppercase tracking-wider">រយៈពេលកន្លងទៅ</span>
+                        <span class="text-base font-extrabold text-slate-700 tracking-wider" id="elapsed-time-display">00 នាទី ០០ វិនាទី</span>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-400 font-semibold block uppercase tracking-wider">របៀបដំណើរការ</span>
+                    <span class="text-xs font-bold text-indigo-700 bg-indigo-50 px-2.5 py-1 rounded-full uppercase khmer-title" id="mode-badge-display">របៀបសិក្សា</span>
+                </div>
+            </div>
+
+            <!-- Navigator Grid Card -->
+            <div class="bg-white rounded-2xl shadow-md p-5 border border-slate-100 flex flex-col gap-4">
+                <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                    <h3 class="font-bold text-slate-800 khmer-title flex items-center gap-2">
+                        <i class="fa-solid fa-grip-vertical text-slate-400"></i> លិបិក្រមសំណួរ (Index)
+                    </h3>
+                    <span class="text-xs text-slate-400 font-semibold" id="index-answered-counter">0 / 60 រួចរាល់</span>
+                </div>
+
+                <!-- Color legend -->
+                <div class="grid grid-cols-3 gap-2 text-[10px] text-slate-500 font-semibold uppercase tracking-wider">
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-slate-100 border border-slate-200"></span>
+                        <span>មិនទាន់ឆ្លើយ</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-blue-100 border border-blue-300"></span>
+                        <span>បានឆ្លើយ</span>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="w-2.5 h-2.5 rounded-full bg-amber-100 border border-amber-300"></span>
+                        <span>ចំណាំទុក</span>
+                    </div>
+                </div>
+
+                <!-- Grid wrapper for high-speed switching -->
+                <div class="overflow-y-auto max-h-[300px] border border-slate-100 rounded-xl p-3 bg-slate-50/50">
+                    <div class="grid grid-cols-5 gap-2" id="navigator-grid">
+                        <!-- 60 buttons loaded dynamically -->
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 pt-3">
+                    <button onclick="triggerFinishQuiz()" id="finish-quiz-btn" class="hidden w-full py-2.5 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl transition shadow hover:shadow-md flex items-center justify-center gap-2 khmer-title text-sm">
+                        <i class="fa-solid fa-circle-check"></i> បញ្ចប់ការប្រឡង
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- Offline Answer Key Panel (Locked and Hidden during Exam) -->
+    <section id="answer-key-section" class="bg-slate-900 text-slate-300 py-12 px-4 border-t-8 border-[#D4AF37]">
+        <div class="max-w-7xl mx-auto flex flex-col gap-8">
+            
+            <!-- Answer key lock state UI -->
+            <div id="answer-key-lock-wrapper" class="text-center py-8 border border-dashed border-slate-700 rounded-2xl bg-slate-950/40">
+                <div class="w-14 h-14 bg-slate-800 text-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-3 shadow-inner">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </div>
+                <h3 class="text-base font-bold khmer-title text-[#E2E8F0] mb-2">សន្លឹកចម្លើយផ្លូវការត្រូវបានចាក់សោ</h3>
+                <p class="text-slate-400 text-xs mb-4 max-w-md mx-auto">សន្លឹកចម្លើយត្រូវបានលាក់ដើម្បីធានាភាពស្មោះត្រង់នៃការប្រឡង។ ប៊ូតុងខាងក្រោមសម្រាប់តែគ្រូឧទ្ទេស (Instructor Only) ដើម្បីបើកផ្ទៀងផ្ទាត់។</p>
+                <button onclick="unlockAnswerKey()" class="px-5 py-2.5 bg-[#002060] hover:bg-blue-900 border border-[#D4AF37] text-white text-xs font-semibold rounded-xl transition khmer-title inline-flex items-center gap-2">
+                    <i class="fa-solid fa-key text-[#D4AF37]"></i> បើកសោសន្លឹកចម្លើយ (Unlock Key)
+                </button>
+            </div>
+
+            <!-- Real answer key table, hidden until unlocked -->
+            <div id="answer-key-content" class="hidden flex flex-col gap-8">
+                <div class="text-center md:text-left flex flex-col md:flex-row justify-between items-center gap-4 border-b border-slate-800 pb-4">
+                    <div>
+                        <h2 class="text-xl md:text-2xl font-bold khmer-title text-[#E2E8F0] mb-2 flex items-center justify-center md:justify-start gap-2">
+                            <i class="fa-solid fa-key text-[#D4AF37]"></i> សន្លឹកចម្លើយផ្លូវការ (Answer Key for All 60 Questions)
+                        </h2>
+                        <p class="text-slate-400 text-xs">សូមផ្ទៀងផ្ទាត់ចម្លើយខាងក្រោម សម្រាប់ជាឯកសារយោងផ្លូវការនៃការរៀនសូត្រ</p>
+                    </div>
+                    <button onclick="lockAnswerKey()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+                        <i class="fa-solid fa-lock"></i> ចាក់សោចម្លើយវិញ
+                    </button>
+                </div>
+
+                <!-- Beautiful grid mapping 60 answers cleanly -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-10 gap-3 text-xs">
+                    <script>
+                        document.write(Array.from({length: 60}, (_, i) => {
+                            const answers = ["C", "C", "A", "B", "C", "D", "B", "A", "C", "D", "D", "A", "B", "C", "C", "A", "C", "A", "B", "D", "B", "C", "A", "C", "B", "C", "D", "B", "B", "C", "D", "A", "D", "A", "D", "C", "C", "A", "B", "D", "A", "C", "D", "B", "C", "B", "D", "C", "A", "B", "D", "B", "A", "D", "C", "A", "B", "D", "C", "A"];
+                            return `
+                            <div class="flex items-center justify-between p-2 rounded-lg bg-slate-800 border border-slate-700 shadow-sm">
+                                <span class="font-bold text-slate-400 text-[10px]">សំណួរ ${i+1}</span>
+                                <span class="font-black text-[#D4AF37] text-sm">${answers[i]}</span>
+                            </div>`;
+                        }).join(''));
+                    </script>
+                </div>
+            </div>
+            <div class="text-center text-[11px] text-slate-500 border-t border-slate-800 pt-6 mt-2">
+                &copy; ២០២៦ សាខាពុទ្ធិកសាកលវិទ្យាល័យព្រះសីហនុរាជ ខេត្តកំពង់ឆ្នាំង &middot; មុខវិជ្ជាផែនការស្ថិតិ &middot; ឌន វណ្ណឌីណា
+            </div>
+        </div>
+    </section>
+
+    <!-- Custom Modal Container (Alert Popup) -->
+    <div id="custom-alert-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full p-6 transform transition-all scale-95 duration-200">
+            <div class="flex items-center gap-3 text-amber-600 mb-4">
+                <span class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center text-lg shadow-sm">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </span>
+                <h3 class="text-lg font-bold khmer-title text-slate-800" id="custom-alert-title">ការណែនាំ</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-6" id="custom-alert-message">សារជូនដំណឹង...</p>
+            <div class="flex justify-end">
+                <button onclick="closeCustomAlert()" class="px-5 py-2 bg-[#002060] hover:bg-blue-900 text-white font-semibold rounded-xl text-sm transition khmer-title">
+                    យល់ព្រម
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Container (Confirm Popup) -->
+    <div id="custom-confirm-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full p-6 transform transition-all scale-95 duration-200">
+            <div class="flex items-center gap-3 text-blue-600 mb-4">
+                <span class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-lg shadow-sm">
+                    <i class="fa-solid fa-circle-question"></i>
+                </span>
+                <h3 class="text-lg font-bold khmer-title text-slate-800" id="custom-confirm-title">បញ្ជាក់ការសម្រេចចិត្ត</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-6" id="custom-confirm-message">តើអ្នកពិតជាចង់អនុវត្តសកម្មភាពនេះមែនទេ?</p>
+            <div class="flex justify-end gap-3">
+                <button onclick="closeCustomConfirm(false)" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 font-semibold rounded-xl text-sm transition khmer-title">
+                    បោះបង់
+                </button>
+                <button onclick="closeCustomConfirm(true)" class="px-5 py-2 bg-rose-600 hover:bg-rose-700 text-white font-semibold rounded-xl text-sm transition khmer-title">
+                    យល់ព្រម
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Modal Container (PIN Input for Teacher Verification) -->
+    <div id="custom-pin-modal" class="hidden fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl shadow-xl border border-slate-100 max-w-md w-full p-6 transform transition-all scale-95 duration-200">
+            <div class="flex items-center gap-3 text-[#002060] mb-4">
+                <span class="w-10 h-10 bg-blue-50 rounded-xl flex items-center justify-center text-lg shadow-sm">
+                    <i class="fa-solid fa-key text-[#D4AF37]"></i>
+                </span>
+                <h3 class="text-lg font-bold khmer-title text-slate-800">ផ្ទៀងផ្ទាត់សិទ្ធិគ្រូឧទ្ទេស</h3>
+            </div>
+            <p class="text-sm text-slate-600 leading-relaxed mb-4">សូមវាយបញ្ចូលលេខកូដសម្ងាត់ (PIN) ដើម្បីបើកមើលសន្លឹកចម្លើយផ្លូវការ៖</p>
+            <input type="password" id="teacher-pin-input" placeholder="បញ្ចូលលេខកូដសម្ងាត់ទីនេះ..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-base text-center tracking-widest focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6 font-mono">
+            <div class="flex justify-end gap-3">
+                <button onclick="closeCustomPinModal(false)" class="px-4 py-2 border border-slate-200 hover:bg-slate-50 text-slate-600 font-semibold rounded-xl text-sm transition khmer-title">
+                    បោះបង់
+                </button>
+                <button onclick="closeCustomPinModal(true)" class="px-5 py-2 bg-[#002060] hover:bg-blue-900 text-white font-semibold rounded-xl text-sm transition khmer-title">
+                    ផ្ទៀងផ្ទាត់
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let questions = [];
+        let filteredQuestions = [];
+        let activeIndex = 0;
+        let userAnswers = {}; // Holds selected answer (A, B, C, D)
+        let flags = {}; // Flag status
+        let isPracticeMode = true; // True for practice, false for exam
+        let activeFilter = 'all'; // Filter by chapter
+        let startTime = null;
+        let timerInterval = null;
+        let myChartInstance = null; // To hold Chart.js object securely
+        let studentName = ""; // Added to store student name
+        let onConfirmCallback = null; // Callback for custom confirm dialog
+
+        function showCustomAlert(title, message) {
+            document.getElementById('custom-alert-title').textContent = title;
+            document.getElementById('custom-alert-message').textContent = message;
+            document.getElementById('custom-alert-modal').classList.remove('hidden');
+        }
+
+        function closeCustomAlert() {
+            document.getElementById('custom-alert-modal').classList.add('hidden');
+        }
+
+        function showCustomConfirm(title, message, callback) {
+            document.getElementById('custom-confirm-title').textContent = title;
+            document.getElementById('custom-confirm-message').textContent = message;
+            onConfirmCallback = callback;
+            document.getElementById('custom-confirm-modal').classList.remove('hidden');
+        }
+
+        function closeCustomConfirm(isConfirmed) {
+            document.getElementById('custom-confirm-modal').classList.add('hidden');
+            if (isConfirmed && onConfirmCallback) {
+                onConfirmCallback();
+            }
+            onConfirmCallback = null;
+        }
+
+        // Validate and start the test
+        function checkAndStartQuiz() {
+            const nameInput = document.getElementById('student-name-input').value.trim();
+            if (!nameInput) {
+                showCustomAlert("ព័ត៌មានចាំបាច់", "សូមវាយបញ្ចូលឈ្មោះរបស់លោកអ្នក (Student Name) មុនពេលចាប់ផ្តើមការប្រឡង!");
+                return;
+            }
+            studentName = nameInput;
+            startQuiz();
+        }
+
+        const originalQuestions = [
+            // Chapter 1: លំនាំដើម ស្ថិតិ (1-12)
+            {
+                id: 1,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើពាក្យ «ស្ថិតិ» (Statistics) មានប្រភពដើមមកពីពាក្យឡាតាំងមួយណា?",
+                choices: {
+                    A: "Statistica",
+                    B: "Statistique",
+                    C: "Status",
+                    D: "Statistical"
+                },
+                answer: "C",
+                explain: "តាមមេរៀនទី១ ទំព័រ២ ពាក្យថាស្ថិតិមានដើមកំណើតចេញពីពាក្យ Latin 'Status' ដែលមានន័យថាការថ្លែងៗសម្រាប់ពេលដ៏យូរលង់ណាស់មកហើយ។"
+            },
+            {
+                id: 2,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើវិទ្យាសាស្ត្រស្ថិតិទំនើប បានចាប់ផ្តើមរីកចម្រើនខ្លាំងនៅចុងសតវត្សទីប៉ុន្មាន?",
+                choices: {
+                    A: "សតវត្សទី១៧",
+                    B: "សតវត្សទី១៨",
+                    C: "សតវត្សទី១៩",
+                    D: "សតវត្សទី២០"
+                },
+                answer: "C",
+                explain: "វិទ្យាសាស្ត្រទំនើបនៃស្ថិតិបានចាប់ផ្តើមរីកចម្រើននៅចុងសតវត្សទី១៩ (ទំព័រ២)។"
+            },
+            {
+                id: 3,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើស្ថិតិប្រភេទណា ដែលរួមមានវិធីសាស្ត្រសម្រាប់ចាត់ចែង សង្ខេប និងបង្ហាញទិន្នន័យដោយប្រើតារាង គំនូសតាង និងក្រាហ្វិក?",
+                choices: {
+                    A: "ស្ថិតិពិពណ៌នា (Descriptive statistics)",
+                    B: "ស្ថិតិសន្និដ្ឋាន (Inferential statistics)",
+                    C: "ស្ថិតិគណិតវិទ្យា (Mathematical statistics)",
+                    D: "ស្ថិតិអនុវត្តន៍ (Applied statistics)"
+                },
+                answer: "A",
+                explain: "ស្ថិតិពិពណ៌នា (Descriptive statistics) រួមមានវិធីសាស្ត្រសម្រាប់ចាត់ចែង សង្ខេប និងបង្ហាញទិន្នន័យដោយប្រើតារាង គំនូសតាង និងក្រាហ្វិក (ទំព័រ៤)។"
+            },
+            {
+                id: 4,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើស្ថិតិប្រភេទណា ដែលប្រើប្រាស់វិធីសាស្ត្រសម្រាប់ធ្វើការសន្និដ្ឋាន ការប៉ាន់ស្មាន ឬការព្យាករណ៍ឱ្យសាកលដោយផ្អែកលើលទ្ធផលទទួលបានពីសំណាកគំរូ?",
+                choices: {
+                    A: "ស្ថិតិពិពណ៌នា (Descriptive statistics)",
+                    B: "ស្ថិតិសន្និដ្ឋាន (Inferential statistics)",
+                    C: "ស្ថិតិប្រូបាប៊ីលីតេ (Probability statistics)",
+                    D: "ស្ថិតិវិភាគ (Analytical statistics)"
+                },
+                answer: "B",
+                explain: "ស្ថិតិសន្និដ្ឋាន (Inferential statistics) រួមមានវិធីសាស្ត្រដែលប្រើប្រាស់សម្រាប់ធ្វើការសន្និដ្ឋាន ការប៉ាន់ស្មាន ការព្យាករណ៍ឱ្យសាកលដោយផ្អែកលើលទ្ធផលដែលទទួលបានពីសំណាកគំរូ (ទំព័រ៥)។"
+            },
+            {
+                id: 5,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើការអង្កេតមួយដែលរាប់បញ្ចូលរាល់ធាតុទាំងអស់នៃសាកល (Population) ហៅថាអ្វី?",
+                choices: {
+                    A: "ការស្ទង់មតិ (Survey)",
+                    B: "សំណាកគំរូ (Sample)",
+                    C: "ជំរឿន (Census)",
+                    D: "ការពិសោធន៍ (Experiment)"
+                },
+                answer: "C",
+                explain: "ការអង្កេតមួយដែលរាប់បញ្ចូលរាល់ធាតុទាំងអស់នៃសាកលហៅថា ជំរឿន (Census) (ទំព័រ៥)។"
+            },
+            {
+                id: 6,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើការប្រមូលព័ត៌មានពីសំណាកគំរូ (Sample) ហៅថាអ្វី?",
+                choices: {
+                    A: "ជំរឿន (Census)",
+                    B: "ការធ្វើផែនការ (Planning)",
+                    C: "ការបកស្រាយ (Interpretation)",
+                    D: "ការអង្កេត (Survey)"
+                },
+                answer: "D",
+                explain: "ការប្រមូលព័ត៌មានពីសំណាកគំរូ ហៅថា អង្កេត (Survey) (ទំព័រ៥)។"
+            },
+            {
+                id: 7,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើអថេរដែលមិនអាចសន្មតជាលេខ ប៉ុន្តែអាចចែកជាប្រភេទផ្សេងៗគ្នា ដូចជា ភេទ ស្ថានភាពអាពាហ៍ពិពាហ៍ និងមុខរបរ ហៅថាអ្វី?",
+                choices: {
+                    A: "អថេរបរិមាណ (Quantitative Variable)",
+                    B: "អថេរគុណភាព (Qualitative Variable)",
+                    C: "អថេរដាច់ (Discrete Variable)",
+                    D: "អថេរជាប់ (Continuous Variable)"
+                },
+                answer: "B",
+                explain: "អថេរគុណភាព គឺអថេរដែលមិនអាចសន្មតជាលេខ ប៉ុន្តែអាចចែកជាប្រភេទមិនមែនជាលេខខុសៗគ្នា ដូចជា ភេទ ស្ថានភាពអាពាហ៍ពិពាហ៍ មុខរបរ (ទំព័រ៦)។"
+            },
+            {
+                id: 8,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើអថេរដែលអាចសន្មតតម្លៃពិតប្រាកដរបស់វាជាចំនួនរាប់បាន ឬជាចំនួនរាប់អស់ ដូចជា ចំនួនកូនក្នុងបន្ទុក ឬចំនួនកម្មករ ហៅថាអ្វី?",
+                choices: {
+                    A: "អថេរដាច់ (Discrete Variable)",
+                    B: "អថេរជាប់ (Continuous Variable)",
+                    C: "អថេរគុណភាព (Qualitative Variable)",
+                    D: "អថេរចន្លោះ (Interval Variable)"
+                },
+                answer: "A",
+                explain: "អថេរដាច់ (Discrete Variable) អាចសន្មតតម្លៃពិតប្រាកដរបស់វាជាចំនួនរាប់បាន ឬជាចំនួនរាប់អស់ ដូចជាចំនួនកូនក្នុងបន្ទុក ចំនួនកម្មករ (ទំព័រ៦)។"
+            },
+            {
+                id: 9,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើអថេរដែលអាចសន្មតរាល់តម្លៃដែលស្ថិតនៅក្នុងចន្លោះជាក់លាក់មួយ ដូចជា កម្ពស់ ទម្ងន់ ឬបៀវត្ស ហៅថាអ្វី?",
+                choices: {
+                    A: "អថេរដាច់ (Discrete Variable)",
+                    B: "អថេរនាមករណ៍ (Nominal Variable)",
+                    C: "អថេរជាប់ (Continuous Variable)",
+                    D: "អថេរលំដាប់ (Ordinal Variable)"
+                },
+                answer: "C",
+                explain: "អថេរជាប់ (Continuous Variable) អាចសន្មតរាល់តម្លៃដែលស្ថិតនៅក្នុងចន្លោះជាក់លាក់មួយ ដូចជាទម្ងន់ កម្ពស់ រយៈពេល បៀវត្ស (ទំព័រ៦)។"
+            },
+            {
+                id: 10,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើកម្រិតរង្វាស់ប្រភេទណាដែលអនុវត្តចំពោះទិន្នន័យដែលត្រូវបានចាត់ជាប្រភេទខុសៗគ្នា ហើយមិនអាចរៀបចំតាមលំដាប់ជាក់លាក់បានឡើយ ដូចជា ភេទ ឬសាសនា?",
+                choices: {
+                    A: "កម្រិតលំដាប់ (Ordinal)",
+                    B: "កម្រិតចន្លោះ (Interval)",
+                    C: "កម្រិតអនុបាត (Ratio)",
+                    D: "កម្រិតនាមករណ៍ (Nominal)"
+                },
+                answer: "D",
+                explain: "កម្រិតនាមករណ៍ អនុវត្តចំពោះទិន្នន័យដែលត្រូវបានចាត់ជាប្រភេទខុសៗគ្នា ហើយប្រភេទទាំងនេះមិនអាចត្រូវបានរៀបចំតាមលំដាប់ជាក់លាក់ឡើយ ដូចជា ភេទ សាសនា (ទំព័រ៧)។"
+            },
+            {
+                id: 11,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើកម្រិតរង្វាស់ប្រភេទណាដែលអនុវត្តចំពោះទិន្នន័យដែលត្រូវបានចាត់ជាប្រភេទខុសៗគ្នា ហើយប្រភេទទាំងនេះអាចរៀបចំតាមលំដាប់ថ្នាក់ជាក់លាក់បាន ដូចជា លំដាប់ពិន្ទុសិស្ស?",
+                choices: {
+                    A: "កម្រិតចន្លោះ (Interval)",
+                    B: "កម្រិតនាមករណ៍ (Nominal)",
+                    C: "កម្រិតអនុបាត (Ratio)",
+                    D: "កម្រិតលំដាប់ (Ordinal)"
+                },
+                answer: "D",
+                explain: "កម្រិតលំដាប់ អនុវត្តចំពោះទិន្នន័យដែលត្រូវបានចាត់ជាប្រភេទខុសៗគ្នា ហើយប្រភេទទាំងនេះត្រូវបានរៀបចំតាមលំដាប់ថ្នាក់ជាក់លាក់ ដូចជា ល្អណាស់ ល្អ មធ្យម (ទំព័រ៧)។"
+            },
+            {
+                id: 12,
+                chapter: 1,
+                chapterTitle: "មេរៀនទី ១",
+                text: "តើកម្រិតរង្វាស់ណាដែលតម្លៃសូន្យ (០) របស់វាគឺមានន័យច្បាស់លាស់ (សូន្យពិតប្រាកដ) ហើយផលធៀបរវាងតម្លៃពីរក៏មានន័យ ដូចជា ចំណូល ឬទម្ងន់?",
+                choices: {
+                    A: "កម្រិតអនុបាត (Ratio)",
+                    B: "កម្រិតចន្លោះ (Interval)",
+                    C: "កម្រិតលំដាប់ (Ordinal)",
+                    D: "កម្រិតនាមករណ៍ (Nominal)"
+                },
+                answer: "A",
+                explain: "កម្រិតអនុបាត (Ratio) ចំណុចសូន្យគឺមានន័យច្បាស់លាស់ (គ្មានធាតុ) ហើយផលធៀបរវាងពីរតម្លៃក៏មានអត្ថន័យដែរ (ទំព័រ៧)។"
+            },
+            // Chapter 2: ការរចនា និង ការរៀបចំផែនការស៊ើបអង្កេតស្ថិតិ (13-24)
+            {
+                id: 13,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើការរៀបចំផែនការស៊ើបអង្កេតស្ថិតិទ្រង់ទ្រាយធំ ដូចជាការរៀបចំធ្វើជំរឿនប្រជាជន អាចចំណាយពេលរៀបចំរយៈពេលប៉ុន្មាន?",
+                choices: {
+                    A: "ពីរបីសប្តាហ៍",
+                    B: "អាចចំណាយពេលច្រើនឆ្នាំ",
+                    C: "ពីរបីខែ",
+                    D: "ត្រឹមតែមួយឆមាស"
+                },
+                answer: "B",
+                explain: "ជាមួយការស៊ើបអង្កេតទ្រង់ទ្រាយធំ ដំណើរការរៀបចំផែនការនេះអាចចំណាយពេលយូរ ត្រូវចំណាយពេលច្រើនឆ្នាំ ឧទាហរណ៍ ការរៀបចំធ្វើជំរឿនប្រជាជន (ទំព័រ១៤)។"
+            },
+            {
+                id: 14,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើនៅក្នុងការស៊ើបអង្កេតស្ថិតិថ្មីមួយ មានជំហានលម្អិតចំនួនប៉ុន្មានចំណុចដែលត្រូវពិចារណា និងរៀបចំផែនការមុនចាប់ផ្តើមប្រមូលទិន្នន័យ?",
+                choices: {
+                    A: "១០ ជំហាន",
+                    B: "១២ ជំហាន",
+                    C: "១៦ ជំហាន",
+                    D: "២០ ជំហាន"
+                },
+                answer: "C",
+                explain: "តាមមេរៀនទី២ ទំព័រ១៤-១៥ គឺមានចំណុចចំនួន ១៦ ដែលត្រូវពិចារណា និងរៀបចំផែនការមុនពេលចាប់ផ្តើមប្រមូលទិន្នន័យជាក់ស្តែង។"
+            },
+            {
+                id: 15,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើគោលបំណងចម្បងនៃការពិនិត្យឡើងវិញនូវអក្សរសិល្ប៍ដែលមានស្រាប់ (Literature Review) គឺដើម្បីអ្វី?",
+                choices: {
+                    A: "ដើម្បីស្វែងរកប្រភពថវិកាបន្ថែម",
+                    B: "ដើម្បីជ្រើសរើសមន្ត្រីសម្ភាសន៍",
+                    C: "ដើម្បីរក្សាបន្តចំណាត់ថ្នាក់ ប្រៀបធៀបគំហើញ និងចៀសវាងការសិក្សាជាន់គ្នា",
+                    D: "ដើម្បីសរសេររបាយការណ៍បោះពុម្ពផ្សាយ"
+                },
+                answer: "C",
+                explain: "ការពិនិត្យឡើងវិញនូវអត្ថបទ/ឯកសារ/អក្សរសិល្ប៍អំពីប្រធានបទពាក់ព័ន្ធ គឺមានសារៈសំខាន់សម្រាប់រក្សាបន្តចំណាត់ថ្នាក់ និងប្រៀបធៀបគំហើញ និងចៀសវាងការជាន់គ្នា (ទំព័រ១៦)។"
+            },
+            {
+                id: 16,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើពាក្យថា «ការគ្របដណ្តប់» (Coverage) នៅក្នុងការស៊ើបអង្កេតស្ថិតិ មានន័យដូចម្តេច?",
+                choices: {
+                    A: "ប្រព័ន្ធធានាថារាល់ឯកតាទាំងអស់នៅក្នុងវិសាលភាពត្រូវបានកំណត់អត្តសញ្ញាណ និងប្រមូលទិន្នន័យ",
+                    B: "ការធានារ៉ាប់រងលើគ្រោះថ្នាក់ការងាររបស់មន្ត្រីស្ថិតិ",
+                    C: "ផ្ទៃដីភូមិសាស្ត្រដែលត្រូវបានការពារដោយច្បាប់ស្ថិតិ",
+                    D: "ទំហំថវិកាដែលបានគ្របដណ្តប់រាល់ការចំណាយទាំងអស់"
+                },
+                answer: "A",
+                explain: "«ការគ្របដណ្តប់» គឺជាប្រព័ន្ធធានាថារាល់ឯកតាទាំងអស់ (ក្រុមហ៊ុន កសិដ្ឋាន គ្រួសារ) នៅក្នុងវិសាលភាពនៃការប្រមូលត្រូវបានកំណត់អត្តសញ្ញាណ និងគ្របដណ្តប់ដោយការប្រមូល (ទំព័រ១៨)។"
+            },
+            {
+                id: 17,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើអ្វីជាឧបករណ៍ដ៏សំខាន់សម្រាប់ធានាការគ្របដណ្តប់ និងទីតាំងរបស់ឯកតាសម្រាប់ការសង្កេត (ដូចជាបញ្ជីក្រុមហ៊ុន ឬផែនទីភូមិ)?",
+                choices: {
+                    A: "កាលវិភាគការងារ",
+                    B: "កម្រងសំណួរបិទ",
+                    C: "ក្របខ័ណ្ឌជ្រើសរើសសំណាក ឬស៊ុមគំរូ (Sampling Frame)",
+                    D: "របាយការណ៍ហិរញ្ញវត្ថុ"
+                },
+                answer: "C",
+                explain: "ក្របខ័ណ្ឌពេញលេញ និងទាន់សម័យរបស់ឯកតា (ស៊ុមគំរូ) គឺចាំបាច់ក្នុងការស៊ើបអង្កេតដើម្បីអាចធ្វើការជ្រើសរើស និងទីតាំងរបស់ឯកតាសម្រាប់ការសង្កេត (ទំព័រ១៨)។"
+            },
+            {
+                id: 18,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើក្នុងការគ្រប់គ្រងការងារចុះអង្កេតជាក់ស្តែង គេត្រូវមានប្រព័ន្ធអ្វីដើម្បីធានាថាអ្នកសម្ភាសន៍បំពេញការងារបានត្រឹមត្រូវ?",
+                choices: {
+                    A: "ប្រព័ន្ធសម្រាប់ត្រួតពិនិត្យ និងត្រួតពិនិត្យគុណភាព (Supervision/Quality Control)",
+                    B: "ប្រព័ន្ធកំណត់ប្រាក់ពិន័យ",
+                    C: "ប្រព័ន្ធផ្សព្វផ្សាយពាណិជ្ជកម្ម",
+                    D: "ប្រព័ន្ធច្បាប់ស្តីពីពន្ធដារ"
+                },
+                answer: "A",
+                explain: "ការងារចុះដល់កន្លែងប្រមូលទិន្នន័យទាំងអស់ ជាទូទៅត្រូវមានប្រព័ន្ធសម្រាប់ត្រួតពិនិត្យអ្នកសម្ភាសន៍ ដើម្បីប្រាកដថាពួកគេបានបំពេញការងារបានត្រឹមត្រូវ (ទំព័រ១៩)។"
+            },
+            {
+                id: 19,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើប្រភពទិន្នន័យដែលបានមកពីការប្រមូលដោយផ្ទាល់ពីតំបន់អង្កេត ឬអ្នកឆ្លើយតប ហៅថាអ្វី?",
+                choices: {
+                    A: "ប្រភពបន្ទាប់បន្សំ (Secondary Source)",
+                    B: "ប្រភពចម្បង ឬប្រភពដើម (Primary Source)",
+                    C: "ប្រភពរដ្ឋបាល (Administrative Source)",
+                    D: "ប្រភពប្រព័ន្ធផ្សព្វផ្សាយ"
+                },
+                answer: "B",
+                explain: "ទិន្នន័យចម្បង សំដៅលើការប្រមូលដោយផ្ទាល់ពីតំបន់អង្កេត ឬអ្នកឆ្លើយតប (ទំព័រ២០)។"
+            },
+            {
+                id: 20,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើទិន្នន័យដែលបានប្រមូលរួចហើយពីជំរឿន ឬការអង្កេតមុនៗ ហើយត្រូវបានយកមកប្រើប្រាស់បន្ត ហៅថាប្រភពអ្វី?",
+                choices: {
+                    A: "ប្រភពចម្បង (Primary Source)",
+                    B: "ប្រភពពិសោធន៍ (Experimental Source)",
+                    C: "ប្រភពផ្ទាល់មាត់ (Oral Source)",
+                    D: "ប្រភពបន្ទាប់បន្សំ (Secondary Source)"
+                },
+                answer: "D",
+                explain: "ការប្រើទិន្នន័យដែលបានប្រមូលរួចហើយពីជំរឿន ឬអង្កេតនៃក្រុមមនុស្សដូចគ្នា ហៅថាប្រភពទិន្នន័យបន្ទាប់បន្សំ (ទំព័រ២០)។"
+            },
+            {
+                id: 21,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើចំណុចណាជាការខុសគ្នារវាង «សម្ភាសន៍» និង «កាលវិភាគសម្ភាសន៍»?",
+                choices: {
+                    A: "សម្ភាសន៍ជាវិធីសាស្ត្រ រីឯកាលវិភាគសម្ភាសន៍ជាឧបករណ៍",
+                    B: "សម្ភាសន៍ជាឧបករណ៍ រីឯកាលវិភាគសម្ភាសន៍ជាវិធីសាស្ត្រ",
+                    C: "ទាំងពីរនេះមានន័យដូចគ្នាបេះបិទ",
+                    D: "សម្ភាសន៍ជាច្បាប់ រីឯកាលវិភាគសម្ភាសន៍ជាថវិកា"
+                },
+                answer: "A",
+                explain: "តាមមេរៀនទី២ ទំព័រ២១ «សម្ភាសន៍គឺជាវិធីសាស្ត្រមួយ ខណៈកាលវិភាគសម្ភាសន៍គឺជាឧបករណ៍មួយ»។"
+            },
+            {
+                id: 22,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើកិច្ចការណាដែលជួយធានាការសម្ងាត់ព័ត៌មានបុគ្គល និងក្រុមហ៊ុនដែលផ្តល់ជូនមន្ត្រីស្ថិតិ?",
+                choices: {
+                    A: "ការផ្សព្វផ្សាយជាសាធារណៈ",
+                    B: "ការបណ្តុះបណ្តាលមន្ត្រី",
+                    C: "បទបប្បញ្ញត្តិច្បាប់ស្ថិតិ (Statistical Law/Confidentiality)",
+                    D: "ការធ្វើតេស្តសាកល្បង"
+                },
+                answer: "C",
+                explain: "ច្បាប់ស្ថិតិជាធម្មតាតែងចែងថា រាល់ព័ត៌មានដែលប្រមូលបានអំពីបុគ្គលម្នាក់ៗ ឬអាជីវកម្មឯកជន គឺជាការសម្ងាត់ (ទំព័រ២៤)។"
+            },
+            {
+                id: 23,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើការហាត់សមដំណាក់កាលទាំងអស់នៃការស៊ើបអង្កេតស្ថិតិដែលធ្វើឡើងក្រោមលក្ខខណ្ឌជាក់ស្តែង ហៅថាអ្វី?",
+                choices: {
+                    A: "ការអង្កេតសាកល្បង (Pilot Survey)",
+                    B: "ការធ្វើតេស្តមុន (Pre-testing)",
+                    C: "ការបណ្តុះបណ្តាលមន្ត្រី",
+                    D: "ការវិភាគសាកល្បង"
+                },
+                answer: "A",
+                explain: "ការអង្កេតសាកល្បង គឺជាការហាត់សមនៃដំណាក់កាលផ្សេងគ្នាទាំងអស់នៃការស៊ើបអង្កេត ដែលបានធ្វើឡើងក្រោមលក្ខខណ្ឌជាក់ស្តែង (ទំព័រ២៥)។"
+            },
+            {
+                id: 24,
+                chapter: 2,
+                chapterTitle: "មេរៀនទី ២",
+                text: "តើការធ្វើតេស្តមុន (Pre-testing) ជាទូទៅផ្តោតលើអ្វី?",
+                choices: {
+                    A: "ការវាយតម្លៃថវិកាសរុប",
+                    B: "ការបណ្តុះបណ្តាលមន្ត្រីរាប់ពាន់នាក់",
+                    C: "ការសាកល្បងសាមញ្ញលើទិដ្ឋភាពជាក់លាក់ ដូចជាការសាកល្បងបញ្ជីសំណួរ",
+                    D: "ការបោះពុម្ពរបាយការណ៍ចុងក្រោយ"
+                },
+                answer: "C",
+                explain: "ការធ្វើតេស្តមុន ជាធម្មតាគ្រាន់តែជាការសាកល្បងសាមញ្ញនៃទិដ្ឋភាពជាក់លាក់មួយនៃការអង្កេត ដូចជាការសាកល្បងសំណួរក្នុងបញ្ជីសំណួរ (ទំព័រ២៥)។"
+            },
+            // Chapter 3: ការរៀបចំបញ្ជីសំណួរ និងការជ្រើសរើសសំណាក (25-36)
+            {
+                id: 25,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើកម្រងសំណួរដែលផ្តល់ឱកាសឱ្យអ្នកឆ្លើយបញ្ចេញមតិ ឬទស្សនៈដោយសេរី ហៅថាអ្វី?",
+                choices: {
+                    A: "កម្រងសំណួរបិទ (Closed Format Questions)",
+                    B: "កម្រងសំណួរបើក (Open Format Questions)",
+                    C: "សំណួរ Dichotomous",
+                    D: "សំណួរ Rating Scales"
+                },
+                answer: "B",
+                explain: "សំណួរបើកចំហផ្តល់អាទិភាពឱ្យអ្នកតបសម្ភាសន៍ឱកាសក្នុងការបញ្ចេញមតិ ទស្សនៈទានដោយសេរី (ទំព័រ៣៥)។"
+            },
+            {
+                id: 26,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើកម្រងសំណួរដែលផ្តល់ជម្រើសចម្លើយកំណត់រួចជាស្រេច ដើម្បីងាយស្រួលវិភាគ និងគណនាភាគរយ ហៅថាអ្វី?",
+                choices: {
+                    A: "កម្រងសំណួរបើក (Open Format Questions)",
+                    B: "សំណួរស្វែងយល់គុណភាព",
+                    C: "សំណួរទម្រង់បិទ (Closed Format Questions)",
+                    D: "មគ្គុទ្ទេសក៍សម្ភាសន៍សង្ខេប"
+                },
+                answer: "C",
+                explain: "សំណួរទម្រង់បិទ ផ្តល់ជម្រើសឱ្យអ្នកតបជ្រើសរើស អត្ថប្រយោជន៍គឺផ្តល់ភាពងាយស្រួលក្នុងការវិភាគ និងគណនាទិន្នន័យស្ថិតិ (ទំព័រ៣៦)។"
+            },
+            {
+                id: 27,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើប្រភេទសំណួរបិទដែលផ្តល់ជម្រើសឱ្យអ្នកឆ្លើយជ្រើសរើសមួយក្នុងចំណោមពីរផ្ទុយគ្នា (ដូចជា បាទ/ចាស ឬ ទេ) ហៅថាអ្វី?",
+                choices: {
+                    A: "Multiple Choice Questions",
+                    B: "Rating Scales",
+                    C: "Likert Scale",
+                    D: "សំណួរ Dichotomous"
+                },
+                answer: "D",
+                explain: "សំណួរ Dichotomous គឺជាប្រភេទសំណួរដែលផ្តល់នូវជម្រើស ដែលអនុញ្ញាតឱ្យអ្នកឆ្លើយជ្រើសរើសមួយក្នុងចំណោមពីរផ្ទុយគ្នា ដូចជា 'បាទ/ចាស' ឬ 'ទេ' (ទំព័រ៣៧)។"
+            },
+            {
+                id: 28,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើមាត្រដ្ឋានវាស់ស្ទង់ការពេញចិត្ត ឬអាកប្បកិរិយាដែលផ្តល់កម្រិតជ្រើសរើស (ឧទាហរណ៍ យល់ស្របបំផុត យល់ស្រប មធ្យម មិនយល់ស្រប...) ហៅថាអ្វី?",
+                choices: {
+                    A: "Dichotomous Scale",
+                    B: "Likert Scale (Rating Scales)",
+                    C: "Nominal Scale",
+                    D: "Binary Scale"
+                },
+                answer: "B",
+                explain: "Likert Scale ឬ Rating Scales ជាប្រភេទពិសេសនៃសំណួរបិទដែលសួរឱ្យវាយតម្លៃគំនិតអរូបី ដូចជាការពេញចិត្ត ឬកម្រិតយល់ស្រប (ទំព័រ៣៨)។"
+            },
+            {
+                id: 29,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើការជ្រើសរើសសំណាកប្រភេទណា ដែលរាល់ឯកតាសំណាកទាំងអស់មានឱកាសស្មើៗគ្នាក្នុងការជ្រើសរើសដោយចៃដន្យ?",
+                choices: {
+                    A: "គំរូមិនប្រូបាប៊ីលីតេ (Non-Probability Sampling)",
+                    B: "គំរូប្រូបាប៊ីលីតេ (Probability Sampling)",
+                    C: "គំរូភាពងាយស្រួល (Convenience Sampling)",
+                    D: "គំរូកូតា (Quota Sampling)"
+                },
+                answer: "B",
+                explain: "គំរូប្រូបាប៊ីលីតេ (Probability Sampling) សំដៅលើការជ្រើសរើសសំណាកនៅពេលការជ្រើសរើសផ្អែកលើចៃដន្យ ឬឱកាសស្មើគ្នា (ទំព័រ៤១)។"
+            },
+            {
+                id: 30,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើវិធីសាស្ត្រជ្រើសសំណាកប្រូបាប៊ីលីតេណា ដែលបែងចែកសាកលទៅជាក្រុមតូចៗ (Strata) ផ្អែកលើលក្ខណៈដូចគ្នា រួចជ្រើសរើសចៃដន្យពីក្រុមនីមួយៗ?",
+                choices: {
+                    A: "Simple Random Sampling",
+                    B: "Systematic Sampling",
+                    C: "Stratified Sampling",
+                    D: "Cluster Sampling"
+                },
+                answer: "C",
+                explain: "ការយកគំរូតាមកម្រិត ឬ Stratified Sampling ទាក់ទងនឹងការបែងចែកចំនួនសាកលទៅជាក្រុមតូចៗដែលគេស្គាល់ថាជាស្រទាប់ (Strata) រួចជ្រើសចៃដន្យ (ទំព័រ៤២)។"
+            },
+            {
+                id: 31,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើវិធីសាស្ត្រជ្រើសសំណាកប្រូបាប៊ីលីតេណា ដែលបែងចែកសាកលទៅជាក្រុមតូចៗតាមភូមិសាស្ត្រ (Clusters) រួចជ្រើសរើសដោយចៃដន្យយកទាំងក្រុមមកសិក្សា?",
+                choices: {
+                    A: "Stratified Sampling",
+                    B: "Systematic Sampling",
+                    C: "Simple Random Sampling",
+                    D: "Cluster Sampling"
+                },
+                answer: "D",
+                explain: "នៅក្នុងការយកគំរូតាមចង្កោម (Cluster Sampling) អ្នកស្រាវជ្រាវបែងចែកសាកលជាក្រុមតូចៗតាមភូមិសាស្ត្រ រួចជ្រើសរើសដោយចៃដន្យក្នុងចំណោមចង្កោមទាំងនេះ (ទំព័រ៤៣)។"
+            },
+            {
+                id: 32,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើវិធីសាស្ត្រជ្រើសសំណាកណា ដែលជ្រើសរើសបុគ្គលណាដែលងាយស្រួលរកបំផុត ជិតបំផុត ឬស្ម័គ្រចិត្តចូលរួម?",
+                choices: {
+                    A: "Convenience Sampling (ភាពងាយស្រួល)",
+                    B: "Purposive Sampling (វិនិច្ឆ័យ)",
+                    C: "Quota Sampling (កូតា)",
+                    D: "Snowball Sampling (បន្តបន្ទាប់)"
+                },
+                answer: "A",
+                explain: "ការយកគំរូតាមភាពងាយស្រួល (Convenience Sampling) គឺជ្រើសរើសឯកតាព្រោះវាងាយស្រួលបំផុតសម្រាប់អ្នកសិក្សាស្ថិតិ (ទំព័រ៤៣)។"
+            },
+            {
+                id: 33,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើវិធីសាស្ត្រជ្រើសសំណាកមិនមែនប្រូបាប៊ីលីតេណា ដែលពឹងផ្អែកលើការណែនាំបន្តបន្ទាប់ពីអ្នកឆ្លើយតបម្នាក់ទៅម្នាក់ទៀត សម្រាប់ករណីពិបាកស្វែងរក?",
+                choices: {
+                    A: "Quota Sampling",
+                    B: "Convenience Sampling",
+                    C: "Judgment Sampling",
+                    D: "Snowball Sampling"
+                },
+                answer: "D",
+                explain: "សំណាក Snowball គឺស័ក្តិសមសម្រាប់ប្រជាជនមិនស្គាល់ និងពិបាករកទីតាំង ដោយអ្នកឆ្លើយតបដំបូងជួយផ្តល់ព័ត៌មានណែនាំអ្នកឆ្លើយតបបន្តបន្ទាប់ (ទំព័រ៤៤-៤៥)។"
+            },
+            {
+                id: 34,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើរូបមន្ត Yamane Taro ឆ្នាំ១៩៩៧ សម្រាប់កំណត់ទំហំគំរូសំណាក (n) គឺមួយណា?",
+                choices: {
+                    A: "n = N / (1 + N.e²)",
+                    B: "n = N / (1 - N.e²)",
+                    C: "n = N.e² / (1 + N)",
+                    D: "n = (1 + N.e²) / N"
+                },
+                answer: "A",
+                explain: "តាមទំព័រ៤៥ រូបមន្ត Yamane Taro ឆ្នាំ១៩៩៧ គឺ n = N / (1 + N.e²) ដែល N ជាចំនួនសាកល និង e ជាកម្រិតលំអៀងគំរូ។"
+            },
+            {
+                id: 35,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "ចូរគណនាទំហំសំណាកគំរូ (n) បើចំនួនសាកល N = ១៨៧ ៨៦២ នាក់ និងកម្រិតលំអៀង e = ០.១ (១០%)?",
+                choices: {
+                    A: "៥០ នាក់",
+                    B: "៨០ នាក់",
+                    C: "៩០ នាក់",
+                    D: "១០០ នាក់"
+                },
+                answer: "D",
+                explain: "តាមការគណនា៖ n = 187862 / (1 + 187862*(0.1)²) = 187862 / (1 + 1878.62) = 187862 / 1879.62 = 99.94 បង្គត់ជា ១០០ នាក់ (ទំព័រ៤៥)។"
+            },
+            {
+                id: 36,
+                chapter: 3,
+                chapterTitle: "មេរៀនទី ៣",
+                text: "តើរូបមន្តសមាមាត្រសម្រាប់រកសំណាកគំរូតាមថ្នាក់រងនីមួយៗ (ni) ផ្អែកលើទំហំសំណាកសរុប (n) គឺរូបមន្តមួយណា?",
+                choices: {
+                    A: "ni = n * (N / Ni)",
+                    B: "ni = N * (ni / n)",
+                    C: "ni = n * (Ni / N)",
+                    D: "ni = e * (Ni / N)"
+                },
+                answer: "C",
+                explain: "រូបមន្តកំណត់គំរូសំណាករងគឺ ni = n * (Ni / N) (ទំព័រ៤៦)។"
+            },
+            // Chapter 4: ការប្រមូលទិន្នន័យ និងការវិភាគទិន្នន័យប្រើប្រាស់កម្មវិធីSPSS (37-48)
+            {
+                id: 37,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើទិន្នន័យគុណភាព (Qualitative Data) ប្រភេទណាដែលប្រើគ្រាន់តែជាឈ្មោះ ឬស្លាកសម្គាល់ និងមិនអាចរៀបលំដាប់បាន ដូចជា ភេទ ឬសាសនា?",
+                choices: {
+                    A: "ទិន្នន័យលំដាប់ (Ordinal Data)",
+                    B: "ទិន្នន័យជាប់ (Continuous Data)",
+                    C: "ទិន្នន័យនាសព្ទ ឬតាង (Nominal Data)",
+                    D: "ទិន្នន័យដាច់ (Discrete Data)"
+                },
+                answer: "C",
+                explain: "Nominal Data (ទិន្នន័យនាសព្ទ) ត្រូវបានប្រើកំណត់សម្គាល់ទៅលើអថេរកម្រិតទិន្នន័យដូចជាឈ្មោះ ឬផ្លាកសម្គាល់តែប៉ុណ្ណោះ និងមិនអាចរៀបលំដាប់បានឡើយ (ទំព័រ៦១)។"
+            },
+            {
+                id: 38,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើទិន្នន័យគុណភាពប្រភេទណាដែលអាចរៀបចំ ឬតម្រៀបតាមឋានានុក្រម ឬលំដាប់ថ្នាក់បាន ដូចជា កម្រិតវាយតម្លៃការពេញចិត្ត ឬកម្រិតវាយតម្លៃសេដ្ឋកិច្ច?",
+                choices: {
+                    A: "ទិន្នន័យលំដាប់ (Ordinal Data)",
+                    B: "ទិន្នន័យនាសព្ទ (Nominal Data)",
+                    C: "ទិន្នន័យដាច់ (Discrete Data)",
+                    D: "ទិន្នន័យចន្លោះ (Interval Data)"
+                },
+                answer: "A",
+                explain: "Ordinal Data (ទិន្នន័យលំដាប់) គឺជាទិន្នន័យដែលយើងអាចរៀបចំទៅតាមលំដាប់ថ្នាក់បាន ដូចជាកម្រិតអប់រំ ឬស្ថានភាពសេដ្ឋកិច្ច (ទំព័រ៦១)។"
+            },
+            {
+                id: 39,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើទិន្នន័យបរិមាណប្រភេទណាដែលមានតម្លៃកំណត់ជាលេខចំនួនគត់រាប់បានដាច់ៗពីគ្នា និងមិនអាចមានក្បៀស ដូចជា ចំនួនសិស្ស ឬចំនួនកុំព្យូទ័រ?",
+                choices: {
+                    A: "ទិន្នន័យជាប់ (Continuous Data)",
+                    B: "ទិន្នន័យដាច់ដោយឡែក (Discrete Data)",
+                    C: "ទិន្នន័យលំដាប់ (Ordinal Data)",
+                    D: "ទិន្នន័យចន្លោះ (Interval Data)"
+                },
+                answer: "B",
+                explain: "ទិន្នន័យដាច់ដោយឡែក (Discrete Data) មានតម្លៃកំណត់លេខរាប់បាន និងជាចំនួនគត់ មិនអាចបំបែកជាទសភាគ ឬប្រភាគបានឡើយ (ទំព័រ៦២)។"
+            },
+            {
+                id: 40,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើទិន្នន័យបរិមាណប្រភេទណាដែលអាចមានតម្លៃជាលេខទសភាគ ឬប្រភាគ ឬជាតម្លៃដែលវាស់វែងបាន ដូចជា កម្ពស់ ទម្ងន់ និងពេលវេលា?",
+                choices: {
+                    A: "ទិន្នន័យនាសព្ទ (Nominal Data)",
+                    B: "ទិន្នន័យលំដាប់ (Ordinal Data)",
+                    C: "ទិន្នន័យដាច់ (Discrete Data)",
+                    D: "ទិន្នន័យបន្ត ឬជាប់ (Continuous Data)"
+                },
+                answer: "D",
+                explain: "ទិន្នន័យបន្ត ឬជាប់ (Continuous Data) គឺជាសំណុំនៃលេខដែលមានតម្លៃជាចំនួនជាលេខទសភាគ ឬប្រភាគ ដូចជា កម្ពស់ ទម្ងន់ ពេលវេលា (ទំព័រ៦២)។"
+            },
+            {
+                id: 41,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើចំណុចសូន្យ (០) នៃកម្រិតរង្វាស់ចន្លោះ (Interval scale) មានន័យដូចម្តេច? (ឧទាហរណ៍ សីតុណ្ហភាព ០ អង្សាសេ)",
+                choices: {
+                    A: "គ្រាន់តែជាចំណុចមួយនៅលើក្រឹតប៉ុណ្ណោះ មិនមែនមានន័យថា «គ្មាន» សីតុណ្ហភាពឡើយ",
+                    B: "មានន័យថា គ្មានសីតុណ្ហភាពទាំងស្រុង",
+                    C: "មានន័យដូចគ្នានឹងសូន្យនៃកម្រិតអនុបាត",
+                    D: "ជាតម្លៃសូន្យដែលមិនមានអត្ថន័យអ្វីទាំងអស់"
+                },
+                answer: "A",
+                explain: "ក្នុងកម្រិតចន្លោះ លេខ ០ គ្រាន់តែជាចំណុចមួយនៅលើក្រឹតប៉ុណ្ណោះ វាមិនមានន័យថាមិនមានអ្វីកើតឡើងនោះឡើយ ដូចជា ០ អង្សាសេ គឺនៅតែត្រជាក់ (ទំព័រ៦២)។"
+            },
+            {
+                id: 42,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើពាក្យកាត់ SPSS មកពីពាក្យពេញមួយណា?",
+                choices: {
+                    A: "Systematic Program for Social Sciences",
+                    B: "Statistical Package for the School Sciences",
+                    C: "Statistical Package for the Social Sciences",
+                    D: "Standard Program for Statistical Systems"
+                },
+                answer: "C",
+                explain: "SPSS គឺជាពាក្យកាត់មកពីពាក្យ Statistical Package for the Social Sciences (ទំព័រ៦៤)។"
+            },
+            {
+                id: 43,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើនៅក្នុងកម្មវិធីកែច្នៃទិន្នន័យ (Data Editor) នៃកម្មវិធី SPSS មានសន្លឹកបៀរ (Sheets) សំខាន់ពីរណាខ្លះ?",
+                choices: {
+                    A: "Chart View និង Table View",
+                    B: "Output View និង Input View",
+                    C: "Code View និង Design View",
+                    D: "Data View និង Variable View"
+                },
+                answer: "D",
+                explain: "ក្នុង Data Editor នៃ SPSS មាន Sheet ពីរសំខាន់គឺ 1). ទិដ្ឋភាពទិន្នន័យ (Data View) និង 2). ទិដ្ឋភាពនៃអថេរ (Variable View) (ទំព័រ៦៦)។"
+            },
+            {
+                id: 44,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "នៅក្នុងទិដ្ឋភាពទិន្នន័យ (Data View) តើជួរដេក (Rows) និងជួរឈរ (Columns) តំណាងឱ្យអ្វី?",
+                choices: {
+                    A: "ជួរដេកតំណាងឱ្យសំណួរ ជួរឈរតំណាងឱ្យចម្លើយ",
+                    B: "ជួរដេកតំណាងឱ្យករណី ឬអ្នកឆ្លើយតប (Cases) ជួរឈរតំណាងឱ្យអថេរ ឬសំណួរ (Variables)",
+                    C: "ជួរដេកតំណាងឱ្យក្រាហ្វិក ជួរឈរតំណាងឱ្យរូបមន្ត",
+                    D: "ជួរដេកតំណាងឱ្យសន្លឹកកិច្ចការ ជួរឈរតំណាងឱ្យកូដបញ្ជា"
+                },
+                answer: "B",
+                explain: "ជួរដេក (Rows are Cases) គឺជាករណី/អ្នកឆ្លើយតប។ ជួរឈរ (Columns/Variables) គឺជាសំណួរ/អថេរដែលត្រូវបានវាស់វែង (ទំព័រ៦កៅសិបប្រាំពីរ)។"
+            },
+            {
+                id: 45,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើការកំណត់លក្ខណៈអថេរ (Variable Configuration) នៅក្នុងសន្លឹក Variable View ត្រូវធ្វើឡើងចំពោះចំណុចណាខ្លះ?",
+                choices: {
+                    A: "Data view និង Output document",
+                    B: "Syntax Editor និង Viewer",
+                    C: "Name, Type, Width, Decimals, Label, Values, Missing, Measure",
+                    D: "File, Edit, View, Data, Transform, Analyze, Graphs"
+                },
+                answer: "C",
+                explain: "ព័ត៌មាននិយមន័យអថេររួមមាន Name, Type, Width, Decimals, Label, Values, Missing, Columns, Align, Measure, Role (ទំព័រ៦៧-៦៨)។"
+            },
+            {
+                id: 46,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើច្បាប់មួយណាដែលខុសក្នុងការដាក់ឈ្មោះអថេរ (Name) នៅក្នុង SPSS?",
+                choices: {
+                    A: "ឈ្មោះត្រូវចាប់ផ្តើមដោយអក្សរ",
+                    B: "ឈ្មោះអថេរអាចមានចន្លោះទំនេរ (Spaces) បានតាមចិត្ត",
+                    C: "ឈ្មោះអថេរមិនអាចបញ្ចប់ដោយសញ្ញាចុច (.) បានឡើយ",
+                    D: "ឈ្មោះអថេរនីមួយៗត្រូវតែមានតែមួយគត់ មិនអាចជាន់គ្នាឡើយ"
+                },
+                answer: "B",
+                explain: "ច្បាប់នៃការដាក់ឈ្មោះអថេរ គឺមិនអាចមានចន្លោះទំនេរ (Spaces) និងតួអក្សរពិសេសមួយចំនួនឡើយ (ទំព័រ៦៨-៦៩)។"
+            },
+            {
+                id: 47,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើការកំណត់ស្លាកតម្លៃ (Value Labels) នៅក្នុង SPSS មានប្រយោជន៍ចម្បងអ្វី?",
+                choices: {
+                    A: "ដើម្បីគណនាផលបូកដោយស្វ័យប្រវត្តិ",
+                    B: "ដើម្បីបោះពុម្ពរបាយការណ៍ជា PDF",
+                    C: "ដើម្បីសរសេរកូដបញ្ជា Syntax",
+                    D: "ដើម្បីប្រើលេខកូដជាលេខតំណាងឱ្យប្រភេទដែលមិនមែនជាលេខ (ដូចជា 1=ប្រុស, 2=ស្រី)"
+                },
+                answer: "D",
+                explain: "ស្លាកតម្លៃមានប្រយោជន៍ជាពិសេសប្រសិនបើឯកសារទិន្នន័យប្រើលេខកូដជាលេខដើម្បីតំណាងឱ្យប្រភេទដែលមិនមែនជាលេខ (ទំព័រ៧០)។"
+            },
+            {
+                id: 48,
+                chapter: 4,
+                chapterTitle: "មេរៀនទី ៤",
+                text: "តើដើម្បីទទួលបានតារាងប្រេកង់ (Frequencies) និងស្ថិតិពិពណ៌នានៅក្នុង SPSS គេត្រូវចូលទៅកាន់ម៉ឺនុយណាតាមលំដាប់?",
+                choices: {
+                    A: "Transform -> Compute Variable",
+                    B: "File -> Open -> Data",
+                    C: "Analyze -> Descriptive Statistics -> Frequencies...",
+                    D: "Graphs -> Chart Builder"
+                },
+                answer: "C",
+                explain: "ដើម្បីទទួលបានប្រេកង់៖ ១. ចុច Analyze ២. ចុច Descriptive Statistics ៣. ចុច Frequencies... (ទំព័រ៧២)។"
+            },
+            // Chapter 5: បកស្រាយទិន្នន័យ និងការរៀបចំរបាយការណ៍ស្រាវជ្រាវ (49-60)
+            {
+                id: 49,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើការបកស្រាយទិន្នន័យ (Data Interpretation) សំដៅលើដំណើរការអ្វី?",
+                choices: {
+                    A: "ដំណើរការនៃការបង្កើតអត្ថន័យនៃទិន្នន័យដោយការវិភាគ និងទាញសេចក្តីសន្និដ្ឋាន",
+                    B: "ដំណើរការនៃការបោះពុម្ពផ្សាយលទ្ធផលលក់",
+                    C: "ដំណើរការនៃការបកប្រែភាសាបច្ចេកទេសទៅជាភាសាសាមញ្ញ",
+                    D: "ដំណើរការនៃការរៀបចំប្រព័ន្ធកុំព្យូទ័រ"
+                },
+                answer: "A",
+                explain: "ការបកស្រាយទិន្នន័យ សំដៅលើដំណើរការនៃការបង្កើតអត្ថន័យនៃទិន្នន័យដោយការវិភាគ និងឈានដល់ការទាញសេចក្តីសន្និដ្ឋាន (ទំព័រ៧២)។"
+            },
+            {
+                id: 50,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើការបង្ហាញទិន្នន័យជា «តារាង» (Table) ផ្តល់នូវអត្ថប្រយោជន៍ចម្បងអ្វីខ្លះ?",
+                choices: {
+                    A: "ការរក្សាសម្ងាត់ទិន្នន័យ",
+                    B: "ការធ្វើបទបង្ហាញសង្ខេប សាមញ្ញ ងាយស្រួលប្រៀបធៀប និងផ្តល់ភាពងាយស្រួលក្នុងការវិភាគ",
+                    C: "ការលុបចោលរាល់កំហុសឆ្គងទិន្នន័យទាំងអស់",
+                    D: "ការទាក់ទាញអារម្មណ៍ដោយមិនបាច់មានតួលេខ"
+                },
+                answer: "B",
+                explain: "គុណសម្បត្តិនៃតារាងរួមមាន ការធ្វើបទបង្ហាញសង្ខេបសាមញ្ញ ងាយប្រៀបធៀប ងាយវិភាគ និងផ្តល់ឯកសារយោង (ទំព័រ៧៣)។"
+            },
+            {
+                id: 51,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើក្រាហ្វរបារប្រភេទណា ដែលបង្ហាញតែលក្ខណៈមួយនៃទិន្នន័យ ដូចជាការលក់ ឬតួលេខប្រជាជនសម្រាប់ឆ្នាំផ្សេងៗគ្នា?",
+                choices: {
+                    A: "ក្រាហ្វរបារច្រើន (Multiple Bar Graph)",
+                    B: "ក្រាហ្វរបារបែងចែករង (Sub-Divided Bar Graph)",
+                    C: "ក្រាហ្វបន្ទាត់ (Line Graph)",
+                    D: "ក្រាហ្វរបារសាមញ្ញ (Simple Bar Graph)"
+                },
+                answer: "D",
+                explain: "ដ្យាក្រាមរបារសាមញ្ញបង្ហាញតែលក្ខណៈមួយនៃទិន្នន័យ ដូចជាការលក់ ការផលិត ឬតួលេខប្រជាជនសម្រាប់ឆ្នាំផ្សេងៗ (ទំព័រ៧៤)។"
+            },
+            {
+                id: 52,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើក្រាហ្វរបារប្រភេទណា ដែលត្រូវបានប្រើដើម្បីប្រៀបធៀបអថេរពីរ ឬច្រើន ដូចជាការប្រៀបធៀប ចំណូល និងការចំណាយ នាំចូល និងនាំចេញ តាមឆ្នាំ?",
+                choices: {
+                    A: "ក្រាហ្វរបារសាមញ្ញ (Simple Bar Graph)",
+                    B: "ក្រាហ្វរបារច្រើន (Multiple Bar Graph)",
+                    C: "ក្រាហ្វរបារបែងចែករង (Sub-Divided Bar Graph)",
+                    D: "ក្រាហ្វចំណិត (Pie Graph)"
+                },
+                answer: "B",
+                explain: "ដ្យាក្រាមរបារច្រើនត្រូវបានប្រើដើម្បីប្រៀបធៀបអថេរពីរ ឬច្រើន ដូចជាចំណូលនិងចំណាយ នាំចូលនិងនាំចេញសម្រាប់ឆ្នាំផ្សេងៗគ្នា (ទំព័រ៧៥)។"
+            },
+            {
+                id: 53,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើក្រាហ្វរបារប្រភេទណា ដែលរបារនីមួយៗត្រូវបានបែងចែកទៅជាសមាសធាតុជាច្រើន ដូចជាការបែងចែកសិស្សដែលបានចុះឈ្មោះជាប្រុស និងស្រី?",
+                choices: {
+                    A: "ក្រាហ្វរបារបែងចែករង (Sub-Divided Bar Graph)",
+                    B: "ក្រាហ្វរបារច្រើន (Multiple Bar Graph)",
+                    C: "ក្រាហ្វបន្ទាត់ (Line Graph)",
+                    D: "ក្រាហ្វរួមបញ្ចូលគ្នា (Combin Graph)"
+                },
+                answer: "A",
+                explain: "នៅក្នុងដ្យាក្រាមរបារបែងចែករង របារដែលត្រូវគ្នានឹងបាតុភូតនីមួយៗត្រូវបានបែងចែកទៅជាសមាសធាតុជាច្រើន (ទំព័រ៧៥)។"
+            },
+            {
+                id: 54,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើក្រាហ្វប្រភេទណាដែលត្រូវបានគូរឡើងជាចម្បងដើម្បីបង្ហាញពីព័ត៌មានដែលប្រែប្រួល ឬផ្លាស់ប្តូរទៅតាមពេលវេលា ដោយការភ្ជាប់ចំណុចផ្សេងៗ?",
+                choices: {
+                    A: "ក្រាហ្វរបារច្រើន (Multiple Bar Graph)",
+                    B: "ក្រាហ្វរបារបែងចែករង (Sub-Divided Bar Graph)",
+                    C: "ក្រាហ្វចំណិត (Pie Graph)",
+                    D: "ក្រាហ្វបន្ទាត់ (Line Graph)"
+                },
+                answer: "D",
+                explain: "ក្រាហ្វបន្ទាត់ជាទូទៅត្រូវបានគូរដើម្បីបង្ហាញព័ត៌មានដែលផ្លាស់ប្តូរតាមពេលវេលា ដោយភ្ជាប់ចំណុចដោយប្រើផ្នែកបន្ទាត់ (ទំព័រ៧៦)។"
+            },
+            {
+                id: 55,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើក្រាហ្វប្រភេទណាដែលជារង្វង់បែងចែកជាផ្នែកៗដើម្បីបង្ហាញពីសមាមាត្រនៃសមាសធាតុនីមួយៗធៀបនឹងចំនួនសរុប (១០០%)?",
+                choices: {
+                    A: "ក្រាហ្វបន្ទាត់ (Line Graph)",
+                    B: "ក្រាហ្វរបារច្រើន (Multiple Bar Graph)",
+                    C: "ក្រាហ្វចំណិត ឬក្រាហ្វល្អិត (Pie Graph)",
+                    D: "ក្រាហ្វរួមបញ្ចូលគ្នា (Combin Graph)"
+                },
+                answer: "C",
+                explain: "ក្រាហ្វចំណិត ឬ Pie Graph គឺជារង្វង់ដែលអាចត្រូវបានបែងចែកទៅជាផ្នែកដើម្បីបង្ហាញសមាមាត្រនៃសមាសធាតុផ្សេងៗគ្នា (ទំព័រ៧៦)។"
+            },
+            {
+                id: 56,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើក្នុងរង្វង់ទាំងមូលមានតម្លៃមុំស្មើនឹងប៉ុន្មានដឺក្រេ ដែលយើងត្រូវប្រើដើម្បីគណនាបំប្លែងតម្លៃភាគរយទៅជាជ្រុងសម្រាប់គូរក្រាហ្វចំណិត?",
+                choices: {
+                    A: "៣៦០ ដឺក្រេ (360°)",
+                    B: "១៨០ ដឺក្រេ (180°)",
+                    C: "៩០ ដឺក្រេ (90°)",
+                    D: "១០០ ដឺក្រេ (100°)"
+                },
+                answer: "A",
+                explain: "ដោយសាររង្វង់មួយមាន 360° ហើយតម្លៃភាគរយសរុបគឺស្មើនឹង 100 ដូច្នេះតម្លៃភាគរយនីមួយៗត្រូវគុណនឹង 3.6 ដើម្បីបានជាមុំដឺក្រេ (ទំព័រ៧៧)។"
+            },
+            {
+                id: 57,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើក្រាហ្វប្រភេទណាដែលរួមបញ្ចូលទាំងបន្ទាត់ និងរបារជាមួយគ្នា ដើម្បីប្រៀបធៀបទិន្នន័យខុសគ្នាក្នុងរយៈពេលមួយ?",
+                choices: {
+                    A: "Sub-Divided Bar Graph",
+                    B: "គំនូសតាងរួមបញ្ចូលគ្នា (Combin Graph/Chart)",
+                    C: "Line Graph Multi-variable",
+                    D: "Pie Graph Breakdown"
+                },
+                answer: "B",
+                explain: "គំនូសតាងរួមបញ្ចូលគ្នា ឬ Combin Graph ប្រើបន្ទាត់ និងរបារជាច្រើនរួមគ្នា ដើម្បីបង្ហាញពីភាពខុសគ្នារវាងសំណុំទិន្នន័យផ្សេងៗគ្នា (ទំព័រ៧៧)។"
+            },
+            {
+                id: 58,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើផ្នែកដំបូងបង្អស់នៅក្នុងរចនាសម្ព័ន្ធទូទៅនៃការសរសេររបាយការណ៍ស្រាវជ្រាវស្ថិតិគឺផ្នែកមួយណា?",
+                choices: {
+                    A: "សេចក្តីផ្តើម (Introduction)",
+                    B: "លទ្ធផល (Results)",
+                    C: "ទស្សនាទាន និងនិយមន័យ (Concepts)",
+                    D: "សង្ខេបប្រតិបត្តិ (Executive Summary)"
+                },
+                answer: "D",
+                explain: "ផ្នែកចម្បងនៃរបាយការណ៍ស្រាវជ្រាវស្ថិតិជាទូទៅចាប់ផ្តើមដោយ៖ ១. សង្ខេបប្រតិបត្តិ (Executive Summary) (ទំព័រ៧៨)។"
+            },
+            {
+                id: 59,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើគោលការណ៍ណែនាំទូទៅក្នុងការសរសេរប្រយោគក្នុងរបាយការណ៍ស្រាវជ្រាវ គឺគួរព្យាយាមកុំឱ្យប្រយោគមួយមានប្រវែងវែងជាងប៉ុន្មានពាក្យ?",
+                choices: {
+                    A: "១០ ទៅ ១៥ ពាក្យ",
+                    B: "១៥ ទៅ ២០ ពាក្យ",
+                    C: "២០ ទៅ ៣០ ពាក្យ",
+                    D: "៥០ ទៅ ៦០ ពាក្យ"
+                },
+                answer: "C",
+                explain: "ក្នុងរបាយការណ៍ គួរព្យាយាមចៀសវាងប្រយោគដែលវែងជាងប្រហែល ២០-៣០ ពាក្យ ដោយបំបែកប្រយោគវែងជាពីរប្រសិនបើចាំបាច់ (ទំព័រ៧៨)។"
+            },
+            {
+                id: 60,
+                chapter: 5,
+                chapterTitle: "មេរៀនទី ៥",
+                text: "តើផ្នែកចុងក្រោយគេបង្អស់ដែលត្រូវដាក់បញ្ជាក់ក្នុងរបាយការណ៍ស្រាវជ្រាវដើម្បីបង្ហាញពីប្រភពឯកសារយោងជាអក្សរក្រមគឺផ្នែកអ្វី?",
+                choices: {
+                    A: "ឯកសារយោង (References / Bibliography)",
+                    B: "ឧបសម្ព័ន្ធ (Appendix)",
+                    C: "សទ្ទានុក្រម (Glossary)",
+                    D: "សេចក្តីសន្និដ្ឋាន (Conclusion)"
+                },
+                answer: "A",
+                explain: "ផ្នែកឯកសារយោង (References) និងសទ្ទានុក្រម (Glossary) ស្ថិតនៅចុងក្រោយបំផុតនៃរបាយការណ៍ដើម្បីបង្ហាញភាពត្រឹមត្រូវតាមលក្ខណៈវិទ្យាសាស្ត្រ (ទំព័រ៧៨)។"
+            }
+        ];
+
+        function startTimer() {
+            startTime = Date.now();
+            timerInterval = setInterval(() => {
+                const diff = Date.now() - startTime;
+                const minutes = Math.floor(diff / 60000);
+                const seconds = Math.floor((diff % 60000) / 1000);
+                const timeStr = `${minutes.toString().padStart(2, '0')} នាទី ${seconds.toString().padStart(2, '0')} វិនាទី`;
+                document.getElementById('elapsed-time-display').textContent = timeStr;
+            }, 1000);
+        }
+
+        function stopTimer() {
+            clearInterval(timerInterval);
+        }
+
+        function startQuiz() {
+            const modeSelect = document.getElementById('quiz-mode-select');
+            const filterSelect = document.getElementById('quiz-filter-select');
+            
+            isPracticeMode = modeSelect.value === 'practice';
+            activeFilter = filterSelect.value;
+            
+            // Apply filtering logic
+            if (activeFilter === 'all') {
+                filteredQuestions = [...originalQuestions];
+            } else {
+                const chapNum = parseInt(activeFilter);
+                filteredQuestions = originalQuestions.filter(q => q.chapter === chapNum);
+            }
+
+            activeIndex = 0;
+            userAnswers = {};
+            flags = {};
+            
+            // UI elements setup
+            document.getElementById('welcome-screen').classList.add('hidden');
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.remove('hidden');
+            document.getElementById('finish-quiz-btn').classList.remove('hidden');
+            
+            // Strictly hide the entire answer key section and lock it when the quiz starts to prevent cheating
+            document.getElementById('answer-key-section').classList.add('hidden');
+            lockAnswerKey();
+
+            document.getElementById('mode-badge-display').textContent = isPracticeMode ? "របៀបសិក្សា" : "របៀបប្រឡង";
+            document.getElementById('mode-badge-display').className = isPracticeMode 
+                ? "text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full uppercase khmer-title"
+                : "text-xs font-bold text-amber-700 bg-amber-50 px-2.5 py-1 rounded-full uppercase khmer-title";
+
+            buildNavigatorGrid();
+            loadQuestion(0);
+            startTimer();
+        }
+
+        function buildNavigatorGrid() {
+            const grid = document.getElementById('navigator-grid');
+            grid.innerHTML = '';
+            
+            filteredQuestions.forEach((q, idx) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = `nav-btn-${idx}`;
+                btn.textContent = idx + 1;
+                btn.onclick = () => loadQuestion(idx);
+                btn.className = getNavButtonClass(idx);
+                grid.appendChild(btn);
+            });
+            updateNavigatorCounter();
+        }
+
+        function getNavButtonClass(idx) {
+            let base = "w-full py-2.5 rounded-xl font-bold text-sm transition-all focus:outline-none flex items-center justify-center border ";
+            if (idx === activeIndex) {
+                base += "bg-[#002060] text-white border-[#D4AF37] ring-2 ring-[#D4AF37]/50 ";
+            } else if (flags[idx]) {
+                base += "bg-amber-100 text-amber-800 border-amber-300 hover:bg-amber-200 ";
+            } else if (userAnswers[idx] !== undefined) {
+                base += "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-100 ";
+            } else {
+                base += "bg-white text-slate-600 border-slate-200 hover:bg-slate-50 ";
+            }
+            return base;
+        }
+
+        function updateNavigatorCounter() {
+            const answeredCount = Object.keys(userAnswers).length;
+            document.getElementById('index-answered-counter').textContent = `${answeredCount} / ${filteredQuestions.length} រួចរាល់`;
+        }
+
+        function loadQuestion(idx) {
+            // Update navigation button active styles
+            const oldActive = document.getElementById(`nav-btn-${activeIndex}`);
+            if (oldActive) oldActive.className = getNavButtonClass(activeIndex);
+            
+            activeIndex = idx;
+            
+            const activeBtn = document.getElementById(`nav-btn-${activeIndex}`);
+            if (activeBtn) activeBtn.className = getNavButtonClass(activeIndex);
+
+            const q = filteredQuestions[idx];
+            
+            // Set badge and counters
+            document.getElementById('chapter-badge').textContent = q.chapterTitle;
+            document.getElementById('question-index-display').textContent = `សំណួរទី ${idx + 1} នៃ ${filteredQuestions.length}`;
+            document.getElementById('question-text').textContent = q.text;
+            
+            // Build options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+
+            const isAnswered = userAnswers[idx] !== undefined;
+
+            Object.entries(q.choices).forEach(([key, val]) => {
+                const optBtn = document.createElement('button');
+                optBtn.type = 'button';
+                optBtn.onclick = () => selectOption(key);
+                
+                // Base classes for options (large tap targets as per responsive rules)
+                let optClass = "w-full text-left p-4 rounded-xl border transition-all duration-200 flex items-center gap-3 focus:outline-none ";
+                
+                if (isPracticeMode && isAnswered) {
+                    // Practice mode show immediate validation coloring
+                    if (key === q.answer) {
+                        optClass += "bg-emerald-50 border-emerald-300 text-emerald-900 ring-2 ring-emerald-500/20";
+                    } else if (userAnswers[idx] === key) {
+                        optClass += "bg-rose-50 border-rose-300 text-rose-900 ring-2 ring-rose-500/20";
+                    } else {
+                        optClass += "bg-slate-50 border-slate-200 text-slate-400 opacity-60";
+                    }
+                    optBtn.disabled = true; // disable further clicks
+                } else {
+                    // Normal state or exam mode
+                    if (userAnswers[idx] === key) {
+                        optClass += "bg-blue-50/70 border-blue-400 text-blue-900 ring-2 ring-blue-600/10 font-medium";
+                    } else {
+                        optClass += "bg-white border-slate-200 text-slate-700 hover:bg-slate-50 hover:border-slate-300";
+                    }
+                }
+
+                // Inner content
+                const letterBadge = `<span class="w-7 h-7 rounded-lg flex items-center justify-center font-bold text-xs shrink-0 ${
+                    userAnswers[idx] === key ? 'bg-blue-600 text-white' : 'bg-slate-100 text-slate-600'
+                }">${key}</span>`;
+                
+                optBtn.className = optClass;
+                optBtn.innerHTML = `${letterBadge} <span class="text-sm md:text-base">${val}</span>`;
+                optionsContainer.appendChild(optBtn);
+            });
+
+            // Practice Mode feedbacks
+            const feedbackBox = document.getElementById('feedback-container');
+            if (isPracticeMode && isAnswered) {
+                feedbackBox.classList.remove('hidden');
+                const isCorrect = userAnswers[idx] === q.answer;
+                
+                if (isCorrect) {
+                    feedbackBox.className = "mt-6 p-4 rounded-xl border border-emerald-200 bg-emerald-50/50 text-emerald-900";
+                    document.getElementById('feedback-icon-bg').className = "w-8 h-8 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0";
+                    document.getElementById('feedback-icon').className = "fa-solid fa-circle-check";
+                    document.getElementById('feedback-title').textContent = "ចម្លើយត្រឹមត្រូវ!";
+                } else {
+                    feedbackBox.className = "mt-6 p-4 rounded-xl border border-rose-200 bg-rose-50/50 text-rose-900";
+                    document.getElementById('feedback-icon-bg').className = "w-8 h-8 rounded-full bg-rose-500 text-white flex items-center justify-center shrink-0";
+                    document.getElementById('feedback-icon').className = "fa-solid fa-triangle-exclamation";
+                    document.getElementById('feedback-title').textContent = `ចម្លើយមិនត្រឹមត្រូវ! (ចម្លើយត្រឹមត្រូវគឺ៖ ${q.answer})`;
+                }
+                document.getElementById('feedback-explanation').textContent = q.explain;
+            } else {
+                feedbackBox.classList.add('hidden');
+            }
+
+            // Flags indicator on button
+            const flagBtn = document.getElementById('flag-btn');
+            if (flags[idx]) {
+                flagBtn.className = "w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center transition-all";
+            } else {
+                flagBtn.className = "w-8 h-8 rounded-full border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-amber-500 transition-colors flex items-center justify-center";
+            }
+
+            // Handle navigation buttons availability
+            document.getElementById('prev-btn').disabled = idx === 0;
+            document.getElementById('next-btn').textContent = idx === filteredQuestions.length - 1 ? "បញ្ចប់ និងមើលលទ្ធផល" : "សំណួរបន្ទាប់";
+            
+            // Show reveal button only in practice mode
+            const revealBtn = document.getElementById('reveal-btn');
+            if (isPracticeMode && !isAnswered) {
+                revealBtn.classList.remove('hidden');
+            } else {
+                revealBtn.classList.add('hidden');
+            }
+
+            updateScoreCounter();
+        }
+
+        function selectOption(key) {
+            const q = filteredQuestions[activeIndex];
+            userAnswers[activeIndex] = key;
+            
+            // Instantly refresh navigator view
+            const navBtn = document.getElementById(`nav-btn-${activeIndex}`);
+            if (navBtn) navBtn.className = getNavButtonClass(activeIndex);
+            
+            loadQuestion(activeIndex);
+            updateNavigatorCounter();
+        }
+
+        function toggleFlag() {
+            flags[activeIndex] = !flags[activeIndex];
+            
+            const navBtn = document.getElementById(`nav-btn-${activeIndex}`);
+            if (navBtn) navBtn.className = getNavButtonClass(activeIndex);
+            
+            loadQuestion(activeIndex);
+        }
+
+        function revealAnswer() {
+            const q = filteredQuestions[activeIndex];
+            selectOption(q.answer);
+        }
+
+        function prevQuestion() {
+            if (activeIndex > 0) {
+                loadQuestion(activeIndex - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (activeIndex < filteredQuestions.length - 1) {
+                loadQuestion(activeIndex + 1);
+            } else {
+                triggerFinishQuiz();
+            }
+        }
+
+        function updateScoreCounter() {
+            let correctCount = 0;
+            let answeredCount = 0;
+            
+            filteredQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] !== undefined) {
+                    answeredCount++;
+                    if (userAnswers[idx] === q.answer) {
+                        correctCount++;
+                    }
+                }
+            });
+
+            document.getElementById('score-counter').textContent = `ត្រូវ៖ ${correctCount} / ${answeredCount}`;
+        }
+
+        function triggerFinishQuiz() {
+            const unanswered = filteredQuestions.length - Object.keys(userAnswers).length;
+            if (unanswered > 0) {
+                showCustomConfirm(
+                    "សំណួរមិនទាន់ឆ្លើយរួចរាល់", 
+                    `អ្នកនៅសល់ចំនួន ${unanswered} សំណួរមិនទាន់បានឆ្លើយនៅឡើយ។ តើអ្នកពិតជាចង់បញ្ចប់ការប្រឡងមែនទេ?`,
+                    () => {
+                        stopTimer();
+                        calculateResults();
+                    }
+                );
+            } else {
+                showCustomConfirm(
+                    "បញ្ចប់ការប្រឡង", 
+                    "តើអ្នកពិតជាចង់បញ្ចប់ការប្រឡង និងវិភាគលទ្ធផលពិន្ទុមែនទេ?",
+                    () => {
+                        stopTimer();
+                        calculateResults();
+                    }
+                );
+            }
+        }
+
+        function calculateResults() {
+            let correctCount = 0;
+            let wrongCount = 0;
+            
+            // Chapter stats mapping
+            const chapterStats = {
+                1: { total: 0, correct: 0 },
+                2: { total: 0, correct: 0 },
+                3: { total: 0, correct: 0 },
+                4: { total: 0, correct: 0 },
+                5: { total: 0, correct: 0 }
+            };
+
+            filteredQuestions.forEach((q, idx) => {
+                const ans = userAnswers[idx];
+                const ch = q.chapter;
+                
+                chapterStats[ch].total++;
+                
+                if (ans === q.answer) {
+                    correctCount++;
+                    chapterStats[ch].correct++;
+                } else {
+                    wrongCount++;
+                }
+            });
+
+            // Calculations for UI
+            const totalQ = filteredQuestions.length;
+            const scorePercent = totalQ > 0 ? Math.round((correctCount / totalQ) * 100) : 0;
+            
+            document.getElementById('result-score-percentage').textContent = `${scorePercent}%`;
+            document.getElementById('result-student-name').textContent = studentName; // Render student name
+            document.getElementById('result-score-fraction').textContent = `${correctCount} / ${totalQ} សំណួរ`;
+            document.getElementById('result-correct-count').textContent = correctCount;
+            document.getElementById('result-wrong-count').textContent = wrongCount;
+
+            // Timer string mapping
+            const diff = Date.now() - startTime;
+            const minutes = Math.floor(diff / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+            document.getElementById('result-timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            // Map elements to printable certificate
+            const dateStr = new Date().toLocaleDateString('km-KH');
+            const timeStr = new Date().toLocaleTimeString('km-KH');
+            const evaluationText = scorePercent >= 90 ? "A (ល្អប្រសើរ / Excellent)" : scorePercent >= 80 ? "B (ល្អណាស់ / Very Good)" : scorePercent >= 70 ? "C (ល្អ / Good)" : scorePercent >= 50 ? "D (មធ្យម / Fair)" : "F (ធ្លាក់/ខ្សោយ / Failure)";
+            
+            document.getElementById('print-student-name').textContent = studentName;
+            document.getElementById('print-student-score').textContent = `${correctCount} / ${totalQ} សំណួរ (${scorePercent}%)`;
+            document.getElementById('print-student-grade').textContent = evaluationText;
+            document.getElementById('print-student-time').textContent = `${minutes} នាទី ${seconds} វិនាទី`;
+            document.getElementById('print-student-date').textContent = `${dateStr} - ម៉ោង ${timeStr}`;
+            document.getElementById('print-student-sign').textContent = studentName;
+
+            // Build vertical progress bars breakdown
+            const barsContainer = document.getElementById('chapter-bars-container');
+            barsContainer.innerHTML = '';
+
+            const chapterLabels = {
+                1: "មេរៀនទី១៖ លំនាំដើម ស្ថិតិ",
+                2: "មេរៀនទី២៖ ការរចនា និងផែនការ",
+                3: "មេរៀនទី៣៖ បញ្ជីសំណួរ និងសំណាក",
+                4: "មេរៀនទី៤៖ ទិន្នន័យ និង SPSS",
+                5: "មេរៀនទី៥៖ បកស្រាយ និងរបាយការណ៍"
+            };
+
+            // Calculate ratios for the chart
+            const chartLabels = [];
+            const chartData = [];
+
+            Object.entries(chapterStats).forEach(([ch, stat]) => {
+                if (stat.total === 0) return; // skip chapters with no questions filtered
+                
+                const percent = Math.round((stat.correct / stat.total) * 100);
+                chartLabels.push(`មេរៀនទី ${ch}`);
+                chartData.push(percent);
+
+                const barDiv = document.createElement('div');
+                barDiv.className = "flex flex-col gap-1 text-xs";
+                barDiv.innerHTML = `
+                    <div class="flex justify-between items-center font-semibold text-slate-700">
+                        <span class="khmer-title">${chapterLabels[ch]}</span>
+                        <span>${stat.correct}/${stat.total} (${percent}%)</span>
+                    </div>
+                    <div class="w-full bg-slate-200 h-2.5 rounded-full overflow-hidden">
+                        <div class="bg-blue-600 h-full rounded-full transition-all duration-1000" style="width: ${percent}%"></div>
+                    </div>
+                `;
+                barsContainer.appendChild(barDiv);
+            });
+
+            // Render interactive graphics with STRICT clean-up logic
+            renderPerformanceChart(chartLabels, chartData);
+
+            // Shift Screen Views
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('finish-quiz-btn').classList.add('hidden');
+            document.getElementById('results-screen').classList.remove('hidden');
+
+            // Unhide answer key section on result screen (though still locked behind PIN for security)
+            document.getElementById('answer-key-section').classList.remove('hidden');
+        }
+
+        function exportToExcel() {
+            try {
+                const dateStr = new Date().toLocaleDateString('km-KH');
+                const timeStr = new Date().toLocaleTimeString('km-KH');
+                const selectedChapterText = document.getElementById('quiz-filter-select').options[document.getElementById('quiz-filter-select').selectedIndex].text;
+                const timerVal = document.getElementById('result-timer').textContent;
+                
+                let correctCount = 0;
+                let wrongCount = 0;
+                filteredQuestions.forEach((q, idx) => {
+                    if (userAnswers[idx] !== undefined && userAnswers[idx] === q.answer) {
+                        correctCount++;
+                    } else {
+                        wrongCount++;
+                    }
+                });
+                const totalQ = filteredQuestions.length;
+                const scorePercent = totalQ > 0 ? Math.round((correctCount / totalQ) * 100) : 0;
+
+                // Build a highly structured, professional multi-row array for Excel output
+                const excelData = [
+                    ["របាយការណ៍លទ្ធផលការប្រឡងវាស់ស្ទង់សមត្ថភាព «ផែនការស្ថិតិ»"],
+                    ["សាខាពុទ្ធិកសាកលវិទ្យាល័យព្រះសីហនុរាជ ខេត្តកំពង់ឆ្នាំង"],
+                    ["--------------------------------------------------------------------------------------------------------"],
+                    ["ព័ត៌មានលម្អិតអំពីការប្រឡង (EXAMINATION DETAILS)"],
+                    ["ឈ្មោះនិស្សិត (Student Name):", studentName, "", "កាលបរិច្ឆេទប្រឡង (Exam Date/Time):", `${dateStr} - ម៉ោង ${timeStr}`],
+                    ["របៀបដំណើរការ (Exam Mode):", isPracticeMode ? "របៀបសិក្សា (Practice Mode)" : "របៀបប្រឡង (Exam Mode)", "", "រយៈពេលប្រើប្រាស់ (Time Elapsed):", timerVal],
+                    ["វិញ្ញាសាដែលបានជ្រើសរើស (Subject Area):", selectedChapterText],
+                    [""],
+                    ["សង្ខេបលទ្ធផលពិន្ទុ (SCORE SUMMARY)"],
+                    ["សំណួរសរុប (Total Questions):", totalQ, "សំណួរ", "ភាគរយទទួលបាន (Percentage Score):", scorePercent + "%"],
+                    ["ឆ្លើយត្រូវ (Correct Answers):", correctCount, "សំណួរ", "ការវាយតម្លៃលទ្ធផល (Grade Evaluation):", scorePercent >= 90 ? "A (ល្អប្រសើរ)" : scorePercent >= 80 ? "B (ល្អណាស់)" : scorePercent >= 70 ? "C (ល្អ)" : scorePercent >= 50 ? "D (មធ្យម)" : "F (ធ្លាក់/ខ្សោយ)"],
+                    ["ឆ្លើយខុស/មិនបានឆ្លើយ (Wrong/Unanswered):", wrongCount, "សំណួរ"],
+                    ["--------------------------------------------------------------------------------------------------------"],
+                    ["វិវិភាគលទ្ធផលលម្អិតតាមសំណួរនីមួយៗ (DETAILED QUESTIONS ANALYSIS)"],
+                    ["ល.រ (No.)", "ខ្លឹមសារសំណួរ (Question Text)", "ជំពូក/មេរៀន (Chapter)", "ចម្លើយជ្រើសរើស (Your Answer)", "ចម្លើយត្រូវ (Correct Answer)", "លទ្ធផល (Result)"]
+                ];
+
+                // Map questions to the sheet details
+                filteredQuestions.forEach((q, idx) => {
+                    const userAns = userAnswers[idx] || "មិនបានឆ្លើយ";
+                    const isCorrect = userAns === q.answer ? "ត្រូវ (Correct)" : (userAnswers[idx] === undefined ? "មិនបានឆ្លើយ (No Answer)" : "ខុស (Incorrect)");
+                    excelData.push([
+                        idx + 1,
+                        q.text,
+                        q.chapterTitle,
+                        userAns,
+                        q.answer,
+                        isCorrect
+                    ]);
+                });
+
+                // Generate Worksheet
+                const ws = XLSX.utils.aoa_to_sheet(excelData);
+
+                // Apply width properties for a clean Excel layout (wch = width in characters)
+                ws['!cols'] = [
+                    { wch: 10 },   // Column A: No.
+                    { wch: 75 },   // Column B: Question text (wide for readability)
+                    { wch: 15 },   // Column C: Chapter Code
+                    { wch: 25 },   // Column D: User Selected choice
+                    { wch: 25 },   // Column E: Official answer
+                    { wch: 20 }    // Column F: Result evaluation status
+                ];
+
+                // Merge headers nicely
+                ws['!merges'] = [
+                    { s: { r: 0, c: 0 }, e: { r: 0, c: 5 } }, // main title
+                    { s: { r: 1, c: 0 }, e: { r: 1, c: 5 } }, // subtitle
+                    { s: { r: 2, c: 0 }, e: { r: 2, c: 5 } }, // dividing line 1
+                    { s: { r: 3, c: 0 }, e: { r: 3, c: 5 } }, // exam details header
+                    { s: { r: 6, c: 1 }, e: { r: 6, c: 5 } }, // merge chapter text
+                    { s: { r: 8, c: 0 }, e: { r: 8, c: 5 } }, // score summary header
+                    { s: { r: 12, c: 0 }, e: { r: 12, c: 5 } }, // dividing line 2
+                    { s: { r: 13, c: 0 }, e: { r: 13, c: 5 } } // questions analysis header
+                ];
+
+                // Generate Workbook & save
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "លទ្ធផលការប្រឡង");
+
+                const safeFileName = `លទ្ធផលប្រឡង_ស្ថិតិ_${studentName.trim().replace(/\s+/g, '_')}_${dateStr.replace(/\//g, '-')}.xlsx`;
+                XLSX.writeFile(wb, safeFileName);
+            } catch (err) {
+                console.error("Error creating Excel spreadsheet file:", err);
+                showCustomAlert("កំហុសបច្ចេកទេស", "មានបញ្ហាក្នុងការបង្កើត File Excel! សូមព្យាយាមម្តងទៀត។");
+            }
+        }
+
+        function printResult() {
+            try {
+                // Instantly call browser print dialog
+                window.print();
+            } catch (err) {
+                console.error("Print feature failed or is unsupported:", err);
+                showCustomAlert("កំហុសបច្ចេកទេស", "មិនអាចបើកកម្មវិធីបោះពុម្ពបានទេ! សូមសាកល្បងចុចប៊ូតុងម្តងទៀត។");
+            }
+        }
+
+        function renderPerformanceChart(labels, data) {
+            const ctx = document.getElementById('performance-chart').getContext('2d');
+            
+            // STRICT CLEAN-UP LOGIC: Destroy any previous Chart.js instance to prevent canvas pollution
+            if (myChartInstance !== null) {
+                myChartInstance.destroy();
+                myChartInstance = null;
+                console.log("Strict Clean-Up logic executed successfully: Previous Chart.js instance destroyed.");
+            }
+
+            // Generate new modern Chart
+            myChartInstance = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'កម្រិតយល់ដឹង (%)',
+                        data: data,
+                        backgroundColor: 'rgba(59, 130, 246, 0.2)', // translucent blue
+                        borderColor: 'rgba(59, 130, 246, 1)', // solid blue
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(30, 58, 138, 1)', // deep navy
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgba(59, 130, 246, 1)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            angleLines: { display: true },
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            ticks: {
+                                stepSize: 20,
+                                showLabelBackdrop: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        function resetQuiz() {
+            startQuiz();
+        }
+
+        function goToWelcome() {
+            stopTimer();
+            
+            // STRICT CLEAN-UP LOGIC: Clean up charts when leaving the results screen
+            if (myChartInstance !== null) {
+                myChartInstance.destroy();
+                myChartInstance = null;
+                console.log("Strict Clean-Up logic executed successfully on leaving result screen.");
+            }
+
+            document.getElementById('results-screen').classList.add('hidden');
+            document.getElementById('quiz-container').classList.add('hidden');
+            document.getElementById('finish-quiz-btn').classList.add('hidden');
+            document.getElementById('welcome-screen').classList.remove('hidden');
+            
+            // Show answer key section on welcome screen (still locked by default)
+            document.getElementById('answer-key-section').classList.remove('hidden');
+            lockAnswerKey();
+
+            document.getElementById('elapsed-time-display').textContent = "00 នាទី ០០ វិនាទី";
+        }
+
+        // Instructor PIN-Lock functions to prevent student peeking
+        function lockAnswerKey() {
+            document.getElementById('answer-key-lock-wrapper').classList.remove('hidden');
+            document.getElementById('answer-key-content').classList.add('hidden');
+        }
+
+        function unlockAnswerKey() {
+            // Prevent unlocking during an active exam phase
+            const isQuizActive = !document.getElementById('quiz-container').classList.contains('hidden');
+            if (isQuizActive) {
+                showCustomAlert("សកម្មភាពត្រូវបានបដិសេធ", "លោកអ្នកមិនអនុញ្ញាតឱ្យបើកមើលសន្លឹកចម្លើយផ្លូវការបានឡើយ ខណៈពេលដែលការប្រឡងកំពុងដំណើរការ!");
+                return;
+            }
+            document.getElementById('teacher-pin-input').value = '';
+            document.getElementById('custom-pin-modal').classList.remove('hidden');
+        }
+
+        function closeCustomPinModal(shouldVerify) {
+            document.getElementById('custom-pin-modal').classList.add('hidden');
+            if (shouldVerify) {
+                const enteredPin = document.getElementById('teacher-pin-input').value.trim();
+                // Accept standard '1234' or specialized school PIN 'srbu2026'
+                if (enteredPin === "1234" || enteredPin === "srbu2026") {
+                    document.getElementById('answer-key-lock-wrapper').classList.add('hidden');
+                    document.getElementById('answer-key-content').classList.remove('hidden');
+                } else {
+                    showCustomAlert("លេខកូដខុស", "លេខកូដសម្ងាត់ដែលអ្នកបានវាយបញ្ចូលមិនត្រឹមត្រូវឡើយ! សូមព្យាយាមម្តងទៀត។");
+                }
+            }
+        }
+
+        // Auto load setup on start up
+        window.onload = function() {
+            console.log("Interactive planning statistics quiz initialized with professional Excel exporter.");
+        };
+    </script>
+</body>
+</html>
