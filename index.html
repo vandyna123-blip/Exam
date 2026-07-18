@@ -1,0 +1,1923 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធប្រឡងអន្តរកម្ម៖ មុខវិជ្ជាអភិបាលកិច្ចឌីជីថល</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & Kantumruy Pro for professional Khmer rendering -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Kantumruy+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Font Awesome for sleek icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for beautiful analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kantumruy Pro', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        govblue: {
+                            50: '#f0f4f8',
+                            100: '#dbeafe',
+                            500: '#1d4ed8',
+                            800: '#1e3a8a',
+                            900: '#0f172a',
+                        },
+                        cybercyan: '#06b6d4',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Kantumruy Pro', 'Inter', sans-serif;
+            background-color: #0f172a;
+            color: #f1f5f9;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1e293b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #475569;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #06b6d4;
+        }
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .btn-gradient {
+            background: linear-gradient(135deg, #2563eb 0%, #06b6d4 100%);
+            transition: all 0.3s ease;
+        }
+        .btn-gradient:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Header -->
+    <header class="glass-panel sticky top-0 z-40 border-b border-slate-800 px-4 py-3 shadow-lg">
+        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="p-2.5 bg-gradient-to-tr from-blue-600 to-cyan-500 rounded-xl text-white shadow-md shadow-blue-500/20">
+                    <i class="fa-solid fa-laptop-code text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-lg font-bold bg-gradient-to-r from-white via-slate-100 to-cyan-400 bg-clip-text text-transparent">
+                        ប្រព័ន្ធប្រឡងអន្តរកម្មឌីជីថល (Digital Exam Platform)
+                    </h1>
+                    <p class="text-xs text-slate-400">វិទ្យាស្ថានប្រាយហូម</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="timerDisplay" class="hidden bg-slate-800/80 text-cyan-400 font-mono px-3 py-1.5 rounded-lg border border-slate-700/50 flex items-center gap-2">
+                    <i class="fa-regular fa-clock text-sm animate-pulse"></i> <span id="timeValue">120:00</span>
+                </span>
+                <button onclick="toggleTheme()" class="p-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-slate-300 border border-slate-700/50 transition">
+                    <i id="themeIcon" class="fa-solid fa-moon"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 flex flex-col justify-start">
+        
+        <!-- Welcome Screen -->
+        <div id="welcomeScreen" class="py-6 max-w-4xl mx-auto w-full">
+            <div class="glass-panel rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden mb-8 border border-slate-800/80">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="absolute -left-20 -bottom-20 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10">
+                    <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">
+                        ប្រឡងពាក់កណ្ដាលឆមាស (Midterm Exam)
+                    </span>
+                    
+                    <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-4 mb-2">
+                        មុខវិជ្ជា៖ អភិបាលកិច្ចឌីជីថល (Digital Governance)
+                    </h2>
+                    <p class="text-slate-400 text-sm md:text-base mb-6 leading-relaxed">
+                        តេស្តនេះមានចំនួន <span class="text-cyan-400 font-bold">៧០ សំណួរ</span> ដែលត្រូវបានដកស្រង់យ៉ាងហ្មត់ចត់ពីមេរៀនទី១ (សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល) និងមេរៀនទី២ (ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ) ដើម្បីវាយតម្លៃការយល់ដឹងស៊ីជម្រៅរបស់និស្សិត។
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+                        <div class="bg-slate-900/50 rounded-2xl p-4 border border-slate-800/80 flex items-start gap-3">
+                            <i class="fa-solid fa-book-open text-cyan-400 text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-white text-sm">វិសាលភាពនៃមេរៀន</h4>
+                                <p class="text-xs text-slate-400 mt-1">មេរៀនទី១៖ បដិវត្តឧស្សាហកម្ម, e-Gov, និងការផ្លាស់ប្តូរ</p>
+                                <p class="text-xs text-slate-400">មេរៀនទី២៖ GEA, ស្ថាបត្យកម្ម ៤ សសរស្តម្ភ, ក្របខ័ណ្ឌ Interoperability</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-900/50 rounded-2xl p-4 border border-slate-800/80 flex items-start gap-3">
+                            <i class="fa-solid fa-circle-info text-blue-400 text-lg mt-1"></i>
+                            <div>
+                                <h4 class="font-semibold text-white text-sm">ព័ត៌មាននៃការប្រឡង</h4>
+                                <p class="text-xs text-slate-400 mt-1">ចំនួនសំណួរ៖ ៧០ សំណួរ (ជ្រើសរើសចម្លើយត្រឹមត្រូវ)</p>
+                                <p class="text-xs text-slate-400">រយៈពេលកំណត់៖ ១២០ នាទី (2 ម៉ោង)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <button onclick="startExam('exam')" class="btn-gradient px-6 py-3.5 rounded-xl font-bold text-white flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-play"></i> ចាប់ផ្តើមប្រឡងផ្លូវការ (មានពេលកំណត់)
+                        </button>
+                        <button onclick="startExam('practice')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 px-6 py-3.5 rounded-xl font-bold text-slate-200 transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-graduation-cap"></i> របៀបស្វ័យសិក្សា (បង្ហាញចម្លើយភ្លាមៗ)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Syllabus Highlight -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Chapter 1 Highlight -->
+                <div class="bg-slate-800/40 rounded-2xl p-5 border border-slate-800/80">
+                    <div class="flex items-center gap-2 text-cyan-400 mb-3">
+                        <i class="fa-solid fa-gauge-high"></i>
+                        <span class="font-bold text-sm">មេរៀនទី ១៖ សេចក្តីផ្តើម និងការវិវត្ត</span>
+                    </div>
+                    <ul class="text-xs text-slate-400 space-y-2">
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>ការវិវត្តនៃបដិវត្តឧស្សាហកម្ម ១.០ ដល់ ៤.០</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>ភាពខុសគ្នារវាង e-Government និង Digital Governance</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>ដំណាក់កាលទាំង ៤ នៃការវិវត្តរបស់ UN</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>គំរូទំនាក់ទំនង G2C, G2B, G2G, G2E</li>
+                    </ul>
+                </div>
+                <!-- Chapter 2 Highlight -->
+                <div class="bg-slate-800/40 rounded-2xl p-5 border border-slate-800/80">
+                    <div class="flex items-center gap-2 text-blue-400 mb-3">
+                        <i class="fa-solid fa-network-wired"></i>
+                        <span class="font-bold text-sm">មេរៀនទី ២៖ ស្ថាបត្យកម្ម និងការតភ្ជាប់</span>
+                    </div>
+                    <ul class="text-xs text-slate-400 space-y-2">
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>ស្ថាបត្យកម្មអង្គភាពរដ្ឋាភិបាល (GEA) និង សសរស្តម្ភទាំង ៤</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>លំហូរការងាររដ្ឋបាល (BPR) និង Once-Only Principle</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>ជម្រុកទិន្នន័យគ្រឹះជាតិ (National Base Registries)</li>
+                        <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i>អន្តរប្រតិបត្តិការទាំង ៤ កម្រិត (Legal, Org, Semantic, Tech)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Section -->
+        <div id="examScreen" class="hidden grid grid-cols-1 lg:grid-cols-4 gap-6 py-4 flex-grow">
+            <!-- Left Panel: Question Card -->
+            <div class="lg:col-span-3 flex flex-col gap-4">
+                <!-- Question Block -->
+                <div class="glass-panel rounded-2xl p-6 border border-slate-800/80 shadow-xl relative overflow-hidden flex-grow flex flex-col justify-between">
+                    <div>
+                        <!-- Header Question Status -->
+                        <div class="flex items-center justify-between border-b border-slate-800/80 pb-4 mb-4">
+                            <span class="text-xs font-semibold text-cyan-400 tracking-wider uppercase">
+                                មេរៀនទី <span id="qLesson">1</span> &bull; សំណួរទី <span id="qIndex">1</span> ក្នុងចំណោម 70
+                            </span>
+                            <button id="flagBtn" onclick="toggleFlag()" class="text-slate-400 hover:text-amber-400 transition text-sm flex items-center gap-1">
+                                <i id="flagIcon" class="fa-regular fa-bookmark"></i> ចំណាំសំណួរ
+                            </button>
+                        </div>
+
+                        <!-- Question Prompt -->
+                        <h3 id="questionText" class="text-lg md:text-xl font-bold text-white mb-6 leading-relaxed">
+                            [សំណួរកំពុងដំណើរការ...]
+                        </h3>
+
+                        <!-- Choices -->
+                        <div id="optionsContainer" class="space-y-3.5 mb-6">
+                            <!-- Options generated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Study Mode Explanation -->
+                    <div id="explanationContainer" class="hidden bg-slate-900/60 border-l-4 border-cyan-500 rounded-r-xl p-4 mb-6">
+                        <h4 class="font-bold text-cyan-400 text-sm mb-1"><i class="fa-solid fa-circle-info"></i> ការពន្យល់ចម្លើយ៖</h4>
+                        <p id="explanationText" class="text-xs text-slate-300 leading-relaxed"></p>
+                    </div>
+
+                    <!-- Navigation Footer -->
+                    <div class="flex items-center justify-between border-t border-slate-800/80 pt-4">
+                        <button onclick="prevQuestion()" id="prevBtn" class="bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/50 px-4 py-2.5 rounded-xl font-semibold transition text-sm flex items-center gap-2">
+                            <i class="fa-solid fa-arrow-left"></i> ថយក្រោយ
+                        </button>
+                        
+                        <div class="flex items-center gap-2">
+                            <button onclick="checkAnswerInstant()" id="checkBtn" class="hidden bg-cyan-600 hover:bg-cyan-500 text-white px-4 py-2.5 rounded-xl font-semibold transition text-sm">
+                                ពិនិត្យចម្លើយ
+                            </button>
+                            <button onclick="nextQuestion()" id="nextBtn" class="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2.5 rounded-xl font-semibold transition text-sm flex items-center gap-2">
+                                បន្តទៅមុខ <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Navigator Grid & Info -->
+            <div class="lg:col-span-1 flex flex-col gap-4">
+                <!-- Status & Finish Button Card -->
+                <div class="glass-panel rounded-2xl p-4 border border-slate-800/80 shadow-md">
+                    <h4 class="font-bold text-white text-sm mb-3">ស្ថានភាពការប្រឡង</h4>
+                    
+                    <div class="space-y-3.5 mb-4">
+                        <!-- Progress bar -->
+                        <div>
+                            <div class="flex justify-between text-xs text-slate-400 mb-1">
+                                <span>វឌ្ឍនភាពឆ្លើយ៖</span>
+                                <span id="progressText" class="font-semibold text-white">0 / 70</span>
+                            </div>
+                            <div class="w-full bg-slate-900 rounded-full h-2 overflow-hidden">
+                                <div id="progressBar" class="bg-gradient-to-r from-blue-500 to-cyan-400 h-full w-0 transition-all duration-300"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="bg-slate-900/60 p-2 rounded-xl border border-slate-800/50">
+                                <p class="text-slate-400">ឆ្លើយរួច</p>
+                                <p id="answeredCount" class="text-base font-bold text-emerald-400">0</p>
+                            </div>
+                            <div class="bg-slate-900/60 p-2 rounded-xl border border-slate-800/50">
+                                <p class="text-slate-400">នៅសល់</p>
+                                <p id="unansweredCount" class="text-base font-bold text-slate-300">70</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="confirmFinishExam()" class="w-full bg-rose-600 hover:bg-rose-500 text-white py-2.5 rounded-xl font-bold transition text-sm flex items-center justify-center gap-2 shadow-lg shadow-rose-900/20">
+                        <i class="fa-solid fa-circle-check"></i> បញ្ចប់ និងប្រគល់កិច្ចការ
+                    </button>
+                </div>
+
+                <!-- Interactive Question Grid -->
+                <div class="glass-panel rounded-2xl p-4 border border-slate-800/80 shadow-md flex-grow flex flex-col">
+                    <h4 class="font-bold text-white text-sm mb-3 flex items-center justify-between">
+                        <span>ផ្ទាំងចម្លងរហ័ស (Jump to)</span>
+                        <span class="text-[10px] text-slate-400 font-normal">ចុចលេខសំណួរដើម្បីលោតទៅ</span>
+                    </h4>
+                    
+                    <div class="grid grid-cols-5 sm:grid-cols-10 lg:grid-cols-5 gap-1.5 overflow-y-auto max-h-[300px] pr-1" id="navGrid">
+                        <!-- Navigation Grid Numbers generated dynamically -->
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-slate-800/80 grid grid-cols-2 gap-2 text-[10px] text-slate-400">
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-blue-600 inline-block"></span> កំពុងមើល</div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-emerald-700/80 inline-block"></span> ឆ្លើយរួច</div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-amber-500 inline-block"></span> បានចំណាំ</div>
+                        <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded bg-slate-800 border border-slate-700 inline-block"></span> មិនទាន់ឆ្លើយ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Dashboard Section -->
+        <div id="resultScreen" class="hidden py-6 max-w-5xl mx-auto w-full space-y-6">
+            <!-- Summary Dashboard Header Card -->
+            <div class="glass-panel rounded-3xl p-6 md:p-8 border border-slate-800/80 shadow-2xl relative overflow-hidden">
+                <div class="absolute -right-20 -top-20 w-80 h-80 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+                    <div>
+                        <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-1 rounded-full text-xs font-semibold">
+                            ប្រកាសលទ្ធផលប្រឡង
+                        </span>
+                        <h2 class="text-2xl md:text-3xl font-extrabold text-white mt-4 mb-2">
+                            របាយការណ៍វាយតម្លៃសមត្ថភាព
+                        </h2>
+                        <p class="text-slate-400 text-sm max-w-md">
+                            អ្នកបានបញ្ចប់ការឆ្លើយសាកល្បងនូវសំណួរទាំង ៧០ លើមុខវិជ្ជាអភិបាលកិច្ចឌីជីថល។ លទ្ធផលលម្អិតត្រូវបានបង្ហាញខាងក្រោម។
+                        </p>
+                        
+                        <div class="flex flex-wrap gap-3 mt-6">
+                            <button onclick="resetApp()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-2">
+                                <i class="fa-solid fa-rotate-left"></i> សាកល្បងម្តងទៀត
+                            </button>
+                            <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold px-5 py-2.5 rounded-xl text-sm transition flex items-center gap-2">
+                                <i class="fa-solid fa-print"></i> បោះពុម្ពលទ្ធផល / ចម្លើយ
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Circular Score Widget -->
+                    <div class="flex flex-col items-center">
+                        <div class="relative flex items-center justify-center w-40 h-40 rounded-full bg-slate-900 border-4 border-slate-800">
+                            <!-- Simulated circular progress -->
+                            <svg class="absolute inset-0 w-full h-full transform -rotate-90">
+                                <circle cx="80" cy="80" r="70" class="stroke-slate-800" stroke-width="8" fill="transparent"/>
+                                <circle cx="80" cy="80" r="70" id="circleProgress" class="stroke-emerald-500" stroke-width="8" fill="transparent" stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="round"/>
+                            </svg>
+                            <div class="text-center z-10">
+                                <span id="resScore" class="text-4xl md:text-5xl font-black text-white">0</span>
+                                <span class="text-slate-400 text-xs block mt-1">ពិន្ទុសរុប / 70</span>
+                            </div>
+                        </div>
+                        <div class="text-center mt-3">
+                            <span id="gradeBadge" class="px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-bold">Excellent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Detailed Grid Statistics + Charts -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Statistics Card -->
+                <div class="md:col-span-1 bg-slate-800/40 rounded-2xl p-5 border border-slate-800/80 flex flex-col justify-between">
+                    <h4 class="font-bold text-white text-sm mb-4">ស្ថិតិនៃចម្លើយ</h4>
+                    <div class="space-y-3.5">
+                        <div class="flex justify-between items-center bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                            <span class="text-xs text-slate-400 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> ឆ្លើយត្រូវ៖</span>
+                            <span id="statCorrect" class="font-bold text-emerald-400">0 / 70</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                            <span class="text-xs text-slate-400 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> ឆ្លើយខុស៖</span>
+                            <span id="statIncorrect" class="font-bold text-rose-400">0 / 70</span>
+                        </div>
+                        <div class="flex justify-between items-center bg-slate-900/40 p-3 rounded-xl border border-slate-800/50">
+                            <span class="text-xs text-slate-400 flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-full bg-slate-600"></span> មិនបានឆ្លើយ៖</span>
+                            <span id="statSkipped" class="font-bold text-slate-400">0 / 70</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-800/80">
+                        <div class="flex justify-between text-xs mb-1">
+                            <span>អត្រាឆ្លើយត្រូវ (Accuracy)៖</span>
+                            <span id="accuracyPercent" class="font-bold text-cyan-400">0%</span>
+                        </div>
+                        <div class="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                            <div id="accuracyBar" class="bg-cyan-500 h-full w-0 transition-all duration-300"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Graphic/Chart Representation -->
+                <div class="md:col-span-2 bg-slate-800/40 rounded-2xl p-5 border border-slate-800/80 flex flex-col justify-between">
+                    <div class="flex items-center justify-between mb-2">
+                        <h4 class="font-bold text-white text-sm">វិភាគការយល់ដឹងតាមប្រធានបទ</h4>
+                        <span class="text-[10px] text-slate-400"><i class="fa-solid fa-shield-halved"></i> ក្រាហ្វិកអន្តរកម្ម</span>
+                    </div>
+                    
+                    <!-- Chart canvas inside wrapper -->
+                    <div class="relative h-60 w-full flex items-center justify-center">
+                        <canvas id="topicChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Collapsible: Review of All 70 Questions -->
+            <div class="bg-slate-800/20 rounded-2xl border border-slate-800/80 p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-white">ការត្រួតពិនិត្យ និងការកែប្រែឡើងវិញ (Review Section)</h3>
+                    <div class="flex gap-2">
+                        <button onclick="filterReview('all')" id="revAllBtn" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold">ទាំងអស់</button>
+                        <button onclick="filterReview('correct')" id="revCorrectBtn" class="px-3 py-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs font-semibold">ត្រូវ</button>
+                        <button onclick="filterReview('incorrect')" id="revIncorrectBtn" class="px-3 py-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs font-semibold">ខុស</button>
+                    </div>
+                </div>
+
+                <div id="reviewContainer" class="space-y-4 max-h-[500px] overflow-y-auto pr-2">
+                    <!-- Review elements generated dynamically -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Custom Warning Modal instead of alert() -->
+        <div id="customModal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+            <div class="glass-panel rounded-2xl p-6 max-w-sm w-full border border-slate-800 shadow-2xl">
+                <div class="w-12 h-12 bg-rose-500/10 text-rose-500 rounded-full flex items-center justify-center text-xl mb-4 mx-auto">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <h3 class="text-center font-bold text-white text-lg mb-2" id="modalTitle">ប្រុងប្រយ័ត្ន!</h3>
+                <p class="text-center text-slate-300 text-sm mb-6 leading-relaxed" id="modalMessage">តើអ្នកពិតជាចង់បញ្ចប់ការប្រឡងនេះមែនទេ?</p>
+                <div class="flex gap-3">
+                    <button onclick="closeModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 py-2 rounded-xl text-sm font-semibold transition">បដិសេធ</button>
+                    <button id="modalActionBtn" class="flex-1 bg-rose-600 hover:bg-rose-500 text-white py-2 rounded-xl text-sm font-semibold transition">យល់ព្រម</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glass-panel border-t border-slate-800 mt-12 py-6 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <p>&copy; 2026 គ្រប់គ្រងកម្មវិធីសិក្សាដោយ វិទ្យាស្ថានប្រាយហូម។</p>
+            <div class="flex gap-4">
+                <a href="#welcomeScreen" class="hover:text-cyan-400 transition">ទំព័រដើម</a>
+                <span>&bull;</span>
+                <span class="text-cyan-400">ជំនាន់ ៤.០ (Industry 4.0 Standard)</span>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        /* ----------------------------------------------------
+         * 70 QUESTIONS DATASET (CH 1 & CH 2)
+         * ---------------------------------------------------- */
+        const questionsDataset = [
+            // Chapter 1 Questions (1-35)
+            {
+                id: 1,
+                lesson: 1,
+                question: "តើរបកគំហើញអ្វីដែលជាសញ្ញាសម្គាល់ដំបូងគេបង្អស់ នៃបដិវត្តឧស្សាហកម្មទី ១ (Industry 1.0) នៅចុងសតវត្សទី១៨?",
+                options: [
+                    "ការរកឃើញ និងអភិវឌ្ឍន៍ថាមពលអគ្គិសនី",
+                    "ការបង្កើតម៉ាស៊ីនចំហាយទឹក និងការផលិតបែបមេកានិច",
+                    "ការបង្កើតឡើងនូវកុំព្យូទ័រ និងប្រព័ន្ធអនឡាញដំបូង",
+                    "ការអភិវឌ្ឍបច្ចេកវិទ្យាបញ្ញាសិប្បនិម្មិត (AI)"
+                ],
+                answer: 1,
+                explanation: "បដិវត្តឧស្សាហកម្មទី១ (ចុងសតវត្សទី១៨) ចាប់ផ្តើមដោយសាររបកគំហើញម៉ាស៊ីនចំហាយទឹក ដែលផ្លាស់ប្តូរការផលិតដោយដៃ មកជាគ្រឿងចក្រមេកានិចវិញ។"
+            },
+            {
+                id: 2,
+                lesson: 1,
+                question: "តើការផ្លាស់ប្តូរដ៏ធំបំផុតនៅក្នុងរដ្ឋបាលសាធារណៈ កំឡុងបដិវត្តឧស្សាហកម្មទី ២ (Industry 2.0) គឺអ្វី?",
+                options: [
+                    "ការបង្កើតប្រព័ន្ធរដ្ឋាភិបាលអេឡិចត្រូនិក (e-Government)",
+                    "ការលេចឡើងនៃ «របបការិយាល័យធិបតេយ្យបែបទំនើប» (Modern Bureaucracy) ដែលមានស្តង់ដារ និងឋានានុក្រមច្បាស់លាស់",
+                    "ការលុបបំបាត់ការិយាល័យធិបតេយ្យស្មុគស្មាញ និងការប្រើប្រាស់ក្រដាស",
+                    "ការផ្តល់សេវាសាធារណៈ ២៤/៧ ដល់ប្រជាពលរដ្ឋ"
+                ],
+                answer: 1,
+                explanation: "បដិវត្តឧស្សាហកម្មទី២ នាំមកនូវចង្វាក់ផលិតកម្មទ្រង់ទ្រាយធំ និងថាមពលអគ្គិសនី។ ក្នុងវិស័យរដ្ឋបាល វាបានបង្កើតឡើងនូវ «របបការិយាល័យធិបតេយ្យបែបទំនើប» ដើម្បីគ្រប់គ្រងសេវាសាធារណៈដែលរីកធំធាត់លឿន។"
+            },
+            {
+                id: 3,
+                lesson: 1,
+                question: "តើបដិវត្តឧស្សាហកម្មទី ៣ (Industry 3.0) ចាប់ផ្តើមនៅពេលណា ហើយនាំមកនូវរបកគំហើញអ្វីជាស្នូល?",
+                options: [
+                    "ចុងសតវត្សទី១៨ ជាមួយម៉ាស៊ីនចំហាយទឹក",
+                    "ចុងសតវត្សទី១៩ ជាមួយការផលិតទ្រង់ទ្រាយធំ",
+                    "ពាក់កណ្តាលសតវត្សទី២០ ជាមួយគ្រឿងអេឡិចត្រូនិច កុំព្យូទ័រ និងអ៊ីនធឺណិត",
+                    "ដើមសតវត្សទី២១ ជាមួយបច្ចេកវិទ្យា Blockchain"
+                ],
+                answer: 2,
+                explanation: "បដិវត្តឧស្សាហកម្មទី៣ (ពាក់កណ្តាលសតវត្សទី២០) គឺជឿនលឿនដោយគ្រឿងអេឡិចត្រូនិច និងព័ត៌មានវិទ្យា (IT) ដែលជាការចាប់ផ្តើមនៃរដ្ឋាភិបាលអេឡិចត្រូនិក (e-Government)។"
+            },
+            {
+                id: 4,
+                lesson: 1,
+                question: "តើបច្ចេកវិទ្យាណាខ្លះដែលត្រូវបានចាត់ទុកថាជា «បច្ចេកវិទ្យាស្នូល» នៅក្នុងយុគសម័យបដិវត្តឧស្សាហកម្មទី ៤ (Industry 4.0)?",
+                options: [
+                    "ម៉ាស៊ីនចំហាយទឹក និងផ្លូវដែk",
+                    "ថាមពលអគ្គិសនី និងខ្សែសង្វាក់ផលិតកម្ម",
+                    "ម៉ាស៊ីនបោះពុម្ព និងទូរលេខ",
+                    "បញ្ញាសិប្បនិម្មិត (AI), ទិន្នន័យមហិមា (Big Data), និង Internet of Things (IoT)"
+                ],
+                answer: 3,
+                explanation: "បដិវត្តឧស្សាហកម្មទី៤ ផ្ដោតលើប្រព័ន្ធស្វ័យប្រវត្តឆ្លាតវៃ ដោយមានបច្ចេកវិទ្យាស្នូលដូចជា AI, Big Data, Cloud, និង IoT។"
+            },
+            {
+                id: 5,
+                lesson: 1,
+                question: "តើបញ្ញាសិប្បនិម្មិត (AI) ខុសពីកម្មវិធីកុំព្យូទ័រ (Software logic) ធម្មតាត្រង់ចំណុចណាខ្លះ?",
+                options: [
+                    "AI មិនត្រូវការប្រើប្រាស់កូដកុំព្យូទ័រទាល់តែសោះ",
+                    "AI ដើរតាមលំដាប់លំដោយធម្មតា និងងាយស្រួលបង្កើតជាង",
+                    "AI ប្រើប្រាស់ក្បួនដោះស្រាយ (Algorithms) ដើម្បីរៀនសូត្រ វិភាគ និងរកលំនាំពីទិន្នន័យមហិមាដើម្បីធ្វើសេចក្តីសម្រេចចិត្តបានដូចមនុស្ស",
+                    "AI អាចដំណើរការបានលុះត្រាតែគ្មានអ៊ីនធឺណិតប៉ុណ្ណោះ"
+                ],
+                answer: 2,
+                explanation: "AI មិនមែនគ្រាន់តែជា Logic ធម្មតាទេ ប៉ុន្តែវាជាប្រព័ន្ធឆ្លាតវៃដែលអាចរៀនសូត្រពីទិន្នន័យ (Machine Learning) និងធ្វើការសម្រេចចិត្តដោយស្វ័យប្រវត្តិ។"
+            },
+            {
+                id: 6,
+                lesson: 1,
+                question: "ដើម្បីចាត់ទុកទិន្នន័យណាមួយថាជា «ទិន្នន័យមហិមា» (Big Data) តើត្រូវមានលក្ខណៈសម្បត្តិគ្រឹះ (5 Vs) អ្វីខ្លះ?",
+                options: [
+                    "Vector, Virus, Vertical, Virtual, Vibrant",
+                    "Volume, Velocity, Variety, Veracity, Value",
+                    "Validation, Verification, Visibility, Visual, Version",
+                    "Vastness, Velocity, Variant, Variable, Volatility"
+                ],
+                answer: 1,
+                explanation: "Big Data ត្រូវមានចរិតលក្ខណៈ ៥ គឺ៖ ទំហំ (Volume), ល្បឿន (Velocity), ភាពចម្រុះ (Variety), ភាពត្រឹមត្រូវជឿជាក់ (Veracity), និងតម្លៃអាជីវកម្ម (Value)។"
+            },
+            {
+                id: 7,
+                lesson: 1,
+                question: "ក្នុងលក្ខណៈសម្បត្តិ 5 Vs របស់ Big Data តើពាក្យថា «Velocity» ពិពណ៌នាអំពីអ្វី?",
+                options: [
+                    "ភាពត្រឹមត្រូវ និងគុណភាពខ្ពស់នៃទិន្នន័យដែលទទួលបាន",
+                    "ទម្រង់ចម្រុះជាច្រើនរបស់ទិន្នន័យដូចជា អត្ថបទ រូបភាព ឬវីដេអូ",
+                    "ល្បឿននៃការបង្កើត និងការបញ្ជូនទិន្នន័យសម្រាប់ការវិភាគភ្លាមៗ (Real-time)",
+                    "ទំហំបរិមាណទិន្នន័យដ៏មហិមាគិតជា Petabytes"
+                ],
+                answer: 2,
+                explanation: "Velocity សំដៅលើល្បឿនដែលទិន្នន័យត្រូវបានបង្កើត បញ្ជូន និងកែច្នៃដើម្បីយកទៅប្រើប្រាស់ភ្លាមៗ។"
+            },
+            {
+                id: 8,
+                lesson: 1,
+                question: "តើ Internet of Things (IoT) មានន័យដូចម្តេច?",
+                options: [
+                    "ជាបណ្តាញកុំព្យូទ័រធម្មតាសម្រាប់តែបុគ្គលិករដ្ឋទំនាក់ទំនងគ្នា",
+                    "ជាបណ្តាញនៃឧបករណ៍រូបវន្តទាំងឡាយដែលបំពាក់ដោយ Sensors, Software និងបច្ចេកវិទ្យាតភ្ជាប់ ដើម្បីប្រមូល និងប្តូរទិន្នន័យជាមួយគ្នាតាមអ៊ីនធឺណិត",
+                    "ជាកម្មវិធីទូរស័ព្ទរបស់រដ្ឋសម្រាប់ផ្សព្វផ្សាយព័ត៌មាន",
+                    "ជាការរក្សាទុកទិន្នន័យទាំងអស់នៅលើប្រព័ន្ធ Cloud"
+                ],
+                answer: 1,
+                explanation: "IoT សំដៅលើការតភ្ជាប់ឧបករណ៍រូបវន្តនានាទៅនឹងអ៊ីនធឺណិត ដើម្បីឱ្យពួកវាអាច 'ជជែកគ្នា' និងផ្លាស់ប្តូរទិន្នន័យដោយស្វ័យប្រវត្តិ។"
+            },
+            {
+                id: 9,
+                lesson: 1,
+                question: "តើប្រព័ន្ធ IoT មួយត្រូវការសមាសភាគស្នូលចំនួនប៉ុន្មានដើម្បីដំណើរការ?",
+                options: [
+                    "២ (ឧបករណ៍ និងអេក្រង់)",
+                    "៣ (Wi-Fi, ទូរស័ព្ទ, និងកុំព្យូទ័រ)",
+                    "៤ (សិនស័រ, ការតភ្ជាប់, ការវិភាគទិន្នន័យ, និងចំណុចប្រទាក់អ្នកប្រើប្រាស់)",
+                    "៥ (ទិន្នន័យ, កម្មវិធី, ខ្សែកាប, ម៉ាស៊ីនបោះពុម្ព, និងភ្លើងអគ្គិសនី)"
+                ],
+                answer: 2,
+                explanation: "សមាសភាគទាំង ៤ របស់ IoT រួមមាន៖ ១) Device/Sensor, ២) Connectivity, ៣) Data Processing, និង ៤) User Interface (UI)។"
+            },
+            {
+                id: 10,
+                lesson: 1,
+                question: "តើគោលបំណងចម្បងនៃ «រដ្ឋាភិបាលអេឡិចត្រូនិក» (e-Government) ផ្តោតលើអ្វី?",
+                options: [
+                    "ការផ្លាស់ប្តូរវប្បធម៌ការងារ និងការបង្កើតទំនាក់ទំនងថ្មីទាំងស្រុងរវាងរដ្ឋ និងពលរដ្ឋ",
+                    "ការលើកកម្ពស់ប្រសិទ្ធភាពការងាររដ្ឋបាលដែលមានស្រាប់ ដោយបំប្លែងក្រដាសស្នាមទៅជាទម្រង់ឌីជីថល (Digitization)",
+                    "ការប្រើប្រាស់ AI ក្នុងការសម្រេចចិត្តលើគោលនយោបាយជាតិ",
+                    "ការបើកចំហទិន្នន័យសាធារណៈសម្រាប់សាធារណជនទូទៅ"
+                ],
+                answer: 1,
+                explanation: "e-Government ផ្តោតលើការយក ICT មកជួយសម្រួល និងបង្កើនល្បឿននីតិវិធីដែលមានស្រាប់ (Digitization) ដោយមិនទាន់មានការផ្លាស់ប្តូររចនាសម្ព័ន្ធការងារស្នូលឡើយ។"
+            },
+            {
+                id: 11,
+                lesson: 1,
+                question: "តើអ្វីជាភាពខុសគ្នាដ៏សំខាន់រវាង e-Government និង «អភិបាលកិច្ចឌីជីថល» (Digital Governance)?",
+                options: [
+                    "e-Government ទំនើបជាង និងមានតម្លៃថ្លៃជាង",
+                    "Digital Governance គ្រាន់តែជាការបង្កើតវិបសាយផ្សព្វផ្សាយព័ត៌មានប៉ុណ្ណោះ",
+                    "e-Gov ផ្តោតលើការយកបច្ចេកវិទ្យាជាឧបករណ៍ (Digitization) ចំណែក Digital Governance ផ្តោតលើការធ្វើបរិវត្តកម្មឌីជីថលពេញលេញ (Digital Transformation) ទាំងនីតិវិធី ស្ថាប័ន និងវប្បធម៌",
+                    "គ្មានភាពខុសគ្នានោះទេ ពាក្យទាំងពីរមានអត្ថន័យដូចគ្នាទាំងស្រុង"
+                ],
+                answer: 2,
+                explanation: "e-Government ជាការយក IT មកធ្វើជាឧបករណ៍ជំនួសក្រដាស (Digitization) រីឯ Digital Governance គឺជាការធ្វើបរិវត្តកម្មឌីជីថលពេញលេញ (Digital Transformation) លើរចនាសម្ព័ន្ធ និងវប្បធម៌ការងាររដ្ឋ។"
+            },
+            {
+                id: 12,
+                lesson: 1,
+                question: "យោងតាមក្របខ័ណ្ឌរបស់ UN តើការឈានទៅដល់អភិបាលកិច្ចឌីជីថលពេញលេញ ត្រូវឆ្លងកាត់ប៉ុន្មានដំណាក់កាល?",
+                options: [
+                    "២ ដំណាក់កាល (កុំព្យូទ័រ និងទូរស័ព្ទ)",
+                    "៣ ដំណាក់កាល (ព័ត៌មាន, ទំនាក់ទំនង, និងប្រតិបត្តិការ)",
+                    "៤ ដំណាក់កាល (ព័ត៌មាន, អន្តរកម្ម, ប្រតិបត្តិការ, និងបំប្លែងខ្លួន)",
+                    "៥ ដំណាក់កាល (Static, Dynamic, Portal, AI, Blockchain)"
+                ],
+                answer: 2,
+                explanation: "ដំណាក់កាលទាំង ៤ នៃអង្គការសហប្រជាជាតិ (UN) រួមមាន៖ ព័ត៌មាន (Information), អន្តរកម្ម (Interaction), ប្រតិបត្តិការ (Transaction), និងបំប្លែងខ្លួន (Transformation)។"
+            },
+            {
+                id: 13,
+                lesson: 1,
+                question: "នៅក្នុងដំណាក់កាលទី១ «ព័ត៌មាន» (Emerging/Information Stage) តើទំនាក់ទំនងរវាងរដ្ឋ និងប្រជាពលរដ្ឋមានលក្ខណៈបែបណា?",
+                options: [
+                    "ទំនាក់ទំនងទ្វេភាគីពេញលេញ (Full Two-way interaction)",
+                    "ទំនាក់ទំនងឯកតោភាគី (One-way Communication) រដ្ឋជាអ្នកផ្តល់ព័ត៌មាន ហើយពលរដ្ឋជាអ្នកអាន",
+                    "ការតភ្ជាប់គ្នារវាងគ្រប់ស្ថាប័នរដ្ឋដោយស្វ័យប្រវត្ត",
+                    "គ្មានការប្រាស្រ័យទាក់ទងគ្នាសោះឡើយ"
+                ],
+                answer: 1,
+                explanation: "ដំណាក់កាលព័ត៌មានគឺជាការផ្សព្វផ្សាយព័ត៌មានជាឯកតោភាគី (One-way) តាមគេហទំព័រ ឬបណ្តាញសង្គមរបស់រដ្ឋ ដោយពលរដ្ឋគ្រាន់តែជាអ្នកអានព័ត៌មានប៉ុណ្ណោះ។"
+            },
+            {
+                id: 14,
+                lesson: 1,
+                question: "តើចំណុចខ្វះខាត និងបញ្ហាប្រឈមធំបំផុតនៅក្នុងដំណាក់កាល «ព័ត៌មាន» គឺអ្វី?",
+                options: [
+                    "ការវាយប្រហារតាមអ៊ីនធឺណិតលើគណនីបង់ប្រាក់របស់ពលរដ្ឋ",
+                    "ព័ត៌មានមិនទាន់សម័យ (Outdated), ពិបាកស្វែងរក, និងភាសាបច្ចេកទេសពេកដែលពលរដ្ឋពិបាកយល់",
+                    "ការផ្លាស់ប្តូរទិន្នន័យខុសទម្រង់រវាងក្រសួង និងក្រសួង",
+                    "ការិយាល័យធិបតេយ្យត្រូវបានរលាយបាត់បង់ទាំងស្រុង"
+                ],
+                answer: 1,
+                explanation: "បញ្ហាប្រឈមធំក្នុងដំណាក់កាលនេះគឺ គេហទំព័រមិនត្រូវបានធ្វើបច្ចុប្បន្នភាពបានទៀងទាត់ (Outdated Content) និងពិបាកស្វែងរកឯកសារ។"
+            },
+            {
+                id: 15,
+                lesson: 1,
+                question: "តើលក្ខណៈពិសេសសម្គាល់នៃដំណាក់កាលទី២ «អន្តរកម្ម» (Enhanced/Interaction Stage) គឺអ្វី?",
+                options: [
+                    "ពលរដ្ឋអាចបង់ថ្លៃសេវារដ្ឋបាលតាមអនឡាញភ្លាមៗ",
+                    "គ្រប់ស្ថាប័នរដ្ឋទាំងអស់ត្រូវបានតភ្ជាប់ទិន្នន័យគ្នាទៅវិញទៅមក",
+                    "ពលរដ្ឋចាប់ផ្តើមមានអន្តរកម្មទ្វេភាគីកម្រិតទាប ដូចជាអាចទាញយកទម្រង់បែបបទ (PDF Forms) និងទាក់ទងមន្ត្រីតាមអ៊ីមែល",
+                    "ការប្រើប្រាស់ប្រព័ន្ធបញ្ញាសិប្បនិម្មិតដើម្បីឆ្លើយតបសំណួរពលរដ្ឋ"
+                ],
+                answer: 2,
+                explanation: "ដំណាក់កាលអន្តរកម្ម គឺជា Two-way Communication កម្រិតទាប ដែលពលរដ្ឋអាច Download ទម្រង់បែបបទយកមកបំពេញ ឬផ្ញើអ៊ីមែលសួរព័ត៌មាន។"
+            },
+            {
+                id: 16,
+                lesson: 1,
+                question: "ទោះបីជាឈានដល់ដំណាក់កាល «អន្តរកម្ម» ក៏ដោយ ហេតុអ្វីបានជានៅតែមិនទាន់ចាត់ទុកជាប្រតិបត្តិការពេញលេញ?",
+                options: [
+                    "By using the internet as a tool, citizens are already fully transacting.",
+                    "ដោយសារពលរដ្ឋនៅតែត្រូវកាន់ក្រដាសស្នាមដែលបំពេញរួច ទៅដាក់នៅការិយាល័យរដ្ឋបាលផ្ទាល់ និងមិនទាន់អាចទូទាត់ប្រាក់តាមអនឡាញបាន",
+                    "ដោយសាររដ្ឋគ្មានមន្ត្រីជំនាញព័ត៌មានវិទ្យា",
+                    "ដោយសារប្រព័ន្ធកុំព្យូទ័រមិនទាន់មានសុវត្ថិភាព"
+                ],
+                answer: 1,
+                explanation: "ក្នុងដំណាក់កាលអន្តរកម្ម ពលរដ្ឋអាចទាញយកពាក្យសុំបាន ប៉ុន្តែនៅតែត្រូវយកក្រដាសនោះទៅដាក់ និងបង់ប្រាក់នៅការិយាល័យរដ្ឋដោយផ្ទាល់ដដែល។"
+            },
+            {
+                id: 17,
+                lesson: 1,
+                question: "តើធាតុផ្សំបច្ចេកវិទ្យាសំខាន់ទាំង ៣ ណាខ្លះ ដែលអនុញ្ញាតឱ្យប្រព័ន្ធរដ្ឋបាលសាធារណៈអាចឈានចូលដំណាក់កាលទី៣ «ប្រតិបត្តិការ» (Transactional Stage)?",
+                options: [
+                    "កុំព្យូទ័រយួរដៃ, ទូរស័ព្ទដៃ, និងខ្សែកាបអុបទិក",
+                    "ការបំពេញបែបបទអនឡាញ, ប្រព័ន្ធទូទាត់ប្រាក់ឌីជីថល (e-Payment), និងអត្តសញ្ញាណ/ហត្ថលេខាឌីជីថល (Digital ID/e-Signature)",
+                    "គេហទំព័រ, ហ្វេសប៊ុកផេក, និងតេឡេក្រាម",
+                    "ម៉ាស៊ីនបោះពុម្ព, ម៉ាស៊ីនស្កេន, និងម៉ាស៊ីនថតចម្លង"
+                ],
+                answer: 1,
+                explanation: "ដើម្បីដំណើរការប្រតិបត្តិការបានពេញលេញ (Transactional Stage) ត្រូវការ៖ ១) Online submission, ២) e-Payment, និង ៣) Digital ID ឬ e-Signature។"
+            },
+            {
+                id: 18,
+                lesson: 1,
+                question: "តើអត្ថប្រយោជន៍ដ៏ធំបំផុតមួយនៃការទូទាត់ប្រាក់ឌីជីថល (e-Payment) ក្នុងការផ្តល់សេវាសាធារណៈគឺអ្វី?",
+                options: [
+                    "ធ្វើឱ្យពលរដ្ឋមិនបាច់ចាយលុយទាល់តែសោះ",
+                    "បង្កើនល្បឿនក្នុងការបោះពុម្ពក្រដាសប្រាក់ជាតិ",
+                    "កាត់ផ្តាច់ការជួបគ្នាផ្ទាល់រវាងមន្ត្រី និងពលរដ្ឋ ដែលជួយកាត់បន្ថយអំពើពុករលួយ និងលុបបំបាត់ការទាមទារកម្រៃក្រៅផ្លូវការ",
+                    "ជួយឱ្យរដ្ឋអាចតាមដានគណនីធនាគារផ្ទាល់ខ្លួនរបស់ពលរដ្ឋគ្រប់គ្នា"
+                ],
+                answer: 2,
+                explanation: "ការបង់ប្រាក់តាមអនឡាញ (e-Payment) ជួយលុបបំបាត់ការទាមទារកម្រៃក្រៅផ្លូវការ ព្រោះគ្មានការជួបមុខផ្ទាល់រវាងពលរដ្ឋ និងមន្ត្រីដើម្បីហុចលុយសុទ្ធឡើយ។"
+            },
+            {
+                id: 19,
+                lesson: 1,
+                question: "តើគោលការណ៍ «Once-Only Principle» (ផ្ដល់ទិន្នន័យតែម្ដងគត់) នៅក្នុងដំណាក់កាលទី៤ «បំប្លែងខ្លួន» (Connected Government) សំដៅលើអ្វី?",
+                options: [
+                    "ពលរដ្ឋម្នាក់ៗអាចមកសុំសេវារបស់រដ្ឋបានតែម្តងគត់ក្នុងមួយជីវិត",
+                    "ការតម្រូវឱ្យពលរដ្ឋបំពេញឯកសារអត្តសញ្ញាណប័ណ្ណឡើងវិញរាល់ពេលទៅទំនាក់ទំនងក្រសួងខុសគ្នា",
+                    "នៅពេលរដ្ឋមានទិន្នន័យពលរដ្ឋនៅក្នុងប្រព័ន្ធរួចហើយ ស្ថាប័នរដ្ឋដទៃត្រូវទាញយកមកប្រើដោយស្វ័យប្រវត្ត ដោយមិនទាមទារឯកសារដដែលៗពីពលរដ្ឋឡើយ",
+                    "ការចុះឈ្មោះប្រើប្រាស់គណនីរដ្ឋាភិបាលតែមួយដងគត់នៅលើទូរស័ព្ទ"
+                ],
+                answer: 2,
+                explanation: "Once-Only Principle គឺជាគោលការណ៍ស្នូលដែលតម្រូវឱ្យរដ្ឋចែករំលែកទិន្នន័យគ្នា ដើម្បីការពារកុំឱ្យពលរដ្ឋត្រូវកាន់ឯកសារដដែលៗទៅដាក់នៅគ្រប់ក្រសួង។"
+            },
+            {
+                id: 20,
+                lesson: 1,
+                question: "តើទំនាក់ទំនងឌីជីថលប្រភេទណាដែលសំដៅលើការប្រើប្រាស់បច្ចេកវិទ្យាដើម្បីផ្តល់សេវាសាធារណៈដោយផ្ទាល់ទៅកាន់ប្រជាពលរដ្ឋ (ឧទាហរណ៍៖ ការធ្វើអត្តសញ្ញាណប័ណ្ណ ឬការបង់ពន្ធយានយន្ត)?",
+                options: [
+                    "G2B (Government-to-Business)",
+                    "G2C (Government-to-Citizens)",
+                    "G2G (Government-to-Government)",
+                    "G2E (Government-to-Employees)"
+                ],
+                answer: 1,
+                explanation: "G2C (Government-to-Citizens) គឺជាទំនាក់ទំនង និងការផ្តល់សេវាពីស្ថាប័នរដ្ឋាភិបាលទៅកាន់ប្រជាពលរដ្ឋផ្ទាល់."
+            },
+            {
+                id: 21,
+                lesson: 1,
+                question: "តើទំនាក់ទំនង G2B (Government-to-Business) មានគោលដៅចម្បងក្នុងសេដ្ឋកិច្ចជាតិយ៉ាងដូចម្តេច?",
+                options: [
+                    "ដើម្បីគ្រប់គ្រង និងត្រួតពិនិត្យក្រុមហ៊ុនឯកជនឱ្យបានតឹងរ៉ឹងបំផុត",
+                    "ដើម្បីកាត់បន្ថយរបាំងរដ្ឋបាល និងថ្លៃដើមនៃប្រតិបត្តិការ (Transaction Costs) សម្រាប់វិស័យឯកជន ជំរុញសេដ្ឋកិច្ចឌីជីថល",
+                    "ដើម្បីឱ្យរដ្ឋអាចទិញភាគហ៊ុនរបស់ក្រុមហ៊ុនឯកជនទាំងអស់",
+                    "ដើម្បីបង្ខំឱ្យក្រុមហ៊ុនទាំងអស់ប្រើប្រាស់បច្ចេកវិទ្យាតែមួយទម្រង់"
+                ],
+                answer: 1,
+                explanation: "G2B ជួយកាត់បន្ថយនីតិវិធីស្មុគស្មាញ និងថ្លៃដើមរបស់ក្រុមហ៊ុនឯកជន ដែលជាកាតាលីករជម្រុញសេដ្ឋកិច្ចឌីជីថល."
+            },
+            {
+                id: 22,
+                lesson: 1,
+                question: "តើការតភ្ជាប់កម្រិត «បញ្ឈរ» (Vertical Integration) នៅក្នុងគំរូ G2G សំដៅលើអ្វី?",
+                options: [
+                    "ការតភ្ជាប់ការងាររវាងក្រសួង និងក្រសួងក្នុងកម្រិតថ្នាក់ជាតិដូចគ្នា",
+                    "ការតភ្ជាប់ទិន្នន័យរវាងរដ្ឋបាលថ្នាក់ជាតិ និងរដ្ឋបាលថ្នាក់ក្រោមជាតិ (ដូចជា ក្រសួងមហាផ្ទៃជាមួយសាលាខេត្ត/ស្រុក)",
+                    "ការតភ្ជាប់រវាងរដ្ឋាភិបាលកម្ពុជា និងរដ្ឋាភិបាលបរទេស",
+                    "ការតភ្ជាប់រវាងមន្ត្រី និងប្រជាពលរដ្ឋនៅតាមមូលដ្ឋាន"
+                ],
+                answer: 1,
+                explanation: "ការតភ្ជាប់កម្រិតបញ្ឈរ (Vertical) គឺការតភ្ជាប់រវាងថ្នាក់លើ (ថ្នាក់ជាតិ) និងថ្នាក់ក្រោម (ថ្នាក់ក្រោមជាតិ ដូចជាខេត្ត ស្រុក ឃុំ)."
+            },
+            {
+                id: 23,
+                lesson: 1,
+                question: "តើគំរូទំនាក់ទំនងណាដែលផ្តោតលើការកសាងសមត្ថភាពមន្ត្រីរាជការ និងការបង្កើត «ការិយាល័យឌីជីថលឆ្លាតវៃ» (Smart Digital Office)?",
+                options: [
+                    "G2C",
+                    "G2B",
+                    "G2G",
+                    "G2E (Government-to-Employees)"
+                ],
+                answer: 3,
+                explanation: "G2E (Government-to-Employees) ផ្តោតលើទំនាក់ទំនង និងការសម្រួលការងាររបស់មន្ត្រីរាជការផ្ទៃក្នុងរដ្ឋ."
+            },
+            {
+                id: 24,
+                lesson: 1,
+                question: "តើគោលការណ៍ «តម្លាភាព» (Transparency) ក្នុងយុគសម័យអភិបាលកិច្ចឌីជីថល ត្រូវបានពង្រឹងដោយរបៀបណា?",
+                options: [
+                    "ការលាក់ទុកទិន្នន័យជាតិដើម្បីការពារសុវត្ថិភាព",
+                    "ការប្រើប្រាស់ទិន្នន័យបើកទូលាយ (Open Data) ដូចជាការផ្សព្វផ្សាយថវិកាជាតិ និងការតាមដានសំណុំរឿងតាមពេលវេលាជាក់ស្តែង (Real-time Tracking)",
+                    "ការបង្កើតច្បាប់ហាមឃាត់មិនឱ្យពលរដ្ឋសួរព័ត៌មានពីរដ្ឋ",
+                    "ការផ្តល់ព័ត៌មានតែទៅកាន់អ្នកដែលមានសិទ្ធិពិសេសប៉ុណ្ណោះ"
+                ],
+                answer: 1,
+                explanation: "តម្លាភាពសម័យឌីជីថល គឺការអនុញ្ញាតឱ្យពលរដ្ឋចូលពិនិត្យទិន្នន័យបើកទូលាយ (Open Data) និងដឹងពីដំណើរការឯកសារតាម Real-time Tracking."
+            },
+            {
+                id: 25,
+                lesson: 1,
+                question: "តើ «ដានឌីជីថល» (Digital Footprint) ជួយបង្កើន «គណនេយ្យភាព» (Accountability) របស់មន្ត្រីរាជការយ៉ាងដូចម្តេច?",
+                options: [
+                    "វាជួយឱ្យមន្ត្រីអាចបំពេញការងារបានលឿនជាងមុនដប់ដង",
+                    "វាលុបប្រវត្តិការងារចាស់ៗចោលរៀងរាល់ចុងខែដើម្បីកុំឱ្យណែនម៉ាស៊ីន",
+                    "រាល់ប្រតិបត្តិការឌីជីថលទាំងអស់ត្រូវបានកត់ត្រាក្នុងប្រព័ន្ធ (Logs) មិនអាចកែបន្លំបាន ដែលងាយស្រួលរកអ្នកទទួលខុសត្រូវពេលមានបញ្ហា",
+                    "វាអនុញ្ញាតឱ្យមន្ត្រីអាចលុបឯកសារខុសច្បាប់ចោលដោយគ្មានដាន"
+                ],
+                answer: 2,
+                explanation: "គណនេយ្យភាពត្រូវបានធានាដោយសាររាល់សកម្មភាពចុះហត្ថលេខា ឬអនុម័ត ត្រូវបានកត់ត្រាទុកក្នុងប្រព័ន្ធ (Logs) យ៉ាងច្បាស់លាស់."
+            },
+            {
+                id: 26,
+                lesson: 1,
+                question: "តើបច្ចេកវិទ្យាជួយជំរុញ «ការចូលរួម» (Participation) របស់ប្រជាពលរដ្ឋក្នុងកិច្ចការសង្គមតាមរយៈអ្វី?",
+                options: [
+                    "ការផ្សាយពាណិជ្ជកម្មលក់ទំនិញនៅលើទំព័ររដ្ឋ",
+                    "ការបង្កើតវេទិកាពិភាក្សា និងការស្ទង់មតិអនឡាញ (Online Surveys / e-Democracy) លើសេចក្តីព្រាងច្បាប់នានា",
+                    "ការតម្រូវឱ្យពលរដ្ឋទៅប្រជុំនៅសាលាឃុំរៀងរាល់សប្តាហ៍",
+                    "ការផ្ញើសាររំលឹកឱ្យពលរដ្ឋបង់ពន្ធតែម្ខាង"
+                ],
+                answer: 1,
+                explanation: "ការចូលរួម (Participation) សម័យឌីជីថល ឬ e-Democracy អនុញ្ញាតឱ្យពលរដ្ឋអាចបញ្ចេញមតិ ឬចូលរួមស្ទង់មតិលើសេចក្តីព្រាងច្បាប់តាមអនឡាញ."
+            },
+            {
+                id: 27,
+                lesson: 1,
+                question: "តើគោលបំណងនៃការរចនាប្រព័ន្ធបែប «User-Centric» ក្នុងការផ្តល់សេវាសាធារណៈគឺអ្វី?",
+                options: [
+                    "ការរចនាប្រព័ន្ធតម្រូវទៅតាមភាពងាយស្រួលរបស់មន្ត្រីបច្ចេកវិទ្យា",
+                    "ការរចនាប្រព័ន្ធដោយផ្តោតលើតម្រូវការ និងភាពងាយស្រួលប្រើប្រាស់របស់ប្រជាពលរដ្ឋជាធំ",
+                    "ការប្រើប្រាស់បច្ចេកវិទ្យាតែជាមួយអ្នកដែលរស់នៅទីក្រុងប៉ុណ្ណោះ",
+                    "ការធានាថាប្រព័ន្ធរដ្ឋដំណើរការតែក្នុងម៉ោងរដ្ឋបាល"
+                ],
+                answer: 1,
+                explanation: "User-Centric (យកអ្នកប្រើប្រាស់ជាកណ្តាល) គឺការរចនាប្រព័ន្ធសម្រួលដល់ពលរដ្ឋជាធំ មិនមែនសម្រួលដល់អ្នកបង្កើត ឬមន្ត្រីឡើយ."
+            },
+            {
+                id: 28,
+                lesson: 1,
+                question: "តើ «គម្លាតឌីជីថល» (Digital Divide) សំដៅលើបញ្ហាប្រឈមអ្វីខ្លះនៅក្នុងសង្គម?",
+                options: [
+                    "ភាពខុសគ្នារវាងការប្រើប្រាស់ទូរស័ព្ទដៃម៉ាកល្បីៗ និងម៉ាកធម្មតា",
+                    "គម្លាតរវាងអ្នកដែលទទួលបានឱកាស និងសមត្ថភាពប្រើប្រាស់បច្ចេកវិទ្យា និងអ្នកដែលខ្សត់ខ្សោយបច្ចេកវិទ្យា ឬនៅតំបន់ដាច់ស្រយាល",
+                    "ចម្ងាយភូមិសាស្ត្ររវាងទីក្រុង និងជនបទ",
+                    "ល្បឿនអ៊ីនធឺណិតខុសគ្នារវាងការិយាល័យរដ្ឋ និងក្រុមហ៊ុនឯកជន"
+                ],
+                answer: 1,
+                explanation: "គម្លាតឌីជីថល គឺជាគម្លាតរវាងពលរដ្ឋដែលចេះនិងមានបច្ចេកវិទ្យាប្រើប្រាស់ និងពលរដ្ឋដែលមិនចេះ ឬគ្មានអ៊ីនធឺណិតប្រើ (ជាពិសេសជនបទ ឬចាស់ជរា)."
+            },
+            {
+                id: 29,
+                lesson: 1,
+                question: "តើការប្រើប្រាស់ទិន្នន័យបើកទូលាយ (Open Data) មានឥទ្ធិពលអ្វីខ្លះចំពោះការទាក់ទាញការវិនិយោគ?",
+                options: [
+                    "ធ្វើឱ្យវិនិយោគិនបារម្ភពីការលេចធ្លាយអាថ៌កំបាំងពាណិជ្ជកម្ម",
+                    "ធ្វើឱ្យតម្លៃដីធ្លីកើនឡើងយ៉ាងលឿន",
+                    "បង្កើនទំនុកចិត្តដល់វិនិយោគិន (Investor Trust) ព្រោះទិន្នន័យសេដ្ឋកិច្ច ច្បាប់ និងស្ថិតិរដ្ឋមានភាពច្បាស់លាស់ និងបើកចំហ",
+                    "មិនមានឥទ្ធិពលអ្វីទាល់តែសោះចំពោះសេដ្ឋកិច្ចជាតិ"
+                ],
+                answer: 2,
+                explanation: "Open Data ជួយផ្តល់ទិន្នន័យជាក់លាក់ ជឿជាក់ និងមានតម្លាភាពដល់វិនិយោគិនក្នុងការវិភាគគម្រោងវិនិយោគរបស់ពួកគេ."
+            },
+            {
+                id: 30,
+                lesson: 1,
+                question: "ក្នុងន័យរដ្ឋបាល តើអ្វីជាអត្ថប្រយោជន៍ស្នូលនៃការិយាល័យគ្មានក្រដាស (Paperless Office)?",
+                options: [
+                    "ការលុបបំបាត់តួនាទីរបស់ប្រធាននាយកដ្ឋាន",
+                    "ការសន្សំសំចៃថវិកាលើការទិញក្រដាស ការបោះពុម្ព និងទំហំរក្សាទុកឯកសាររូបវន្ត ព្រមទាំងបង្កើនល្បឿនបញ្ជូនឯកសារ",
+                    "ការតម្រូវឱ្យពលរដ្ឋត្រូវតែចេះសរសេរកូដកុំព្យូទ័រ",
+                    "ការកាត់បន្ថយម៉ោងធ្វើការងាររបស់មន្ត្រីរាជការមកត្រឹមពាក់កណ្តាលថ្ងៃ"
+                ],
+                answer: 1,
+                explanation: "ការិយាល័យគ្មានក្រដាសជួយសន្សំចំណាយចរន្ត (ក្រដាស ទឹកថ្នាំ ទីកន្លែងផ្ទុក) និងអាចបញ្ជូនឯកសារឆ្លងក្រសួងបានភ្លាមៗតាមអនឡាញ."
+            },
+            {
+                id: 31,
+                lesson: 1,
+                question: "តើគោលការណ៍ «Mobile-First» ក្នុងការអភិវឌ្ឍរដ្ឋាភិបាលឌីជីថល គឺដើម្បីឆ្លើយតបនឹងស្ថានភាពជាក់ស្តែងបែបណា?",
+                options: [
+                    "ការហាមឃាត់ការប្រើប្រាស់កុំព្យូទ័រនៅតាមការិយាល័យរដ្ឋបាល",
+                    "ដោយសារប្រជាពលរដ្ឋភាគច្រើនលើសលប់ប្រើប្រាស់ទូរស័ព្ទដៃស្មាតហ្វូនជាឧបករណ៍ចម្បងក្នុងការចូលទៅកាន់អ៊ីនធឺណិត",
+                    "ការតម្រូវឱ្យពលរដ្ឋប្តូរទូរស័ព្ទដៃថ្មីរៀងរាល់ឆ្នាំ",
+                    "ការសម្រួលការងារដល់អ្នកលក់ទូរស័ព្ទដៃនៅក្នុងប្រទេស"
+                ],
+                answer: 1,
+                explanation: "Mobile-First សំដៅលើការឌីហ្សាញកម្មវិធីរដ្ឋឱ្យរត់លើទូរស័ព្ទដៃបានល្អបំផុត ព្រោះពលរដ្ឋភាគច្រើនប្រើប្រាស់ស្មាតហ្វូនជាជាងកុំព្យូទ័រ."
+            },
+            {
+                id: 32,
+                lesson: 1,
+                question: "តើការប្រើប្រាស់ប្រព័ន្ធអភិបាលកិច្ចផ្អែកលើទិន្នន័យ (Data-Driven Governance) ជួយអ្វីខ្លះដល់ការសម្រេចចិត្តរបស់រដ្ឋាភិបាល?",
+                options: [
+                    "ជួយឱ្យការសម្រេចចិត្តគោលនយោបាយធ្វើឡើងបានយ៉ាងសុក្រឹត និងចំគោលដៅ ផ្អែកលើទិន្នន័យជាក់ស្តែង និងវិទ្យាសាស្ត្រ (មិនមែនផ្អែកលើការស្មាន)",
+                    "ជួយឱ្យរដ្ឋអាចផ្លាស់ប្តូរច្បាប់បានរៀងរាល់ថ្ងៃ",
+                    "ជួយកាត់បន្ថយតួនាទីរបស់មន្ត្រីធ្វើសេចក្តីសម្រេចចិត្ត",
+                    "ជួយឱ្យប្រព័ន្ធកុំព្យូទ័រអាចសម្រេចចិត្តជំនួសមនុស្សទាំងស្រុងក្នុងរឿងសង្គ្រាម"
+                ],
+                answer: 0,
+                explanation: "Data-Driven Governance គឺការប្រើប្រាស់ទិន្នន័យ និងស្ថិតិពិតប្រាកដមកធ្វើជាមូលដ្ឋានក្នុងការកសាងគោលនយោបាយជាតិ ជៀសវាងការស្មាន."
+            },
+            {
+                id: 33,
+                lesson: 1,
+                question: "តើការបង្កើតប្រព័ន្ធរដ្ឋបាលដែលមាន «ភាពធន់» (Resilience) ជួយរដ្ឋបាលសាធារណៈដូចម្តេចក្នុងកាលៈទេសៈមានវិបត្តិ (ដូចជាជំងឺរាតត្បាត)?",
+                options: [
+                    "ការបិទការិយាល័យរដ្ឋបាលទាំងស្រុងរហូតដល់ចប់វិបត្តិ",
+                    "ការធានាថានិរន្តរភាពការងាររដ្ឋ និងការផ្តល់សេវាសាធារណៈនៅតែអាចដំណើរការបានពីចម្ងាយ (Remote Work) តាមរយៈប្រព័ន្ធឌីជីថល",
+                    "ការបង្ខំឱ្យពលរដ្ឋទាំងអស់រៀនសូត្រពីចម្ងាយដោយគ្មានអ៊ីនធឺណិត",
+                    "ការផ្លាស់ប្តូរការងាររដ្ឋបាលទៅជាការងារស្ម័គ្រចិត្ត"
+                ],
+                answer: 1,
+                explanation: "ភាពធន់ឌីជីថលធានាថា ទោះជាមានវិបត្តិ (ដូចកូវីដ១៩) ក៏មន្ត្រីនៅតែអាចធ្វើការងារពីចម្ងាយ ហើយសេវាសាធារណៈមិនត្រូវបានកាត់ផ្តាច់ឡើយ."
+            },
+            {
+                id: 34,
+                lesson: 1,
+                question: "តើបរិវត្តកម្មឌីជីថល (Digital Transformation) ត្រូវបានសន្និដ្ឋានថាជាអ្វីពិតប្រាកដ?",
+                options: [
+                    "ជាការទិញម៉ាស៊ីនកុំព្យូទ័រទំនើបៗដាក់គ្រប់តុការិយាល័យ",
+                    "ជាការកែទម្រង់ផ្នត់គំនិត របៀបរបបធ្វើការ និងវប្បធម៌ស្ថាប័ន ដើម្បីបង្កើតរដ្ឋបាលសាធារណៈមួយដែលមានភាពវៃឆ្លាត (Smart Government) ទំនើប ឌីណាមិក និងយកប្រជាពលរដ្ឋជាកណ្តាល",
+                    "ជាការជួលក្រុមហ៊ុនបច្ចេកវិទ្យាបរទេសមកធ្វើការជំនួសមន្ត្រីរាជការ",
+                    "ជាការបង្កើតគេហទំព័រឱ្យបានច្រើនតាមដែលអាចធ្វើទៅបាន"
+                ],
+                answer: 1,
+                explanation: "បរិវត្តកម្មឌីជីថល (Digital Transformation) មិនមែនត្រឹមជាការទិញគ្រឿង Hardware ទេ ប៉ុន្តែជាការកែប្រែផ្នត់គំនិត និងរបៀបធ្វើការងារទាំងស្រុង."
+            },
+            {
+                id: 35,
+                lesson: 1,
+                question: "តើស្ថាប័នរដ្ឋណាដែលមានតួនាទីជា «ម្ចាស់ទិន្នន័យស្របច្បាប់» លើទិន្នន័យអត្រានុកូលដ្ឋាន និងអត្តសញ្ញាណបុគ្គលនៅក្នុងប្រទេសកម្ពុជា?",
+                options: [
+                    "ក្រសួងសេដ្ឋកិច្ច និងហិរញ្ញវត្ថុ",
+                    "ក្រសួងមហាផ្ទៃ (អគ្គនាយកដ្ឋានអត្តសញ្ញាណកម្ម)",
+                    "ក្រសួងប្រៃសណីយ៍ និងទូរគមនាគមន៍",
+                    "ក្រសួងការបរទេស និងសហប្រតិបត្តិការអន្តរជាតិ"
+                ],
+                answer: 1,
+                explanation: "ក្រសួងមហាផ្ទៃ (ជាពិសេសអគ្គនាយកដ្ឋានអត្តសញ្ញាណកម្ម) ជាម្ចាស់ទិន្នន័យស្របច្បាប់ (Data Owner) លើអត្តសញ្ញាណបុគ្គល និងអត្រានុកូលដ្ឋាន."
+            },
+
+            // Chapter 2 Questions (36-70)
+            {
+                id: 36,
+                lesson: 2,
+                question: "តើស្ថាបត្យកម្មអង្គភាពរដ្ឋាភិបាល (Government Enterprise Architecture - GEA) គឺជាអ្វី?",
+                options: [
+                    "ជាគំនូររចនាអគារការិយាល័យក្រសួង-ស្ថាប័នរដ្ឋ",
+                    "ជាផែនទីបង្ហាញផ្លូវយុទ្ធសាស្ត្រ និងប្លង់មេស្ថាប័ន ដែលតម្រឹមរចនាសម្ព័ន្ធ នីតិវិធីការងារ និងបច្ចេកវិទ្យាឱ្យដើរទន្ទឹមគ្នា",
+                    "ជាការដំឡើងប្រព័ន្ធការពារកុំព្យូទ័រមិនឱ្យរលត់",
+                    "ជាការបង្កើតច្បាប់ថ្មីសម្រាប់គ្រប់គ្រងមន្ត្រីរាជការ"
+                ],
+                answer: 1,
+                explanation: "GEA គឺជាប្លង់មេយុទ្ធសាស្ត្រ (Blueprint) ដែលតម្រឹមរវាងតម្រូវការការងាររដ្ឋបាល និងប្រព័ន្ធបច្ចេកវិទ្យាព័ត៌មាន ដើម្បីការពារការវិនិយោគជាន់គ្នា."
+            },
+            {
+                id: 37,
+                lesson: 2,
+                question: "តើហានិភ័យអ្វីខ្លះដែលអាចកើតឡើង ប្រសិនបើរដ្ឋាភិបាលអភិវឌ្ឍប្រព័ន្ធឌីជីថលដោយគ្មាន GEA?",
+                options: [
+                    "ការកើនឡើងនៃចំនួនបុគ្គលិកព័ត៌មានវិទ្យា",
+                    "ការខ្ជះខ្ជាយថវិកាជាតិ ការបង្កើតប្រព័ន្ធស្ទួនគ្នា និងប្រព័ន្ធដែលមិនអាចភ្ជាប់ ឬជជែកគ្នាបាន (Silo Systems)",
+                    "ការចុះខ្សោយនៃល្បឿនអ៊ីនធឺណិតទូទាំងប្រទេស",
+                    "ការមិនទទួលបានជំនួយបច្ចេកទេសពីបរទេស"
+                ],
+                answer: 1,
+                explanation: "បើគ្មាន GEA ទេ ក្រសួងនីមួយៗនឹងបង្កើតប្រព័ន្ធដាច់ដោយឡែកពីគ្នា (Siloed) មិនអាចដោះដូរទិន្នន័យគ្នាបាន និងខ្ជះខ្ជាយថវិកាជាតិ."
+            },
+            {
+                id: 38,
+                lesson: 2,
+                question: "តើស្ថាបត្យកម្មគ្រឹះ (The 4 Pillars of EA) របស់ GEA រួមមានស្រទាប់អ្វីខ្លះ?",
+                options: [
+                    "រដ្ឋបាល, ច្បាប់, ថវិកា, និងមន្ត្រីរាជការ",
+                    "Business, Data, Application, និង Technology Architecture",
+                    "Hardware, Software, Network, និង Security Architecture",
+                    "Front-office, Back-office, Cloud, និង Database"
+                ],
+                answer: 1,
+                explanation: "សសរស្តម្ភទាំង ៤ នៃ GEA គឺ៖ ១) Business (សេវាកម្ម/កិច្ចការ), ២) Data (ទិន្នន័យ), ៣) Application (កម្មវិធី), និង ៤) Technology (បច្ចេកវិទ្យា)."
+            },
+            {
+                id: 39,
+                lesson: 2,
+                question: "នៅក្នុង GEA តើស្រទាប់ «Business Architecture» ឆ្លើយតបនឹងសំណួរយុទ្ធសាស្ត្រមួយណា?",
+                options: [
+                    "តើយើងគួរប្រើម៉ាស៊ីន Server ម៉ាកអ្វី និងដាក់នៅឯណា?",
+                    "តើរដ្ឋាភិបាលចង់សម្រេចអ្វី? ហើយស្ថាប័នរដ្ឋត្រូវរៀបចំរចនាសម្ព័ន្ធ និងលំហូរការងារដូចម្តេច?",
+                    "តើយើងត្រូវប្រើប្រាស់ប្រព័ន្ធទិន្នន័យ (Database) មួយណា?",
+                    "តើយើងត្រូវការពារសុវត្ថិភាពព័ត៌មានតាមរបៀបណា?"
+                ],
+                answer: 1,
+                explanation: "Business Architecture កំណត់អំពី គោលបំណង មុខងារស្នូល រចនាសម្ព័ន្ធ និងលំហូរការងាររដ្ឋបាល (Workflow) មុននឹងយកបច្ចេកវិទ្យាមកប្រើ."
+            },
+            {
+                id: 40,
+                lesson: 2,
+                question: "តើគោលការណ៍ «BPR» (Business Process Re-engineering) នៅក្នុងស្ថាបត្យកម្មសេវាកម្ម សំដៅលើអ្វី?",
+                options: [
+                    "ការទិញកម្មវិធី Software ថ្មីមកជំនួសកម្មវិធីចាស់",
+                    "ការពិនិត្យ និងកែសម្រួលលំហូរការងារបែបប្រពៃណី (ក្រដាសស្នាម) ឡើងវិញ ដើម្បីកាត់បន្ថយនីតិវិធីស្មុគស្មាញ (Red Tape) មុននឹងធ្វើស្វ័យប្រវត្តកម្ម",
+                    "ការបណ្តុះបណ្តាលមន្ត្រីរាជការឱ្យចេះវាយអត្ថបទរហ័ស",
+                    "ការផ្លាស់ប្តូរទីតាំងការិយាល័យឱ្យនៅជិតគ្នា"
+                ],
+                answer: 1,
+                explanation: "BPR គឺការកែសម្រួលលំហូរការងាររដ្ឋបាលឱ្យខ្លី និងមានប្រសិទ្ធភាព ដោយកាត់បន្ថយ 'Red Tape' (ការិយាល័យធិបតេយ្យស្មុគស្មាញ) មុនយកកូដមកសរសេរជាកម្មវិធី."
+            },
+            {
+                id: 41,
+                lesson: 2,
+                question: "តើការកែសម្រួលលំហូរការងារបែប «ស្របគ្នា» (Parallel Processing) មានប្រយោជន៍ដូចម្តេចបើធៀបនឹងលំហូរការងារបែបលំដាប់លំដោយ (Serial)?",
+                options: [
+                    "វាជួយកាត់បន្ថយចំនួនបុគ្គលិកដែលត្រូវពិនិត្យឯកសារ",
+                    "វាអនុញ្ញាតឱ្យការិយាល័យ ឬមន្ត្រីខុសៗគ្នា ពិនិត្យ និងវាយតម្លៃលើឯកសារដដែលក្នុងពេលតែមួយ ដែលជួយបង្កើនល្បឿនយ៉ាងខ្លាំង",
+                    "វាជួយការពារមិនឱ្យមានការធ្លាយឯកសារចេញក្រៅ",
+                    "វាតម្រូវឱ្យប្រើប្រាស់កុំព្យូទ័រតែមួយគ្រឿងគត់ក្នុងនាយកដ្ឋាន"
+                ],
+                answer: 1,
+                explanation: "Parallel Processing ជួយឱ្យផ្នែកជាច្រើនអាចដំណើរការឯកសារស្របគ្នាក្នុងពេលតែមួយ មិនចាំបាច់រង់ចាំមួយចប់ ទើបមួយទៀតបានពិនិត្យឡើយ."
+            },
+            {
+                id: 42,
+                lesson: 2,
+                question: "តើសេវាកម្មរដ្ឋបាលបែប «សកម្ម» (Proactive Government) មានលក្ខណៈបែបណា?",
+                options: [
+                    "រដ្ឋតម្រូវឱ្យពលរដ្ឋមករកការិយាល័យរដ្ឋឱ្យបានញឹកញាប់",
+                    "រដ្ឋមិនរង់ចាំទាល់តែពលរដ្ឋមកស្នើសុំនោះទេ គឺប្រព័ន្ធដឹងពីតម្រូវការ និងផ្ញើសាររំលឹក ឬផ្តល់សេវាជូនពលរដ្ឋជាមុន (ឧ. រំលឹកពន្យារប័ណ្ណបើកបរដែលជិតផុតកំណត់)",
+                    "រដ្ឋចាត់មន្ត្រីឱ្យដើរចុះសួរសុខទុក្ខពលរដ្ឋតាមផ្ទះរៀងរាល់ថ្ងៃ",
+                    "ប្រព័ន្ធឆ្លើយតបសំណួរពលរដ្ឋបានយ៉ាងរហ័សពេលមានគេសួរ"
+                ],
+                answer: 1,
+                explanation: "Proactive Government គឺប្រព័ន្ធឆ្លាតវៃដែលដឹងពីព្រឹត្តិការណ៍ និងស្ថានភាពរបស់ពលរដ្ឋ រួចផ្តល់ដំណោះស្រាយជូនមុនពេលពលរដ្ឋស្នើសុំ."
+            },
+            {
+                id: 43,
+                lesson: 2,
+                question: "តើអ្វីទៅជា «ស្ថាបត្យកម្មទិន្នន័យ» (Data Architecture) នៅក្នុងបរិបទរដ្ឋាភិបាលឌីជីថល?",
+                options: [
+                    "ជាប្លង់មេដែលកំណត់អំពីរបៀបប្រមូល រៀបចំរចនាសម្ព័ន្ធ រក្សាទុក និងគ្រប់គ្រងទ្រព្យសកម្មព័ត៌មានជាតិ ដើម្បីធានាសុវត្ថិភាព និងការចែករំលែកឆ្លងស្ថាប័ន",
+                    "ជាការទិញឧបករណ៍ Memory ឬ Hard Disk បន្ថែម",
+                    "ជាច្បាប់គ្រប់គ្រងសិទ្ធិសេរីភាពនៃការបញ្ចេញមតិ",
+                    "ជាបណ្តាញខ្សែកាបអុបទិកក្រោមបាតសមុទ្រ"
+                ],
+                answer: 0,
+                explanation: "Data Architecture ធានាថាទិន្នន័យជាតិទាំងអស់មានស្តង់ដារតែមួយ មានសណ្តាប់ធ្នាប់ សុវត្ថិភាព និងអាចដោះដូរគ្នាបានរលូន."
+            },
+            {
+                id: 44,
+                lesson: 2,
+                question: "តើជម្រុកទិន្នន័យគ្រឹះជាតិ (National Base Registries) ត្រូវបានគេចាត់ទុកជាអ្វីនៅក្នុងរចនាសម្ព័ន្ធទិន្នន័យរដ្ឋ?",
+                options: [
+                    "ជាជម្រុកព័ត៌មានសម្ងាត់របស់កងទ័ពជាតិ",
+                    "ជា «ប្រភពពិតតែមួយ» (Single Source of Truth) នៃទិន្នន័យជាតិដែលទទួលស្គាល់ដោយច្បាប់ (ដូចជា ទិន្នន័យអត្តសញ្ញាណ ធុរកិច្ច និងដីធ្លី)",
+                    "ជាឯកសារបណ្ណសារដ្ឋានចាស់ៗដែលរក្សាទុកក្នុងទម្រង់ក្រដាស",
+                    "ជាប្រព័ន្ធផ្ទុកទិន្នន័យដែលបង្កើតឡើងដោយក្រុមហ៊ុនឯកជន"
+                ],
+                answer: 1,
+                explanation: "National Base Registries គឺជា 'Single Source of Truth' (ប្រភពពិតតែមួយ) ដែលគ្រប់ស្ថាប័នត្រូវតែផ្ទៀងផ្ទាត់ចេញពីទីនោះ ដើម្បីកុំឱ្យមានទិន្នន័យស្ទួន ឬខុសគ្នា."
+            },
+            {
+                id: 45,
+                lesson: 2,
+                question: "តើជម្រុកទិន្នន័យគ្រឹះយ៉ាងហោចណាស់ ៣ ណាខ្លះ ដែលរដ្ឋាភិបាលឌីជីថលទំនើបត្រូវតែមានជាដាច់ខាត?",
+                options: [
+                    "ទិន្នន័យយានយន្ត, ទិន្នន័យទេសចរណ៍, និងទិន្នន័យអាកាសធាតុ",
+                    "ទិន្នន័យអត្តសញ្ញាណបុគ្គល (Population), ទិន្នន័យសហគ្រាស/ធុរកិច្ច (Business), និងទិន្នន័យដីធ្លី/ភូមិសាស្ត្រ (Land)",
+                    "ទិន្នន័យសិស្ស, ទិន្នន័យគ្រូបង្រៀន, និងទិន្នន័យសាលារៀន",
+                    "ទិន្នន័យមន្ត្រីរាជការ, ទិន្នន័យប្រាក់ខែ, និងទិន្នន័យពន្ធដារ"
+                ],
+                answer: 1,
+                explanation: "ជម្រុកគ្រឹះទាំង ៣ គឺ៖ អត្តសញ្ញាណប្រជាជន (Population Registry), សហគ្រាស/ធុរកិច្ច (Business Registry), និងដីធ្លី/អចលនទ្រព្យ (Land/Geographic Registry)."
+            },
+            {
+                id: 46,
+                lesson: 2,
+                question: "តើអ្វីជាតួនាទីស្នូលរបស់ «អភិបាលកិច្ចទិន្នន័យ» (Data Governance) នៅក្នុងស្ថាបត្យកម្មទិន្នន័យរដ្ឋ?",
+                options: [
+                    "ការទិញ Software សម្រាប់ទាញយកទិន្នន័យពីអ៊ីនធឺណិត",
+                    "ការកំណត់ច្បាប់ យន្តការ និងការទទួលខុសត្រូវលើទិន្នន័យ ដើម្បីធានាបាននូវគុណភាព សុវត្ថិភាព និងភាពជឿជាក់ដែលអាចចែករំលែកបាន",
+                    "ការលុបទិន្នន័យចាស់ៗចោលរៀងរាល់ឆ្នាំ",
+                    "ការបណ្តុះបណ្តាលមន្ត្រីរាជការឱ្យចេះលក់ទិន្នន័យ"
+                ],
+                answer: 1,
+                explanation: "Data Governance កំណត់អំពីច្បាប់ យន្តការ និងអ្នកទទួលខុសត្រូវ (Data Stewards) ដើម្បីធានាថាទិន្នន័យមានគុណភាព និងមិនមែនជាទិន្នន័យសម្រាម."
+            },
+            {
+                id: 47,
+                lesson: 2,
+                question: "ដើម្បីការពារឯកជនភាពរបស់ប្រជាពលរដ្ឋពេលយករាយការណ៍ស្ថិតិ តើត្រូវប្រើប្រាស់បច្ចេកទេសអ្វីដើម្បីបំប្លែងទិន្នន័យផ្ទាល់ខ្លួន?",
+                options: [
+                    "ការលុបទិន្នន័យទាំងអស់ចោល",
+                    "ការធ្វើនាមកម្ម (Anonymization) ដោយលុបព័ត៌មានអត្តសញ្ញាណផ្ទាល់ខ្លួនចេញ ដោយរក្សាទុកតែតួលេខទូទៅ",
+                    "ការចាក់សោទិន្នន័យមិនឱ្យនរណាមើលឃើញទាល់តែសោះ",
+                    "ការលក់ទិន្នន័យទៅឱ្យក្រុមហ៊ុនស្រាវជ្រាវ"
+                ],
+                answer: 1,
+                explanation: "Anonymization គឺជាការលុប ឬលាក់បាំងព័ត៌មានដែលអាចកំណត់អត្តសញ្ញាណបុគ្គលបាន ដើម្បីការពារឯកជនភាពមុនយកទិន្នន័យទៅវិភាគ ឬបង្ហាញជាសាធារណៈ."
+            },
+            {
+                id: 48,
+                lesson: 2,
+                question: "តើ «គន្លងប្រវត្តិសវនកម្ម» (Audit Trails) នៅក្នុងប្រព័ន្ធទិន្នន័យរដ្ឋមានសារៈសំខាន់ដូចម្តេច?",
+                options: [
+                    "វាជួយកាត់បន្ថយទំហំផ្ទុករបស់ Database",
+                    "វាអនុញ្ញាតឱ្យប្រព័ន្ធដំឡើង Software ថ្មីដោយស្វ័យប្រវត្ត",
+                    "វាកត់ត្រាទុកជាប្រវត្តិ (Logs) ថាមន្ត្រីរូបណា បានចូលមើលទិន្នន័យអ្វី នៅម៉ោងប៉ុន្មាន និងយកទៅធ្វើអ្វី ដើម្បីការពារការធ្លាយទិន្នន័យ",
+                    "វាជួយឱ្យមន្ត្រីអាចលុបដាននៃការចូលប្រើប្រាស់ខុសច្បាប់បាន"
+                ],
+                answer: 2,
+                explanation: "Audit Trails ជួយកត់ត្រាប្រវត្តិសកម្មភាពលើប្រព័ន្ធទិន្នន័យ ដើម្បីការពារការលួចមើល ឬលួចយកទិន្នន័យឯកជនរបស់ពលរដ្ឋទៅប្រើប្រាស់ខុសច្បាប់."
+            },
+            {
+                id: 49,
+                lesson: 2,
+                question: "តើអ្វីទៅជាស្រទាប់ «Application Architecture» (ស្ថាបត្យកម្មកម្មវិធី)?",
+                options: [
+                    "ជាការកំណត់ទំហំតុការិយាល័យ និងកៅអីរបស់មន្ត្រី",
+                    "ជាប្លង់មេបច្ចេកទេសដែលកំណត់ពីរចនាសម្ព័ន្ធ ទំនាក់ទំនង និងអន្តរកម្មរវាងប្រព័ន្ធ Software និងកម្មវិធីទូរស័ព្ទ (Apps) ទាំងអស់របស់រដ្ឋ",
+                    "ជាការរៀបចំខ្សែបណ្តាញអគ្គិសនីក្នុងអគារ",
+                    "ជាការបង្កើតក្រុមការងារចល័តចុះជួយមូលដ្ឋាន"
+                ],
+                answer: 1,
+                explanation: "Application Architecture កំណត់អំពី Software, Applications, APIs, និងការរៀបចំរចនាសម្ព័ន្ធឱ្យ Front-Office និង Back-Office ដើរទន្ទឹមគ្នា."
+            },
+            {
+                id: 50,
+                lesson: 2,
+                question: "តើអ្វីជាភាពខុសគ្នារវាងប្រព័ន្ធ «Front-Office» និង «Back-Office» នៅក្នុងស្ថាបត្យកម្មកម្មវិធី?",
+                options: [
+                    "Front-Office ប្រើកុំព្យូទ័រយួរដៃ ចំណែក Back-Office ប្រើកុំព្យូទ័រលើតុ",
+                    "Front-Office សម្រាប់តែថ្នាក់ដឹកនាំ ចំណែក Back-Office សម្រាប់បុគ្គលិកធម្មតា",
+                    "Front-Office ជាកម្មវិធីដែលពលរដ្ឋមើលឃើញ និងប្រើប្រាស់ផ្ទាល់ (G2C/G2B) រីឯ Back-Office ជាប្រព័ន្ធការងារផ្ទៃក្នុងរបស់មន្ត្រីរាជការ (G2G)",
+                    "គ្មានភាពខុសគ្នានោះទេ គឺជាកម្មវិធីតែមួយដូចគ្នា"
+                ],
+                answer: 2,
+                explanation: "Front-Office គឺជាច្រកដែលពលរដ្ឋ/ធុរកិច្ចចុចប្រើប្រាស់ (Interface) ចំណែក Back-Office គឺជាប្រព័ន្ធគ្រប់គ្រង និងអនុម័តផ្ទៃក្នុងរបស់មន្ត្រីរដ្ឋ."
+            },
+            {
+                id: 51,
+                lesson: 2,
+                question: "នៅក្នុងការតភ្ជាប់គ្នារវាង Front-Office និង Back-Office តើឯកសារដែលត្រូវបានអនុម័តដោយថ្នាក់ដឹកនាំតាមអនឡាញ ត្រូវប្រើប្រាស់បច្ចេកវិទ្យាអ្វីដើម្បីឱ្យមានតម្លៃច្បាប់?",
+                options: [
+                    "ការថតរូបហត្ថលេខាផ្ទាល់ដៃយកទៅបិទលើ PDF",
+                    "ហត្ថលេខាឌីជីថល (Digital Signature / e-Signature) ដែលមានសុពលភាពតាមច្បាប់",
+                    "ការវាយឈ្មោះរបស់ថ្នាក់ដឹកនាំជាអក្សរធម្មតា",
+                    "ការផ្ញើសារជាសំឡេងបញ្ជាក់ការអនុម័ត"
+                ],
+                answer: 1,
+                explanation: "ហត្ថលេខាឌីជីថល (e-Signature) ដែលមានការការពារកូដសម្ងាត់ គឺជាឧបករណ៍ស្របច្បាប់សម្រាប់អនុម័តឯកសារក្នុងប្រព័ន្ធឌីជីថល."
+            },
+            {
+                id: 52,
+                lesson: 2,
+                question: "តើអ្វីទៅជា «Siloed Systems» (ប្រព័ន្ធឯកោ/ដាច់ដោយឡែក) នៅក្នុងរដ្ឋបាលសាធារណៈ?",
+                options: [
+                    "Refers to highly integrated, shared networks across the government.",
+                    "ជាប្រព័ន្ធ ឬកម្មវិធីរបស់ក្រសួងនីមួយៗដែលបង្កើតឡើងដាច់ដោយឡែកពីគ្នា មិនអាចដោះដូរទិន្នន័យ ឬជជែកគ្នាបាន",
+                    "ជាប្រព័ន្ធដែលត្រូវបានការពារដោយប្រព័ន្ធសុវត្ថិភាពខ្ពស់",
+                    "ជាបណ្តាញអ៊ីនធឺណិតដែលតភ្ជាប់ទូទាំងសកលលោក"
+                ],
+                answer: 1,
+                explanation: "Siloed Systems គឺជាប្រព័ន្ធឯកោ ដែលក្រសួងនីមួយៗបង្កើតឡើងរៀងៗខ្លួន ធ្វើឱ្យពលរដ្ឋត្រូវរត់ការកាន់ឯកសារចម្លងដើរហែកាតគ្រប់ក្រសួង."
+            },
+            {
+                id: 53,
+                lesson: 2,
+                question: "តើឧបករណ៍បច្ចេកវិទ្យាអ្វីដែលអនុញ្ញាតឱ្យកម្មវិធី Software ផ្សេងៗគ្នា អាច «ជជែកគ្នា» និងផ្លាស់ប្តូរទិន្នន័យគ្នាបានដោយស្វ័យប្រវត្ត?",
+                options: [
+                    "USB Flash Drive",
+                    "API (Application Programming Interface)",
+                    "Web Browser",
+                    "Operating System"
+                ],
+                answer: 1,
+                explanation: "API គឺជាស្ពានចម្លងបច្ចេកទេសដែលអនុញ្ញាតឱ្យកម្មវិធី Software ពីរ ឬច្រើន អាចនិយាយរកគ្នា និងប្តូរទិន្នន័យគ្នាបានភ្លាមៗ (Real-time)."
+            },
+            {
+                id: 54,
+                lesson: 2,
+                question: "តើស្ថាបត្យកម្មបច្ចេកវិទ្យា (Technology Architecture) កំណត់អំពីអ្វីខ្លះ?",
+                options: [
+                    "ច្បាប់ស្តីពីការធ្វើពាណិជ្ជកម្មអេឡិចត្រូនិក",
+                    "ហេដ្ឋារចនាសម្ព័ន្ធរូបវន្ត និងឌីជីថល រួមមាន Data Centers, Networks, Cloud, និង Cybersecurity",
+                    "ការបណ្តុះបណ្តាលមន្ត្រីរាជការលើជំនាញទន់",
+                    "លំហូរការងាររដ្ឋបាល និងការិយាល័យច្រកចេញចូលតែមួយ"
+                ],
+                answer: 1,
+                explanation: "Technology Architecture កំណត់អំពីគ្រឿង Hardware, Cloud, បណ្តាញណេតវើក និងប្រព័ន្ធសន្តិសុខរូបវន្តដែលទ្រទ្រង់ប្រព័ន្ធទាំងអស់."
+            },
+            {
+                id: 55,
+                lesson: 2,
+                question: "តើមជ្ឈមណ្ឌលទិន្នន័យរូបវន្ត (Physical Data Center) ត្រូវមានប្រព័ន្ធការពារអ្វីខ្លះជាស្តង់ដារគ្រឹះដើម្បីការពារម៉ាស៊ីន Servers?",
+                options: [
+                    "ប្រព័ន្ធត្រួតពិនិត្យសីតុណ្ហភាព/សំណើម (Cooling) និងប្រព័ន្ធថាមពលអគ្គិសនីបម្រុង (UPS & Generators) ការពារការដាច់ភ្លើង",
+                    "ការចាក់សោទ្វារធម្មតា និងការបិទភ្លើងនៅពេលយប់",
+                    "ការប្រើប្រាស់កុំព្យូទ័រយួរដៃជំនួសឱ្យម៉ាស៊ីនធំៗ",
+                    "ការដំឡើងម៉ាស៊ីនត្រជាក់ធម្មតានៅក្នុងបន្ទប់ធ្វើការ"
+                ],
+                answer: 0,
+                explanation: "Data Center ត្រូវតែមានម៉ាស៊ីន Cooling ពិសេស និងប្រព័ន្ធភ្លើងបម្រុង (UPS/Generators) ដើម្បីធានាថាប្រព័ន្ធរដ្ឋមិនរលត់សោះឡើយ (២៤/៧)."
+            },
+            {
+                id: 56,
+                lesson: 2,
+                question: "តើ «Government Cloud» (G-Cloud) ផ្តល់អត្ថប្រយោជន៍ស្នូលអ្វីខ្លះដល់ការគ្រប់គ្រងហេដ្ឋារចនាសម្ព័ន្ធព័ត៌មានវិទ្យារដ្ឋ?",
+                options: [
+                    "ការលុបបំបាត់ការប្រើប្រាស់អ៊ីនធឺណិតនៅតាមខេត្ត",
+                    "ជួយឱ្យរដ្ឋបាលកណ្តាលអាចបែងចែកកម្លាំងម៉ាស៊ីន (Virtual Machines) ទៅឱ្យក្រសួងនានាប្រើប្រាស់បានភ្លាមៗ លុបបំបាត់ការទិញ Hardware ជាន់គ្នា",
+                    "ការអនុញ្ញាតឱ្យក្រុមហ៊ុនឯកជនគ្រប់គ្រងទិន្នន័យសម្ងាត់ជាតិ",
+                    "ការបង្កើនល្បឿននៃការបោះពុម្ពឯកសាររដ្ឋ"
+                ],
+                answer: 1,
+                explanation: "G-Cloud អនុញ្ញាតឱ្យរដ្ឋធ្វើនិម្មិតកម្ម (Virtualization) ធនធានម៉ាស៊ីនមេ ដើម្បីបែងចែកឱ្យក្រសួងនានាប្រើប្រាស់ដោយមិនបាច់ទិញម៉ាស៊ីនរៀងៗខ្លួន."
+            },
+            {
+                id: 57,
+                lesson: 2,
+                question: "តើគំរូ Cloud បែបណាដែលសមស្របបំផុតសម្រាប់រក្សាទុកទិន្នន័យសម្ងាត់កម្រិតខ្ពស់ និងទាក់ទងនឹងសន្តិសុខជាតិ?",
+                options: [
+                    "Public Cloud (ខ្លៅសាធារណៈ)",
+                    "Private Cloud (ខ្លៅឯកជនរបស់រដ្ឋ)",
+                    "Hybrid Cloud (ខ្លៅចម្រុះ)",
+                    "Community Cloud (ខ្លៅសហគមន៍)"
+                ],
+                answer: 1,
+                explanation: "Private Cloud របស់រដ្ឋ ធានាបាននូវការគ្រប់គ្រងសន្តិសុខ និងការសម្ងាត់ខ្ពស់បំផុត ព្រោះគ្មានការលាយឡំជាមួយហេដ្ឋារចនាសម្ព័ន្ធសាធារណៈ."
+            },
+            {
+                id: 58,
+                lesson: 2,
+                question: "តើ «Gov-WAN» (Government Wide Area Network) សំដៅលើអ្វី?",
+                options: [
+                    "បណ្តាញអ៊ីនធឺណិតឥតគិតថ្លៃសម្រាប់ប្រជាពលរដ្ឋប្រើប្រាស់",
+                    "បណ្តាញតភ្ជាប់ផ្ទៃក្នុងរដ្ឋ (ដូចជាខ្សែកាបអុបទិកពិសេស) ដែលតភ្ជាប់ដាច់ដោយឡែកពីអ៊ីនធឺណិតសាធារណៈ ដើម្បីធានាសុវត្ថិភាព និងល្បឿនលឿន",
+                    "ប្រព័ន្ធផ្កាយរណបសម្រាប់ផ្សាយទូរទស្សន៍ជាតិ",
+                    "កម្មវិធីជជែកកម្សាន្តរបស់មន្ត្រីរាជការ"
+                ],
+                answer: 1,
+                explanation: "Gov-WAN គឺជាបណ្តាញណេតវើកផ្ទៃក្នុងរបស់រដ្ឋដែលតភ្ជាប់ពីថ្នាក់ជាតិដល់ឃុំ/សង្កាត់ ដាច់ដោយឡែកពីអ៊ីនធឺណិតទូទៅ ដើម្បីការពារការលួចទិន្នន័យ."
+            },
+            {
+                id: 59,
+                lesson: 2,
+                question: "តើ «ក្របខ័ណ្ឌការតភ្ជាប់ និងដំណើរការរួមគ្នា» (Interoperability Framework) មានន័យដូចម្តេច?",
+                options: [
+                    "ជាច្បាប់ហាមឃាត់មិនឱ្យក្រសួងនានាចែករំលែកទិន្នន័យគ្នា",
+                    "ជាសំណុំនៃវិធាន គោលនយោបាយ និងស្តង់ដារបច្ចេកទេសដែលកំណត់ឱ្យប្រព័ន្ធព័ត៌មានវិទ្យាខុសៗគ្នាអាចផ្លាស់ប្តូរទិន្នន័យ និងសហការគ្នាបានដោយរលូន",
+                    "ជាការផ្លាស់ប្តូរតួនាទីរបស់មន្ត្រីបច្ចេកវិទ្យា",
+                    "ជាការបង្កើតច្រកទ្វារព្រំដែនឌីជីថល"
+                ],
+                answer: 1,
+                explanation: "Interoperability Framework ធានាថាប្រព័ន្ធដែលបង្កើតឡើងដោយឡែកពីគ្នា អាចយល់គ្នា និយាយរកគ្នា និងដោះដូរទិន្នន័យគ្នាបានដោយជោគជ័យ."
+            },
+            {
+                id: 60,
+                lesson: 2,
+                question: "តើអន្តរប្រតិបត្តិការកម្រិតច្បាប់ (Legal Interoperability) ធានាលើចំណុចណាខ្លះ?",
+                options: [
+                    "ធានាថាការផ្លាស់ប្តូរទិន្នន័យ និងការប្រើប្រាស់ហត្ថលេខាឌីជីថលឆ្លងស្ថាប័នមានតម្លៃគតិយុត្ត និងស្របច្បាប់ដូចជាការប្រើក្រដាសស្នាមនិងត្រាផ្ទាល់ដៃ",
+                    "ធានាថាកូដកុំព្យូទ័រត្រូវបានសរសេរដោយគ្មានកំហុសច្បាប់",
+                    "ធានាថាមន្ត្រីរាជការទាំងអស់យល់ដឹងពីច្បាប់ចរាចរណ៍",
+                    "ធានាថាក្រុមហ៊ុនបច្ចេកវិទ្យាមិនរំលោភលើច្បាប់ការងារ"
+                ],
+                answer: 0,
+                explanation: "Legal Interoperability ធានាថារាល់ប្រតិបត្តិការឌីជីថល (ដូចជា លិខិតអនុញ្ញាតដែលមាន QR Code) ត្រូវបានទទួលស្គាល់ដោយច្បាប់ស្មើនឹងក្រដាសស្នាមផ្លូវការ."
+            },
+            {
+                id: 61,
+                lesson: 2,
+                question: "តើច្បាប់ការពារទិន្នន័យផ្ទាល់ខ្លួន និងឯកជនភាព (Data Protection & Privacy Law) ត្រូវកម្រិតលើអ្វីខ្លះដើម្បីការពារពលរដ្ឋ?",
+                options: [
+                    "ហាមឃាត់មិនឱ្យរដ្ឋប្រើប្រាស់ប្រព័ន្ធកុំព្យូទ័រទាល់តែសោះ",
+                    "កំណត់សិទ្ធិទទួលបាន និងគោលបំណងច្បាស់លាស់នៃការប្រើប្រាស់ទិន្នន័យ ដោយធានាថាក្រសួងមួយមិនអាចយកទិន្នន័យពលរដ្ឋទៅប្រើខុសគោលដៅ",
+                    "ការតម្រូវឱ្យពលរដ្ឋបង់ថ្លៃសេវាការពារទិន្នន័យជារៀងរាល់ខែ",
+                    "ការអនុញ្ញាតឱ្យគ្រប់ភាគីអាចចូលមើលទិន្នន័យពលរដ្ឋបានដោយសេរី"
+                ],
+                answer: 1,
+                explanation: "ច្បាប់ឯកជនភាពតម្រូវឱ្យរដ្ឋកំណត់គោលបំណងច្បាស់លាស់ និងសិទ្ធិទទួលបានទិន្នន័យ ដើម្បីកុំឱ្យមានការយកទិន្នន័យឯកជនពលរដ្ឋទៅប្រើខុសច្បាប់."
+            },
+            {
+                id: 62,
+                lesson: 2,
+                question: "តើអន្តរប្រតិបត្តិការកម្រិតរៀបចំអង្គភាព (Organizational Interoperability) ផ្តោតលើការសម្របសម្រួលអ្វី?",
+                options: [
+                    "ការតភ្ជាប់ខ្សែកាបអុបទិករវាងអគារក្រសួង",
+                    "ការសម្របសម្រួលលំហូរការងារ (Business Processes) និងគោលដៅរដ្ឋបាលរបស់ស្ថាប័នខុសៗគ្នាឱ្យក្លាយជាខ្សែសង្វាក់ការងារតែមួយ",
+                    "ការរៀបចំទីកន្លែងចតរថយន្តរបស់មន្ត្រីរាជការ",
+                    "ការកំណត់ប្រាក់ខែ និងម៉ោងធ្វើការងាររបស់បុគ្គលិក"
+                ],
+                answer: 1,
+                explanation: "Organizational Interoperability សម្របសម្រួលឱ្យលំហូរការងាររដ្ឋបាលរបស់ក្រសួងផ្សេងគ្នា ដើរស្របគ្នា និងសហការគ្នាបានរលូន (Process Alignment)."
+            },
+            {
+                id: 63,
+                lesson: 2,
+                question: "តើអន្តរប្រតិបត្តិការទិន្នន័យវិទ្យា (Semantic Interoperability) ធានាលើចំណុចណា?",
+                options: [
+                    "ធានាថាល្បឿននៃការបញ្ជូនទិន្នន័យមានភាពរហ័សទាន់ចិត្ត",
+                    "ធានាថា អត្ថន័យពិតប្រាកដ (Exact Meaning) នៃទិន្នន័យដែលបានផ្លាស់ប្តូរ ត្រូវបានរក្សាទុក និងបកស្រាយដូចគ្នាបេះបិទរវាងប្រព័ន្ធផ្ញើ និងទទួល",
+                    "ធានាថាទិន្នន័យត្រូវបានរក្សាទុកក្នុងម៉ាស៊ីនមេដែលមានតម្លៃថោក",
+                    "ធានាថាទិន្នន័យត្រូវបានបោះពុម្ពចេញមកជាភាសាខ្មែរជានិច្ច"
+                ],
+                answer: 1,
+                explanation: "Semantic Interoperability ធានាថា អត្ថន័យទិន្នន័យមិនប្រែប្រួល និងត្រូវបានយល់ដូចគ្នា ទោះបីជាប្រើប្រព័ន្ធ Software ខុសគ្នា (ឧ. ថ្ងៃខែឆ្នាំកំណើត ត្រូវយល់ទ្រង់ទ្រាយដូចគ្នា)."
+            },
+            {
+                id: 64,
+                lesson: 2,
+                question: "តើអន្តរប្រតិបត្តិការបច្ចេកទេស (Technical Interoperability) ធានាលើអ្វី?",
+                options: [
+                    "ការតភ្ជាប់ផ្នែករឹង (Hardware), ផ្នែកទន់ (Software), និងណេតវើកខុសៗគ្នា ឱ្យអាចផ្លាស់ប្តូរទិន្នន័យគ្នាបានតាមរយៈ ស្តង់ដារបើកទូលាយ (Open Standards) និង APIs",
+                    "ការជួសជុលកុំព្យូទ័ររបស់មន្ត្រីរាជការពេលមានបញ្ហាគាំង",
+                    "ការធានាថាមន្ត្រីទាំងអស់ចេះប្រើប្រាស់កម្មវិធី Microsoft Office",
+                    "ការដំឡើងម៉ាស៊ីន Servers ឱ្យបានច្រើនតាមដែលអាចធ្វើទៅបាន"
+                ],
+                answer: 0,
+                explanation: "Technical Interoperability សម្របសម្រួលលើកម្រិតបច្ចេកវិទ្យា (កូដ, ប្រូតូកូល, និងស្តង់ដារតភ្ជាប់) ដើម្បីឱ្យ Hardware/Software ផ្សេងគ្នាអាចតភ្ជាប់គ្នាបាន."
+            },
+            {
+                id: 65,
+                lesson: 2,
+                question: "តើថ្នាលផ្លាស់ប្តូរទិន្នន័យរួមរបស់កម្ពុជាបច្ចុប្បន្ន ដែលបង្កើតឡើងផ្អែកលើបច្ចេកវិទ្យា X-Road របស់អេស្តូនី មានឈ្មោះថាអ្វី?",
+                options: [
+                    "CamID",
+                    "Bakong",
+                    "CamDX (Cambodia Data Exchange)",
+                    "Cambodia Single Window"
+                ],
+                answer: 2,
+                explanation: "CamDX (Cambodia Data Exchange) គឺជាថ្នាលផ្លាស់ប្តូរទិន្នន័យរួមរបស់កម្ពុជា ដែលអនុញ្ញាតឱ្យស្ថាប័នរដ្ឋ និងឯកជនចែករំលែកទិន្នន័យគ្នាដោយសុវត្ថិភាព."
+            },
+            {
+                id: 66,
+                lesson: 2,
+                question: "តើការប្រើប្រាស់ស្តង់ដារបើកទូលាយ (Open Standards) ជួយការពាររដ្ឋាភិបាលពីបញ្ហាអ្វីខ្លះក្នុងវិស័យបច្ចេកវិទ្យា?",
+                options: [
+                    "ការពារការជ្រៀតជ្រែកពីមន្ត្រីមិនមែនបច្ចេកទេស",
+                    "防止被单一厂商锁定 (Vendor Lock-in)，使政府未来难以更换或升级系统",
+                    "ការពារការចំណាយថវិកាលើការទិញអាជ្ញាប័ណ្ណអ៊ីនធឺណិត",
+                    "ការពារការលួចមើលទិន្នន័យពីប្រជាពលរដ្ឋទូទៅ"
+                ],
+                answer: 1,
+                explanation: "Open Standards ការពារ 'Vendor Lock-In' (ការជាប់ជំពាក់នឹងក្រុមហ៊ុនតែមួយ) ជួយឱ្យរដ្ឋអាចផ្លាស់ប្តូរ ឬអភិវឌ្ឍប្រព័ន្ធបន្តជាមួយក្រុមហ៊ុនផ្សេងទៀតបាន."
+            },
+            {
+                id: 67,
+                lesson: 2,
+                question: "តើអ្វីទៅជាយន្តការ «Single Sign-On» (SSO) សម្រាប់ប្រជាពលរដ្ឋក្នុងការប្រើប្រាស់សេវាឌីជីថលរបស់រដ្ឋ?",
+                options: [
+                    "ការតម្រូវឱ្យពលរដ្ឋចុះឈ្មោះគណនីថ្មីរាល់ពេលប្រើប្រាស់វិបសាយក្រសួងថ្មី",
+                    "ការប្រើប្រាស់គណនី និងលេខសម្ងាត់តែមួយគត់ដើម្បីចូលប្រើប្រាស់គ្រប់សេវាកម្មឌីជីថលទាំងអស់របស់រដ្ឋាភិបាល",
+                    "ការអនុញ្ញាតឱ្យចូលប្រើប្រាស់ប្រព័ន្ធបានតែម្តងគត់ក្នុងមួយថ្ងៃ",
+                    "ការតម្រូវឱ្យមានការស្កេនមេដៃផ្ទាល់នៅការិយាល័យដើម្បីចូលប្រព័ន្ធ"
+                ],
+                answer: 1,
+                explanation: "SSO អនុញ្ញាតឱ្យពលរដ្ឋមានគណនីតែមួយ (ដូចជាប្រើប្រព័ន្ធ Verify.gov.kh) ដើម្បីចូលទៅប្រើគ្រប់សេវារបស់គ្រប់ក្រសួង."
+            },
+            {
+                id: 68,
+                lesson: 2,
+                question: "តើគោលបំណងនៃការបង្កើត «ថ្នាក់ដឹកនាំព័ត៌មានវិទ្យា» (Chief Information Officer - CIO) នៅតាមក្រសួងនីមួយៗគឺដើម្បីអ្វី?",
+                options: [
+                    "ដើម្បីធ្វើជាអ្នកជួសជុលគ្រឿង Hardware របស់ក្រសួង",
+                    "ដើម្បីដឹកនាំ គ្រប់គ្រងយុទ្ធសាស្ត្ស និងធ្វើសេចក្តីសម្រេចចិត្តលើការធ្វើបរិវត្តកម្មឌីជីថលរបស់ស្ថាប័នឱ្យស្របតាមប្លង់មេជាតិ",
+                    "ដើម្បីតាមដាន និងត្រួតពិនិត្យការប្រើប្រាស់អ៊ីនធឺណិតរបស់បុគ្គលិក",
+                    "ដើម្បីសរសេរកូដកម្មវិធីកុំព្យូទ័រទាំងអស់របស់ក្រសួង"
+                ],
+                answer: 1,
+                explanation: "CIO គឺជាតំណែងយុទ្ធសាស្ត្រដឹកនាំការធ្វើបរិវត្តកម្មឌីជីថល និងតម្រឹមបច្ចេកវិទ្យារបស់ស្ថាប័នឱ្យស្របនឹងគោលនយោបាយរដ្ឋាភិបាលឌីជីថលជាតិ."
+            },
+            {
+                id: 69,
+                lesson: 2,
+                question: "តើគោលការណ៍ «Security by Design» ក្នុងការអភិវឌ្ឍកម្មវិធីរដ្ឋាភិបាលឌីជីថល មានន័យដូចម្តេច?",
+                options: [
+                    "ការដំឡើងប្រព័ន្ធការពារ (Firewall) បន្ទាប់ពីកម្មវិធីត្រូវបានដាក់ឱ្យដំណើរការរួចរាល់",
+                    "ការបញ្ចូលយន្តការការពារសន្តិសុខបច្ចេកវិទ្យា (Cybersecurity) តាំងពីដំណាក់កាលដំបូងនៃការរចនា និងកសាងប្រព័ន្ធ (មិនមែនធ្វើតាមក្រោយ)",
+                    "ការជួលក្រុមហ៊ុនសន្តិសុខមកយាមការពារអគារ Data Center",
+                    "ការលាក់បាំងកូដកម្មវិធីមិនឱ្យនរណាម្នាក់មើលឃើញទាល់តែសោះ"
+                ],
+                answer: 1,
+                explanation: "Security by Design គឺការគិតគូរ និងបញ្ចូលប្រព័ន្ធសុវត្ថិភាពតាំងពីជំហានដំបូងនៃការកសាង Software ការពារបញ្ហាធ្លាយទិន្នន័យទៅថ្ងៃក្រោយ."
+            },
+            {
+                id: 70,
+                lesson: 2,
+                question: "តើបច្ចេកវិទ្យា QR Code ដែលបង្កប់នៅលើវិញ្ញាបនបត្រ ឬអាជ្ញាប័ណ្ណឌីជីថលរបស់រដ្ឋ មានតួនាទីចម្បងអ្វីខ្លះ?",
+                options: [
+                    "ដើម្បីឱ្យមើលទៅមានភាពស្រស់ស្អាត និងទាន់សម័យ",
+                    "ដើម្បីអនុញ្ញាតឱ្យប្រជាពលរដ្ឋ ឬស្ថាប័នពាក់ព័ន្ធ អាចស្កេនផ្ទៀងផ្ទាត់ភាពត្រឹមត្រូវ និងសុពលភាពនៃឯកសារចេញពីប្រភពដើមរដ្ឋបានភ្លាមៗ",
+                    "ដើម្បីផ្ទុកទិន្នន័យរូបភាពរបស់អ្នកស្នើសុំ",
+                    "ដើម្បីតាមដានទីតាំងភូមិសាស្ត្ររបស់ម្ចាស់ឯកសារតាម GPS"
+                ],
+                answer: 1,
+                explanation: "QR Code លើឯកសារផ្លូវការ (ដូចជាប្រព័ន្ធរបស់កម្ពុជា) គឺសម្រាប់ស្កេនផ្ទៀងផ្ទាត់ភាពត្រឹមត្រូវ (Verification) ការពារការក្លែងបន្លំឯកសារ."
+            }
+        ];
+
+        /* ----------------------------------------------------
+         * APP STATE & INITIALIZATION
+         * ---------------------------------------------------- */
+        let currentMode = 'exam'; // 'exam' or 'practice'
+        let currentQuestionIdx = 0;
+        let userAnswers = Array(70).fill(null); // stores index of selected option
+        let flaggedQuestions = Array(70).fill(false);
+        let timerInterval = null;
+        let timeLeftSeconds = 120 * 60; // 120 minutes
+        let scoreChart = null; // ChartJS Instance holder for graphic clean-up logic
+
+        window.onload = function() {
+            initNavigationGrid();
+            
+            // Listen for window resize to redraw charts nicely
+            window.addEventListener('resize', function() {
+                if (document.getElementById('resultScreen').style.display !== 'none') {
+                    // Re-render chart to fit container fluidly
+                    renderTopicAnalyticsChart();
+                }
+            });
+        };
+
+        function startExam(mode) {
+            currentMode = mode;
+            currentQuestionIdx = 0;
+            userAnswers = Array(70).fill(null);
+            flaggedQuestions = Array(70).fill(false);
+            
+            // UI Toggle
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('examScreen').classList.remove('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            
+            if (mode === 'exam') {
+                // Setup timer
+                document.getElementById('timerDisplay').classList.remove('hidden');
+                document.getElementById('checkBtn').classList.add('hidden');
+                timeLeftSeconds = 120 * 60;
+                updateTimerDisplay();
+                clearInterval(timerInterval);
+                timerInterval = setInterval(countdownTimer, 1000);
+            } else {
+                // Practice mode: no timer, show check answer button
+                document.getElementById('timerDisplay').classList.add('hidden');
+                document.getElementById('checkBtn').classList.remove('hidden');
+                clearInterval(timerInterval);
+            }
+
+            loadQuestion(0);
+            updateProgress();
+            renderNavigationGrid();
+        }
+
+        /* ----------------------------------------------------
+         * TIMING LOGIC
+         * ---------------------------------------------------- */
+        function countdownTimer() {
+            if (timeLeftSeconds <= 0) {
+                clearInterval(timerInterval);
+                showCustomModal("អស់ម៉ោងប្រឡង!", "ពេលវេលា ១២០ នាទីរបស់អ្នកត្រូវបានបញ្ចប់ជាស្វ័យប្រវត្ត។ ប្រព័ន្ធនឹងប្រគល់កិច្ចការឥឡូវនេះ។", function() {
+                    finishExam();
+                }, true);
+            } else {
+                timeLeftSeconds--;
+                updateTimerDisplay();
+            }
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeftSeconds / 60);
+            const seconds = timeLeftSeconds % 60;
+            document.getElementById('timeValue').innerText = 
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Alert user visually when under 10 minutes
+            if (timeLeftSeconds < 600) {
+                document.getElementById('timerDisplay').classList.remove('bg-slate-800/80', 'text-cyan-400');
+                document.getElementById('timerDisplay').classList.add('bg-rose-950/80', 'text-rose-400', 'border-rose-800');
+            } else {
+                document.getElementById('timerDisplay').classList.add('bg-slate-800/80', 'text-cyan-400');
+                document.getElementById('timerDisplay').classList.remove('bg-rose-950/80', 'text-rose-400', 'border-rose-800');
+            }
+        }
+
+        /* ----------------------------------------------------
+         * QUIZ LOGIC & NAVIGATION
+         * ---------------------------------------------------- */
+        function loadQuestion(index) {
+            currentQuestionIdx = index;
+            const q = questionsDataset[index];
+
+            // Render details
+            document.getElementById('qLesson').innerText = q.lesson;
+            document.getElementById('qIndex').innerText = index + 1;
+            document.getElementById('questionText').innerText = q.question;
+
+            // Render options
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach((opt, optIdx) => {
+                const isSelected = userAnswers[index] === optIdx;
+                const charCode = String.fromCharCode(65 + optIdx); // A, B, C, D
+                
+                let optionClass = "w-full text-left p-4 rounded-xl border transition-all flex items-start gap-3 ";
+                if (isSelected) {
+                    optionClass += "bg-blue-600/20 border-blue-500 text-white font-semibold shadow-inner";
+                } else {
+                    optionClass += "bg-slate-900/40 border-slate-800/80 text-slate-300 hover:bg-slate-800 hover:text-white";
+                }
+
+                const button = document.createElement('button');
+                button.className = optionClass;
+                button.setAttribute('onclick', `selectOption(${optIdx})`);
+                button.innerHTML = `
+                    <span class="w-6 h-6 rounded-lg ${isSelected ? 'bg-blue-500 text-white' : 'bg-slate-800 text-slate-400'} flex items-center justify-center text-xs font-bold shrink-0 mt-0.5">
+                        ${charCode}
+                    </span>
+                    <span class="text-sm md:text-base leading-relaxed">${opt}</span>
+                `;
+                optionsContainer.appendChild(button);
+            });
+
+            // Adjust navigation buttons
+            document.getElementById('prevBtn').disabled = index === 0;
+            if (index === 0) {
+                document.getElementById('prevBtn').classList.add('opacity-50', 'cursor-not-allowed');
+            } else {
+                document.getElementById('prevBtn').classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+
+            if (index === 69) {
+                document.getElementById('nextBtn').innerHTML = `បញ្ចប់ការប្រឡង <i class="fa-solid fa-flag-checkered"></i>`;
+                document.getElementById('nextBtn').setAttribute('onclick', 'confirmFinishExam()');
+            } else {
+                document.getElementById('nextBtn').innerHTML = `បន្តទៅមុខ <i class="fa-solid fa-arrow-right"></i>`;
+                document.getElementById('nextBtn').setAttribute('onclick', 'nextQuestion()');
+            }
+
+            // Flag system
+            const flagIcon = document.getElementById('flagIcon');
+            if (flaggedQuestions[index]) {
+                flagIcon.className = "fa-solid fa-bookmark text-amber-500 animate-bounce";
+                document.getElementById('flagBtn').classList.add('text-amber-500');
+            } else {
+                flagIcon.className = "fa-regular fa-bookmark";
+                document.getElementById('flagBtn').classList.remove('text-amber-500');
+            }
+
+            // Handle Study Mode (Practice) Explanation toggle
+            const explanationContainer = document.getElementById('explanationContainer');
+            if (currentMode === 'practice' && userAnswers[index] !== null) {
+                showExplanation(q);
+            } else {
+                explanationContainer.classList.add('hidden');
+            }
+
+            // Update active state in grid navigation
+            renderNavigationGrid();
+        }
+
+        function selectOption(optIdx) {
+            userAnswers[currentQuestionIdx] = optIdx;
+            
+            // Re-render current question with selected answer
+            loadQuestion(currentQuestionIdx);
+            updateProgress();
+
+            // In Practice/Study mode, check immediately on selection
+            if (currentMode === 'practice') {
+                checkAnswerInstant();
+            }
+        }
+
+        function toggleFlag() {
+            flaggedQuestions[currentQuestionIdx] = !flaggedQuestions[currentQuestionIdx];
+            loadQuestion(currentQuestionIdx);
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                loadQuestion(currentQuestionIdx - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < 69) {
+                loadQuestion(currentQuestionIdx + 1);
+            }
+        }
+
+        function checkAnswerInstant() {
+            const q = questionsDataset[currentQuestionIdx];
+            const selected = userAnswers[currentQuestionIdx];
+            if (selected === null) return;
+
+            showExplanation(q);
+        }
+
+        function showExplanation(q) {
+            const explanationContainer = document.getElementById('explanationContainer');
+            const explanationText = document.getElementById('explanationText');
+            
+            explanationText.innerHTML = `
+                <strong class="text-white">ចម្លើយត្រឹមត្រូវ៖</strong> <span class="text-emerald-400 font-bold">${String.fromCharCode(65 + q.answer)}</span><br>
+                <span class="mt-1 block">${q.explanation}</span>
+            `;
+            explanationContainer.classList.remove('hidden');
+
+            // Apply styling changes immediately in UI for options
+            const optionsContainer = document.getElementById('optionsContainer');
+            const buttons = optionsContainer.getElementsByTagName('button');
+
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].removeAttribute('onclick'); // Disable clicking again after checking
+                const isSelected = userAnswers[currentQuestionIdx] === i;
+                const isCorrect = q.answer === i;
+
+                if (isCorrect) {
+                    buttons[i].className = "w-full text-left p-4 rounded-xl border bg-emerald-950/50 border-emerald-500 text-white font-semibold transition-all flex items-start gap-3";
+                    buttons[i].querySelector('span').className = "w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5";
+                } else if (isSelected && !isCorrect) {
+                    buttons[i].className = "w-full text-left p-4 rounded-xl border bg-rose-950/50 border-rose-500 text-slate-300 font-semibold transition-all flex items-start gap-3";
+                    buttons[i].querySelector('span').className = "w-6 h-6 rounded-lg bg-rose-500 text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5";
+                } else {
+                    buttons[i].className = "w-full text-left p-4 rounded-xl border bg-slate-900/20 border-slate-850 text-slate-500 transition-all flex items-start gap-3 opacity-60";
+                    buttons[i].querySelector('span').className = "w-6 h-6 rounded-lg bg-slate-800 text-slate-600 flex items-center justify-center text-xs font-bold shrink-0 mt-0.5";
+                }
+            }
+        }
+
+        /* ----------------------------------------------------
+         * NAVIGATION GRID & PROGRESS
+         * ---------------------------------------------------- */
+        function initNavigationGrid() {
+            const navGrid = document.getElementById('navGrid');
+            navGrid.innerHTML = '';
+            for (let i = 0; i < 70; i++) {
+                const btn = document.createElement('button');
+                btn.id = `navBtn-${i}`;
+                btn.className = "w-full py-2 rounded-xl text-xs font-bold transition flex items-center justify-center border border-slate-700 bg-slate-800 text-slate-300 hover:border-cyan-400";
+                btn.innerText = i + 1;
+                btn.setAttribute('onclick', `loadQuestion(${i})`);
+                navGrid.appendChild(btn);
+            }
+        }
+
+        function renderNavigationGrid() {
+            for (let i = 0; i < 70; i++) {
+                const btn = document.getElementById(`navBtn-${i}`);
+                const isCurrent = currentQuestionIdx === i;
+                const isAnswered = userAnswers[i] !== null;
+                const isFlagged = flaggedQuestions[i];
+
+                btn.className = "w-full py-2 rounded-xl text-xs font-bold transition flex items-center justify-center border ";
+                
+                if (isCurrent) {
+                    btn.className += "border-cyan-400 bg-cyan-600/30 text-white ring-2 ring-cyan-500/30";
+                } else if (isFlagged) {
+                    btn.className += "border-amber-500 bg-amber-500/20 text-amber-300";
+                } else if (isAnswered) {
+                    btn.className += "border-emerald-600/80 bg-emerald-800/20 text-emerald-400";
+                } else {
+                    btn.className += "border-slate-800 bg-slate-900/60 text-slate-400 hover:bg-slate-800/80";
+                }
+            }
+        }
+
+        function updateProgress() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const remaining = 70 - answered;
+            const progressPercent = (answered / 70) * 100;
+
+            document.getElementById('progressText').innerText = `${answered} / 70`;
+            document.getElementById('progressBar').style.width = `${progressPercent}%`;
+            document.getElementById('answeredCount').innerText = answered;
+            document.getElementById('unansweredCount').innerText = remaining;
+        }
+
+        /* ----------------------------------------------------
+         * FINISH & SCORING LOGIC
+         * ---------------------------------------------------- */
+        function confirmFinishExam() {
+            const answered = userAnswers.filter(a => a !== null).length;
+            const unanswered = 70 - answered;
+            
+            let message = "តើអ្នកពិតជាចង់បញ្ចប់ការប្រឡង និងប្រគល់សន្លឹកកិច្ចការឥឡូវនេះមែនទេ?";
+            if (unanswered > 0) {
+                message = `អ្នកនៅសល់សំណួរចំនួន <span class="text-rose-400 font-bold">${unanswered}</span> មិនទាន់ឆ្លើយនៅឡើយទេ! តើអ្នកប្រាកដជាចង់បញ្ជូនកិច្ចការមែនទេ?`;
+            }
+
+            showCustomModal("បញ្ជាក់ការប្រគល់កិច្ចការ", message, function() {
+                finishExam();
+            });
+        }
+
+        function finishExam() {
+            clearInterval(timerInterval);
+            document.getElementById('timerDisplay').classList.add('hidden');
+            document.getElementById('examScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+
+            // Calculate Score
+            let correct = 0;
+            let incorrect = 0;
+            let skipped = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                if (ans === null) {
+                    skipped++;
+                } else if (ans === questionsDataset[idx].answer) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+
+            // Display Score Widget
+            document.getElementById('resScore').innerText = correct;
+            
+            // Calculate Circular SVG Offset
+            // r=70 -> perimeter = 440
+            const percentage = correct / 70;
+            const strokeOffset = 440 - (440 * percentage);
+            document.getElementById('circleProgress').style.strokeDashoffset = strokeOffset;
+
+            // Rating badges
+            const gradeBadge = document.getElementById('gradeBadge');
+            if (percentage >= 0.85) {
+                gradeBadge.innerText = "ឆ្នើមណាស់ (A - Excellent)";
+                gradeBadge.className = "px-3 py-1 bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 rounded-full text-xs font-bold";
+            } else if (percentage >= 0.70) {
+                gradeBadge.innerText = "ល្អបង្គួរ (B/C - Very Good)";
+                gradeBadge.className = "px-3 py-1 bg-blue-500/10 text-blue-400 border border-blue-500/20 rounded-full text-xs font-bold";
+            } else if (percentage >= 0.50) {
+                gradeBadge.innerText = "មធ្យមជាប់ (D/E - Passing)";
+                gradeBadge.className = "px-3 py-1 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-full text-xs font-bold";
+            } else {
+                gradeBadge.innerText = "ធ្លាក់ (F - Failed)";
+                gradeBadge.className = "px-3 py-1 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-full text-xs font-bold";
+            }
+
+            // Stats grid
+            document.getElementById('statCorrect').innerText = `${correct} / 70`;
+            document.getElementById('statIncorrect').innerText = `${incorrect} / 70`;
+            document.getElementById('statSkipped').innerText = `${skipped} / 70`;
+
+            const accuracy = Math.round((correct / 70) * 100);
+            document.getElementById('accuracyPercent').innerText = `${accuracy}%`;
+            document.getElementById('accuracyBar').style.width = `${accuracy}%`;
+
+            // Run Chart rendering with graphics clean-up logic
+            renderTopicAnalyticsChart();
+
+            // Populate Review list
+            renderReviewList();
+        }
+
+        /* ----------------------------------------------------
+         * GRAPHICS CLEAN-UP LOGIC
+         * ---------------------------------------------------- */
+        function renderTopicAnalyticsChart() {
+            
+            // CRITICAL STEP: Check if there's an existing Chart.js instance on the canvas,
+            // and completely destroy it to avoid performance issues or duplicate canvas renders.
+            if (scoreChart !== null) {
+                scoreChart.destroy();
+                scoreChart = null;
+            }
+
+            // Category metrics
+            let ch1Total = 35;
+            let ch2Total = 35;
+            let ch1Correct = 0;
+            let ch2Correct = 0;
+
+            userAnswers.forEach((ans, idx) => {
+                const q = questionsDataset[idx];
+                const isCorrect = ans === q.answer;
+                if (isCorrect) {
+                    if (q.lesson === 1) ch1Correct++;
+                    else ch2Correct++;
+                }
+            });
+
+            const ch1ScorePct = Math.round((ch1Correct / ch1Total) * 100);
+            const ch2ScorePct = Math.round((ch2Correct / ch2Total) * 100);
+
+            const ctx = document.getElementById('topicChart').getContext('2d');
+            
+            // Create a brand new ChartJS representation fluidly
+            scoreChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['មេរៀនទី ១៖ សេចក្តីផ្តើម និងការវិវត្ត', 'មេរៀនទី ២៖ ស្ថាបត្យកម្ម និងការតភ្ជាប់'],
+                    datasets: [
+                        {
+                            label: 'អត្រាឆ្លើយត្រូវ (%)',
+                            data: [ch1ScorePct, ch2ScorePct],
+                            backgroundColor: [
+                                'rgba(6, 182, 212, 0.7)',  // Cyan for Chapter 1
+                                'rgba(37, 99, 235, 0.7)'   // Blue for Chapter 2
+                            ],
+                            borderColor: [
+                                '#06b6d4',
+                                '#2563eb'
+                            ],
+                            borderWidth: 2,
+                            borderRadius: 12,
+                            barThickness: 45
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return ` អត្រាជោគជ័យ៖ ${context.parsed.y}%`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)'
+                            },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: {
+                                    family: 'Kantumruy Pro'
+                                }
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#cbd5e1',
+                                font: {
+                                    family: 'Kantumruy Pro',
+                                    size: 11
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        /* ----------------------------------------------------
+         * REVIEW GENERATION & FILTERS
+         * ---------------------------------------------------- */
+        function renderReviewList(filter = 'all') {
+            const reviewContainer = document.getElementById('reviewContainer');
+            reviewContainer.innerHTML = '';
+
+            questionsDataset.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.answer;
+
+                // Apply filter
+                if (filter === 'correct' && !isCorrect) return;
+                if (filter === 'incorrect' && isCorrect) return;
+
+                const card = document.createElement('div');
+                
+                let cardStyle = "p-4 rounded-2xl border transition-all text-left ";
+                let statusBadge = "";
+
+                if (userAns === null) {
+                    cardStyle += "bg-slate-900/40 border-slate-800 text-slate-400";
+                    statusBadge = `<span class="px-2.5 py-1 rounded-md bg-slate-800 text-slate-400 text-[10px] font-bold"><i class="fa-solid fa-minus"></i> មិនបានឆ្លើយ</span>`;
+                } else if (isCorrect) {
+                    cardStyle += "bg-emerald-950/10 border-emerald-500/30 text-slate-200";
+                    statusBadge = `<span class="px-2.5 py-1 rounded-md bg-emerald-500/10 text-emerald-400 text-[10px] font-bold"><i class="fa-solid fa-check"></i> ត្រូវ</span>`;
+                } else {
+                    cardStyle += "bg-rose-950/10 border-rose-500/30 text-slate-200";
+                    statusBadge = `<span class="px-2.5 py-1 rounded-md bg-rose-500/10 text-rose-400 text-[10px] font-bold"><i class="fa-solid fa-xmark"></i> ខុស</span>`;
+                }
+
+                card.className = cardStyle;
+                card.innerHTML = `
+                    <div class="flex justify-between items-center mb-2.5">
+                        <span class="text-xs font-semibold text-slate-400">សំណួរទី ${idx + 1} (មេរៀនទី ${q.lesson})</span>
+                        ${statusBadge}
+                    </div>
+                    <p class="font-bold text-white text-sm leading-relaxed mb-3">${q.question}</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs mb-3">
+                        <div class="p-2.5 rounded-xl ${q.answer === 0 ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-slate-900/60 text-slate-400'}">A: ${q.options[0]}</div>
+                        <div class="p-2.5 rounded-xl ${q.answer === 1 ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-slate-900/60 text-slate-400'}">B: ${q.options[1]}</div>
+                        <div class="p-2.5 rounded-xl ${q.answer === 2 ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-slate-900/60 text-slate-400'}">C: ${q.options[2]}</div>
+                        <div class="p-2.5 rounded-xl ${q.answer === 3 ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400' : 'bg-slate-900/60 text-slate-400'}">D: ${q.options[3]}</div>
+                    </div>
+                    <div class="bg-slate-900/80 border-l-2 border-cyan-500 p-3 rounded-r-xl text-[11px] text-slate-300 leading-relaxed">
+                        <span class="font-bold text-cyan-400">ការពន្យល់៖</span> ${q.explanation}
+                    </div>
+                `;
+                reviewContainer.appendChild(card);
+            });
+        }
+
+        function filterReview(type) {
+            // Adjust buttons active style
+            document.getElementById('revAllBtn').className = type === 'all' ? 'px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold' : 'px-3 py-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs font-semibold';
+            document.getElementById('revCorrectBtn').className = type === 'correct' ? 'px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold' : 'px-3 py-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs font-semibold';
+            document.getElementById('revIncorrectBtn').className = type === 'incorrect' ? 'px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold' : 'px-3 py-1.5 bg-slate-800 text-slate-300 hover:bg-slate-700 rounded-lg text-xs font-semibold';
+            
+            renderReviewList(type);
+        }
+
+        /* ----------------------------------------------------
+         * CUSTOM MODAL & DIALOGS
+         * ---------------------------------------------------- */
+        function showCustomModal(title, msg, onConfirm, hideCancel = false) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMessage').innerHTML = msg;
+            
+            const actionBtn = document.getElementById('modalActionBtn');
+            actionBtn.onclick = function() {
+                onConfirm();
+                closeModal();
+            };
+
+            const cancelBtn = actionBtn.previousElementSibling;
+            if (hideCancel) {
+                cancelBtn.classList.add('hidden');
+            } else {
+                cancelBtn.classList.remove('hidden');
+            }
+
+            document.getElementById('customModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('customModal').classList.add('hidden');
+        }
+
+        function resetApp() {
+            clearInterval(timerInterval);
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('examScreen').classList.add('hidden');
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('timerDisplay').classList.add('hidden');
+        }
+
+        /* ----------------------------------------------------
+         * THEME CUSTOMIZATION
+         * ---------------------------------------------------- */
+        let isDarkMode = true;
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            const icon = document.getElementById('themeIcon');
+            
+            if (isDarkMode) {
+                document.body.style.backgroundColor = "#0f172a";
+                document.body.style.color = "#f1f5f9";
+                icon.className = "fa-solid fa-moon";
+            } else {
+                document.body.style.backgroundColor = "#f8fafc";
+                document.body.style.color = "#0f172a";
+                icon.className = "fa-solid fa-sun";
+            }
+        }
+    </script>
+</body>
+</html>
