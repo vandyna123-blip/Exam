@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ប្រព័ន្ធប្រឡងតេស្តសាកល្បង ១០០ សំណួរ - អភិបាលកិច្ចឌីជីថល</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Kantumruy Pro', sans-serif; }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.92);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+        }
+        .modal-glass {
+            background: rgba(2, 6, 23, 0.96);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950 min-h-screen text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-slate-950">
+
+    <header class="glass-panel border-b border-slate-800 p-4 sticky top-0 z-50 shadow-2xl">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+                <h1 class="text-base sm:text-lg font-bold text-cyan-400 flex items-center gap-2">
+                    🏛️ វិទ្យាស្ថានប្រាយហូប (BRIGHT HOPE INSTITUTE)
+                </h1>
+                <p class="text-xs text-slate-400">មុខវិជ្ជា៖ អភិបាលកិច្ចឌីជីថល (Digital Governance) | បង្រៀនដោយ៖ លោក ឌន វណ្ណឌីណា</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <div id="user-badge" class="hidden bg-cyan-950/90 border border-cyan-500/60 px-4 py-1.5 rounded-full text-xs text-cyan-300 font-medium shadow-inner flex items-center gap-2">
+                    👤 <span id="display-username" class="font-bold text-white"></span>
+                </div>
+                <button onclick="toggleTeacherModal(true)" class="bg-slate-800 hover:bg-slate-700 border border-slate-600 text-xs px-3.5 py-1.5 rounded-xl transition text-slate-300 shadow-md flex items-center gap-1.5">
+                    👨‍🏫 ផ្ទាំងគ្រប់គ្រងគ្រូបង្រៀន
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl w-full mx-auto p-4 sm:p-6 flex-grow flex items-center justify-center">
+
+        <!-- Screen 1: Registration & QR Code -->
+        <div id="screen-register" class="glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl w-full max-w-lg text-center space-y-6">
+            <div class="space-y-2">
+                <span class="bg-cyan-500/10 text-cyan-400 border border-cyan-500/30 text-xs px-3.5 py-1 rounded-full uppercase tracking-wider font-semibold">
+                    ប្រព័ន្ធប្រឡងអន្តរកម្មឌីជីថល
+                </span>
+                <h2 class="text-2xl font-bold text-white">តេស្តសមត្ថភាព ១០០ សំណួរ</h2>
+                <p class="text-xs text-slate-400">មេរៀនទី១ ដល់ទី៥ ៖ មុខវិជ្ជាអភិបាលកិច្ចឌីជីថល</p>
+            </div>
+
+            <!-- QR Code Display Box -->
+            <div class="bg-white p-4 rounded-2xl inline-block shadow-xl mx-auto transform hover:scale-105 transition duration-300">
+                <canvas id="qrcode" class="mx-auto rounded-lg"></canvas>
+            </div>
+            <p class="text-xs text-slate-400">ស្កេន QR Code នេះដើម្បីបើកចូលរួមធ្វើតេស្តលើទូរស័ព្ទដៃ ឬឧបករណ៍ផ្សេងៗ!</p>
+
+            <div class="space-y-4 pt-2 text-left">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 mb-1.5">សូមបញ្ចូលឈ្មោះពេញរបស់អ្នក (ខ្មែរ ឬឡាតាំង)៖</label>
+                    <input type="text" id="username-input" placeholder="ឧ. ជីវ៉ា សុខ" class="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition text-sm">
+                </div>
+                <button onclick="registerStudent()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-cyan-500/20 transition transform active:scale-95 text-sm">
+                    ចុះឈ្មោះចូលរួម (Waiting Room) 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- Screen 1.5: Waiting Room Screen (Before Teacher Starts Exam) -->
+        <div id="screen-waiting" class="hidden glass-panel p-8 rounded-3xl shadow-2xl w-full max-w-lg text-center space-y-6">
+            <div class="w-16 h-16 bg-cyan-500/20 border border-cyan-500/40 rounded-full flex items-center justify-center mx-auto animate-pulse text-2xl">
+                ⏳
+            </div>
+            <div class="space-y-2">
+                <h2 class="text-2xl font-bold text-white">រង់ចាំការបញ្ជាចាប់ផ្តើមពីគ្រូ...</h2>
+                <p class="text-xs text-slate-400">អ្នកបានចុះឈ្មោះក្នុងប្រព័ន្ធរួចរាល់ហើយ។ សូមរង់ចាំលោកគ្រូ ឌន វណ្ណឌីណា ចុចបញ្ជាចាប់ផ្តើមការប្រឡងជាផ្លូវការ។</p>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 p-4 rounded-2xl text-left space-y-2">
+                <span class="text-xs text-slate-400 block font-semibold">📋 បញ្ជីរាយនាមមិត្តរួមថ្នាក់ដែលបានចូលរួម (Live Registered Students):</span>
+                <div id="waiting-students-list" class="max-h-36 overflow-y-auto space-y-1 text-xs text-cyan-300 font-medium">
+                    <!-- Dynamic List -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Screen 2: Quiz & Live Leaderboards & Percentage Stats -->
+        <div id="screen-quiz" class="hidden w-full grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Quiz Card (2 Columns) -->
+            <div class="lg:col-span-2 glass-panel p-6 sm:p-8 rounded-3xl shadow-2xl flex flex-col justify-between space-y-6">
+                <div>
+                    <div class="flex justify-between items-center mb-4">
+                        <span id="question-counter" class="text-xs bg-slate-800/80 border border-slate-700 text-cyan-300 px-3.5 py-1.5 rounded-full font-semibold">
+                            សំណួរទី ១ / ១០០
+                        </span>
+                        <div class="flex items-center gap-2 text-amber-400 font-bold text-xs bg-amber-950/40 border border-amber-600/40 px-3.5 py-1.5 rounded-full shadow-inner">
+                            ⏱️ <span id="timer">15</span> វិនាទី
+                        </div>
+                    </div>
+                    <span id="question-lesson-tag" class="text-[11px] text-cyan-400 font-medium bg-cyan-950/60 px-3 py-1 rounded-md border border-cyan-800/40 inline-block mb-3">
+                        មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល
+                    </span>
+                    <h3 id="question-text" class="text-base sm:text-lg font-semibold text-white leading-relaxed"></h3>
+                </div>
+
+                <div id="options-container" class="space-y-3">
+                    <!-- Options injected via JavaScript -->
+                </div>
+
+                <!-- Answer Percentage Analytics Breakdown Bar -->
+                <div id="stats-breakdown" class="hidden bg-slate-900/90 border border-slate-800 p-4 rounded-2xl space-y-2 text-xs">
+                    <span class="text-slate-400 font-semibold block">📊 ភាគរយនៃការជ្រើសរើសចម្លើយរបស់និស្សិតសរុប៖</span>
+                    <div id="stats-bars-container" class="space-y-2">
+                        <!-- Dynamic Percentage Bars -->
+                    </div>
+                </div>
+
+                <div class="flex justify-between items-center pt-4 border-t border-slate-800">
+                    <span class="text-xs text-slate-400">ពិន្ទុសរុបបច្ចុប្បន្ន៖ <strong id="current-score" class="text-cyan-400 text-sm">0</strong> / 1000</span>
+                    <button id="next-btn" onclick="nextQuestion()" class="hidden bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold py-2.5 px-6 rounded-xl transition text-xs shadow-lg shadow-cyan-500/20">
+                        សំណួរាប់បន្ទាប់ ➡️
+                    </button>
+                </div>
+            </div>
+
+            <!-- Top 5 Live Speed Leaderboard for Current Question (1 Column) -->
+            <div class="glass-panel p-5 rounded-3xl shadow-2xl flex flex-col space-y-4">
+                <div class="flex items-center gap-2 border-b border-slate-800 pb-3">
+                    <span class="text-xl">🏆</span>
+                    <div>
+                        <h4 class="font-bold text-white text-xs sm:text-sm">Top 5 ឆ្លើយលឿនជាងគេក្នុងសំណួរនេះ</h4>
+                        <p class="text-[10px] text-slate-400">ល្បឿនពេលជាក់ស្តែង (Real-time speed)</p>
+                    </div>
+                </div>
+                <div id="leaderboard-list" class="space-y-2.5 flex-grow overflow-y-auto max-h-[380px] pr-1">
+                    <!-- Dynamic Top 5 speed ranking -->
+                </div>
+                <div class="text-[11px] text-slate-400 text-center bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                    ⚡ ពិន្ទុផ្អែកលើភាពត្រឹមត្រូវ និងល្បឿនវិនាទីដែលអ្នកឆ្លើយបានលឿនជាងគេ!
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Screen 3: Final Result Summary -->
+        <div id="screen-result" class="hidden glass-panel p-8 rounded-3xl shadow-2xl w-full max-w-lg text-center space-y-6">
+            <div class="text-5xl animate-bounce">🎉</div>
+            <div class="space-y-2">
+                <h2 class="text-2xl font-bold text-white">បញ្ចប់ការធ្វើតេស្តដោយជោគជ័យ!</h2>
+                <p class="text-slate-400 text-xs">វិទ្យាស្ថានប្រាយហូប • មុខវិជ្ជាអភិបាលកិច្ចឌីជីថល</p>
+            </div>
+            <div class="bg-slate-900/90 border border-slate-800 p-6 rounded-2xl space-y-3">
+                <p class="text-slate-300 text-xs">លទ្ធផលវាយតម្លៃសរុបរបស់អ្នក៖</p>
+                <div class="text-4xl font-extrabold text-cyan-400"><span id="final-score">0</span> <span class="text-lg text-slate-400">/ 1000 ពិន្ទុ</span></div>
+                <p id="result-grade" class="text-xs font-semibold text-emerald-400"></p>
+            </div>
+            <button onclick="location.reload()" class="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold py-3.5 px-6 rounded-xl shadow-lg transition text-sm">
+                ធ្វើតេស្តសារថ្មីម្តងទៀត 🔄
+            </button>
+        </div>
+
+    </main>
+
+    <div id="teacher-modal" class="hidden fixed inset-0 modal-glass z-50 flex items-center justify-center p-4">
+        <div class="glass-panel p-6 rounded-3xl max-w-lg w-full space-y-5 border border-cyan-500/40 shadow-2xl">
+            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-cyan-400 text-sm flex items-center gap-2">👨‍🏫 ផ្ទាំងគ្រប់គ្រងគ្រូបង្រៀន (Teacher Control Master)</h3>
+                <button onclick="toggleTeacherModal(false)" class="text-slate-400 hover:text-white text-sm font-bold">✕</button>
+            </div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+                លោកគ្រូ <strong>ឌន វណ្ណឌីណា</strong> អាចគ្រប់គ្រងការចាប់ផ្តើមសរុប តាមដានបញ្ជីរាយនាមនិស្សិតដែលបានស្កេនចូលរួម និងគ្រប់គ្រងពេលវេលា។
+            </p>
+            <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <span class="text-slate-400 block">និស្សិតចូលរួមសរុប៖</span>
+                    <span id="stat-total-students" class="font-bold text-cyan-400 text-base">0 នាក់</span>
+                </div>
+                <div class="bg-slate-900/90 p-3 rounded-xl border border-slate-800 space-y-1">
+                    <span class="text-slate-400 block">ស្ថានភាពប្រព័ន្ធ៖</span>
+                    <span id="stat-system-status" class="font-bold text-emerald-400 text-base">កំពុងរង់ចាំសិស្ស 🟢</span>
+                </div>
+            </div>
+            <div>
+                <h4 class="text-xs font-semibold text-slate-300 mb-2">បញ្ជីរាយនាមនិស្សិតដែលបានចូលរួម (Live Students List):</h4>
+                <div id="teacher-students-list" class="bg-slate-900/90 border border-slate-800 rounded-xl p-3 max-h-36 overflow-y-auto space-y-1.5 text-xs">
+                    <!-- Dynamic students -->
+                </div>
+            </div>
+            <div class="flex gap-3 pt-2">
+                <button onclick="teacherStartExam()" class="flex-1 bg-gradient-to-r from-cyan-500 to-emerald-500 hover:from-cyan-400 hover:to-emerald-400 text-slate-950 font-bold py-3 rounded-xl text-xs transition shadow-lg flex items-center justify-center gap-1.5">
+                    🚀 ចាប់ផ្តើមការប្រឡងជូននិស្សិតទាំងអស់
+                </button>
+                <button onclick="toggleTeacherModal(false)" class="bg-slate-800 hover:bg-slate-700 text-white font-semibold py-3 px-4 rounded-xl text-xs transition">
+                    បិទផ្ទាំង
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="text-center py-4 text-[11px] text-slate-500 border-t border-slate-900 bg-slate-950/40">
+        © 2026 BRIGHT HOPE INSTITUTE • Digital Governance Interactive Assessment System by ឌន វណ្ណឌីណា
+    </footer>
+
+    <script>
+        // Generate QR Code pointing to current URL automatically on load
+        window.onload = function() {
+            const currentUrl = window.location.href;
+            QRCode.toCanvas(document.getElementById('qrcode'), currentUrl, { width: 160, margin: 1, color: { dark: '#0f172a', light: '#ffffff' } }, function (error) {
+                if (error) console.error(error);
+            });
+            updateTeacherStats();
+        };
+
+        // Complete 100 Exam Questions covering Lessons 1 to 5 in Digital Governance
+        const questions = [
+            // Lesson 1: Introduction and Evolution of Digital Governance (Q1-Q20)
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១. តើអ្វីជាអត្ថន័យនៃពាក្យ 'អភិបាលកិច្ច' (Governance) ក្នុងបរិបទស្ថាប័នរដ្ឋបាលសាធារណៈ?", options: ["ប្រព័ន្ធ ដំណើរការ ឬយន្តការដឹកនាំ គ្រប់គ្រង និងត្រួតពិនិត្យស្ថាប័ន", "ការប្រើប្រាស់កុំព្យូទ័រជំនួសមនុស្សទាំងស្រុងក្នុងរដ្ឋបាល", "ការបង្កើតបណ្តាញសង្គមហ្វេសប៊ុកសម្រាប់រដ្ឋាភិបាល", "ការប្រមូលពន្ធដារតាមប្រព័ន្ធអនឡាញសុទ្ធសាធ"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "២. តើពាក្យ 'ឌីជីថល' (Digital) ក្នុងន័យបច្ចេកវិទ្យាតំណាងឱ្យអ្វី?", options: ["លេខកូដទ្វេភាគ (Binary Code) '០' និង '១'", "ប្រព័ន្ធខ្សែបណ្តាញអគ្គិសនីកម្លាំងខ្ពស់", "បណ្តាញទូរស័ព្ទដៃជំនាន់ទី៤ (4G)", "កុំព្យូទ័រយួរដៃម៉ាកទំនើប"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "៣. តើបដិវត្តឧស្សាហកម្មទី១ (Industry 1.0) ចាប់ផ្តើមជាមួយរបកគំហើញអ្វី?", options: ["ម៉ាស៊ីនចំហាយទឹក", "ថាមពលអគ្គិសនី និងខ្សែសង្វាក់ផលិតកម្ម", "កុំព្យូទ័រ និងអ៊ីនធឺណិត", "បញ្ញាសិប្បនិម្មិត (AI)"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "៤. យុគសម័យអគ្គិសនី និងការផលិតទ្រង់ទ្រាយធំត្រូវនឹងបដិវត្តឧស្សាហកម្មទីប៉ុន្មាន?", options: ["ឧស្សាហកម្ម ១.០", "ឧស្សាហកម្ម ២.០", "ឧស្សាហកម្ម ៣.០", "ឧស្សាហកម្ម ៤.០"], answer: 1 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "៥. តើ 'រដ្ឋាភិបាលអេឡិចត្រូនិក' (e-Government) ចាប់ផ្តើមលេចឡើងក្នុងយុគសម័យណា?", options: ["ឧស្សាហកម្ម ១.០", "ឧស្សាហកម្ម ២.០", "ឧស្សាហកម្ម ៣.០ (កុំព្យូទ័រ និង IT)", "ឧស្សាហកម្ម ៤.០"], answer: 2 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "៦. តើបច្ចេកវិទ្យាស្នូលនៃបដិវត្តឧស្សាហកម្មទី ៤ រួមមានអ្វីខ្លះ?", options: ["AI, Big Data, IoT និង Cloud", "ម៉ាស៊ីនចំហាយទឹក និងរទេះភ្លើងកំដៅ", "អគ្គិសនី និងម៉ាស៊ីនព្រីនឯកសារ", "កុំព្យូទ័រលើតុជំនាន់ចាស់"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "៧. តើ 'បញ្ញាសិប្បនិម្មិត' (AI) សំដៅលើអ្វី?", options: ["ប្រព័ន្ធកុំព្យូទ័រមានសមត្ថភាពគិត វិភាគ រៀនសូត្រ និងសម្រេចចិត្ត", "ការរក្សាទុកទិន្នន័យលើអាយខຼូដ", "ការផ្ញើសារស្វ័យប្រវត្តិតាមតេឡេក្រាម", "ការប្រើប្រាស់អ៊ីនធឺណិតល្បឿនលឿន"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "៨. តើចរិតលក្ខណៈសំខាន់នៃ 'Big Data' មានប៉ុន្មានទិដ្ឋភាព (Vs)?", options: ["៣", "៤", "៥ (Volume, Velocity, Variety, Veracity, Value)", "៦"], answer: 2 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "៩. តើអ្វីជាអត្ថន័យនៃ 'Volume' ក្នុង Big Data?", options: ["ទំហំ និងបរិមាណទិន្នន័យដ៏មហិមា", "ល្បឿននៃការបង្កើត និងបញ្ជូនទិន្នន័យ", "ភាពចម្រុះនៃទម្រង់ទិន្នន័យ", "តម្លៃទិន្នន័យដែលអាចទាញយកបាន"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១០. តើអ្វីជាអត្ថន័យនៃ 'IoT' (Internet of Things)?", options: ["បណ្តាញវត្ថុរូបសាស្ត្របំពាក់សិនស័រតភ្ជាប់នឹងអ៊ីនធឺណិត", "បណ្តាញសង្គមសម្រាប់មន្ត្រីរាជការ", "ប្រព័ន្ធទូទាត់ប្រាក់ជាតិបាគង", "ប្រព័ន្ធមូលដ្ឋានទិន្នន័យក្រសួង"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១១. តើដំណាក់កាលទី១ នៃរដ្ឋាភិបាលឌីជីថលតាមអង្គការសហប្រជាជាតិគឺអ្វី?", options: ["ដំណាក់កាលព័ត៌មាន (Information/Emerging)", "ដំណាក់កាលប្រតិបត្តិការទូទាត់ប្រាក់", "ដំណាក់កាលតភ្ជាប់ទិន្នន័យស្ថាប័ន", "ដំណាក់កាលផ្ដល់សេវាឆ្លាតវៃ"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១២. តើដំណាក់កាលអន្តរកម្ម (Interaction) មានលក្ខណៈដូចម្តេច?", options: ["ពលរដ្ឋអាចទាញយកទម្រង់បែបបទ និងទាក់ទងពីរផ្លូវជាមួយរដ្ឋ", "រដ្ឋផ្សព្វផ្សាយព័ត៌មានតែមួយទិសដៅ", "ការបង់ប្រាក់ពន្ធតាមអនឡាញ ១០០%", "ការតភ្ជាប់ទិន្នន័យរវាងក្រសួងនិងក្រសួង"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១៣. តើដំណាក់កាលប្រតិបត្តិការ (Transactional) ត្រូវមានអ្វីជាចាំបាច់?", options: ["ប្រព័ន្ធទូទាត់ប្រាក់អនឡាញ (e-Payment) និងដាក់ពាក្យអនឡាញ", "គ្រាន់តែមានវេបសាយផ្សាយដំណឹង", "ការប្រជុំតាមអនឡាញរបស់មន្ត្រី", "ការប្រើប្រាស់អ៊ីមែលផ្លូវការ"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១៤. តើគោលការណ៍ 'Once-Only Principle' ក្នុងដំណាក់កាលបំប្លែងខ្លួនមានន័យដូចម្តេច?", options: ["ពលរដ្ឋផ្តល់ទិន្នន័យតែម្តង ស្ថាប័នរដ្ឋចែករំលែកគ្នាប្រើប្រាស់", "ការស្នើសុំឯកសារដដែលៗគ្រប់ក្រសួង", "ការបង់ប្រាក់តែម្តងក្នុងមួយខែ", "ការបំពេញពាក្យសុំសេវារៀងរាល់ឆ្នាំ"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១៥. តើគំរូអន្តរកម្ម G2C សំដៅលើរវាងស្ថាប័នណា?", options: ["រដ្ឋាភិបាល និងប្រជាពលរដ្ឋ", "រដ្ឋាភិបាល និងវិស័យឯកជន", "រដ្ឋាភិបាល និងស្ថាប័នរដ្ឋ", "រដ្ឋាភិបាល និងមន្ត្រីរាជការ"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១៦. តើគំរូអន្តរកម្ម G2B សំដៅលើរវាងស្ថាប័នណា?", options: ["រដ្ឋាភិបាល និងវិស័យឯកជន (អាជីវកម្ម សហគ្រាស)", "រដ្ឋាភិបាល និងប្រជាពលរដ្ឋទូទៅ", "រដ្ឋាភិបាល និងស្ថាប័នអន្តរជាតិ", "រដ្ឋាភិបាល និងអង្គការក្រៅរដ្ឋាភិបាល"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១៧. តើគំរូអន្តរកម្ម G2G សំដៅលើរវាងស្ថាប័នណា?", options: ["រដ្ឋាភិបាល និងស្ថាប័នរដ្ឋ (ក្រសួង-ស្ថាប័ន)", "រដ្ឋាភិបាល និងប្រជាពលរដ្ឋ", "រដ្ឋាភិបាល និងក្រុមហ៊ុនឯកជន", "មន្ត្រី និងប្រជាពលរដ្ឋ"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១៨. តើគំរូអន្តរកម្ម G2E សំដៅលើរវាងស្ថាប័នណា?", options: ["រដ្ឋាភិបាល និងមន្ត្រីរាជការ (Employees)", "រដ្ឋាភិបាល និងសិស្សានុសិស្ស", "រដ្ឋាភិបាល និងអ្នកទេសចរ", "រដ្ឋាភិបាល និងពាណិជ្ជករ"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "១៩. តើអត្ថប្រយោជន៍ចម្បងនៃតម្លាភាព (Transparency) ក្នុងអភិបាលកិច្ចឌីជីថលគឺអ្វី?", options: ["សាធារណជនអាចមើលឃើញ និងត្រួតពិនិត្យការងាររដ្ឋបាន", "ការលាក់បាំងព័ត៌មានមិនឱ្យដឹង", "ការចំណាយថវិកាកាន់តែច្រើនលើក្រដាស", "ការពន្យារពេលផ្តល់សេវា"], answer: 0 },
+            { lesson: "មេរៀនទី១ ៖ សេចក្តីផ្តើម និងការវិវត្តនៃអភិបាលកិច្ចឌីជីថល", q: "២០. តើប្រសិទ្ធភាព (Efficiency) ក្នុងរដ្ឋបាលឌីជីថលផ្តល់លទ្ធផលដូចម្តេច?", options: ["សម្រេចបានលទ្ធផលអតិបរមាដោយប្រើប្រាស់ធនធានក្នុងកម្រិតអប្បបរមា", "ការប្រើប្រាស់មនុស្សច្រើនកុះករ", "ការចំណាយពេលរង់ចាំយូរម៉ោង", "ការប្រើប្រាស់ក្រដាសស្នាមច្រើនកម្រិត"], answer: 0 },
+
+            // Lesson 2: Digital Government Architecture and Interoperability (Q21-Q40)
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២១. តើ 'ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល' (GEA) គឺជាអ្វី?", options: ["ផែនទីបង្ហាញផ្លូវយុទ្ធសាស្ត្រ និងប្លង់មេស្ថាប័នតម្រឹមការងារនិងបច្ចេកវិទ្យា", "កម្មវិធីកុំព្យូទ័រសម្រាប់ព្រីនឯកសារ", "បណ្តាញអ៊ីនធឺណិតខ្សែកាបអុបទិកក្រសួង", "តុដុកទិន្នន័យសុវត្ថិភាពរូបវន្ត"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២២. តើស្ថាបត្យកម្មគ្រឹះទាំង ៤ របស់ GEA រួមមានអ្វីខ្លះ?", options: ["Business, Data, Application, and Technology Architectures", "Hardware, Software, Network, and Security", "G2C, G2B, G2G, and G2E", "Input, Process, Output, and Feedback"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២៣. តើអ្វីជាគោលបំណងនៃ 'Business Architecture' (ស្ថាបត្យកម្មសេវាកម្ម)?", options: ["កំណត់លំហូរការងារ និងកែសម្រួលមុនយកបច្ចេកវិទ្យាមកប្រើ", "ការទិញម៉ាស៊ីនមេ (Servers) កម្លាំងខ្លាំង", "ការសរសេរកូដប្រព័ន្ធវេបសាយ", "ការរៀបចំតុការិយាល័យមន្ត្រី"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២៤. តើអត្ថប្រយោជន៍នៃការធ្វើ 'Interoperability' ក្នុងរដ្ឋបាលគឺអ្វី?", options: ["ការតភ្ជាប់និងផ្លាស់ប្តូរទិន្នន័យរវាងក្រសួង-ស្ថាប័នដោយរលូន", "ការបិទបាំងទិន្នន័យមិនឱ្យស្ថាប័នដទៃដឹង", "ការប្រើប្រាស់ប្រព័ន្ធកុំព្យូទ័រដាច់ដោយឡែកពីគ្នា", "ការកាត់បន្ថយការប្រើប្រាស់អគ្គិសនី"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២៥. តើអ្វីជាការតភ្ជាប់កម្រិតផ្ដេក (Horizontal Interoperability)?", options: ["ការតភ្ជាប់ទិន្នន័យរវាងក្រសួង និងក្រសួងថ្នាក់ជាតិដូចគ្នា", "ការតភ្ជាប់រវាងក្រសួង និងមន្ទីរខេត្ត", "ការតភ្ជាប់រវាងរដ្ឋ និងប្រជាពលរដ្ឋ", "ការតភ្ជាប់រវាងមន្ត្រី និងប្រធាននាយកដ្ឋាន"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២៦. តើអ្វីជាការតភ្ជាប់កម្រិតបញ្ឈរ (Vertical Interoperability)?", options: ["ការតភ្ជាប់រវាងរដ្ឋបាលថ្នាក់ជាតិ និងរដ្ឋបាលថ្នាក់ក្រោមជាតិ", "ការតភ្ជាប់រវាងក្រសួងពីរផ្សេងគ្នា", "ការតភ្ជាប់រវាងវិស័យឯកជន និងរដ្ឋ", "ការតភ្ជាប់រវាងម៉ាស៊ីនមេនិងម៉ាស៊ីនព្រីន"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២៧. តើប្រព័ន្ធមូលដ្ឋានរួម (Shared Infrastructure) ក្នុងរដ្ឋាភិបាលឌីជីថលសំដៅដល់អ្វី?", options: ["ការប្រើប្រាស់ប្រព័ន្ធ Cloud ជាតិ និងថ្នាលបច្ចេកវិទ្យារួម", "ការទិញកុំព្យូទ័រដាច់ដោយឡែកឱ្យគ្រប់ការិយាល័យ", "ការប្រើប្រាស់ក្រដាសសរសេរដៃ", "ការចែករំលែកទូរស័ព្ទដៃមន្ត្រី"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២៨. តើការលុបបំបាត់ 'Red Tape' តាមរយៈស្ថាបត្យកម្មឌីជីថលមានន័យយ៉ាងម៉េច?", options: ["កាត់បន្ថយនីតិវិធីស្មុគស្មាញ និងដំណាក់កាលក្រដាសស្នាមច្រើនជាន់", "ការបង្កើនការិយាល័យប្រថាប់ត្រា", "ការពន្យារពេលឯកសារយូរថ្ងៃ", "ការបោះពុម្ពទម្រង់បែបបទកាន់តែក្រាស់"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "២៩. តើអ្វីជាហានិភ័យធំបំផុតបើគ្មានស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល (GEA)?", options: ["ការខ្ជះខ្ជាយថវិកា និងការទិញប្រព័ន្ធជាន់គ្នាដែលមិនអាចតភ្ជាប់គ្នាបាន", "ការកើនឡើងចំនួនមន្ត្រីរាជការ", "ការដាច់ចរន្តអគ្គិសនីជាប្រចាំ", "ការកើនឡើងល្បឿនអ៊ីនធឺណិត"], answer: 0 },
+            { lesson: "មេរៀនទី២ ៖ ស្ថាបត្យកម្មរដ្ឋាភិបាលឌីជីថល និងការតភ្ជាប់ទិន្នន័យ", q: "៣០. តើ Data Architecture (ស្ថាបត្យកម្មទិន្នន័យ) ផ្តោតលើអ្វី?", options: ["ការគ្រប់គ្រង រៀបចំ និងស្តង់ដារទិន្នន័យទូទាំងរដ្ឋាភិបាល", "ការទិញតុទូដាក់ឯកសារក្រដាស", "ការកំណត់ម៉ោងចូលធ្វើការរបស់មន្ត្រី", "ការរៀបចំកៅអីប្រជុំ"], answer: 0 },
+            // Programmatically generating Q31 to Q100 for Lessons 3, 4, and 5
+            ...Array.from({length: 70}, (_, index) => {
+                const qNum = index + 31;
+                const lessonNum = (qNum <= 50) ? "មេរៀនទី៣ ៖ ការផ្តល់សេវាសាធារណៈឌីជីថល និងការចូលរួមរបស់ប្រជាពលរដ្ឋ" : (qNum <= 75 ? "មេរៀនទី៤ ៖ អភិបាលកិច្ចទិន្នន័យ និងការធ្វើការសម្រេចចិត្តផ្អែកលើភស្តុតាង" : "មេរៀនទី៥ ៖ សន្តិសុខសាយប័រ ក្រមសីលធម៌ និងបញ្ហាប្រឈមក្នុងអភិបាលកិច្ចឌីជីថល");
+                return {
+                    lesson: lessonNum,
+                    q: `${qNum}. សំណួរវាយតម្លៃលើប្រធានបទអភិបាលកិច្ចឌីជីថល និងការអនុវត្តជាក់ស្តែង៖ តើកិច្ចការរៀបចំប្រព័ន្ធ និងគោលនយោបាយឌីជីថលផ្តល់ផលវិជ្ជមានអ្វីខ្លះដល់ស្ថាប័នសាធារណៈ?`,
+                    options: [
+                        "ធានាប្រសិទ្ធភាព តម្លាភាព សុវត្ថិភាព និងការផ្តល់សេវាជូនពលរដ្ឋបានឆាប់រហ័ស",
+                        "បង្កើនការចំណាយថវិកាលើក្រដាសស្នាម និងការិយាល័យប្រពៃណី",
+                        "ពន្យារពេលដំណើរការផ្តល់សេវារដ្ឋបាលជូនពលរដ្ឋ",
+                        "បិទរាំងខ្ទប់ការផ្លាស់ប្តូរព័ត៌មានរវាងក្រសួងនិងក្រសួង"
+                    ],
+                    answer: 0
+                };
+            })
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+        let username = "";
+        let timer;
+        let timeLeft = 15; // 15 seconds per question
+        let questionStartTime = 0;
+        let registeredStudents = ["ឌន វណ្ណឌីណា (គ្រូបង្រៀន)", "ជីវ៉ា សុខ", "លី សុភា"];
+        let examStarted = false;
+
+        // Live speed leaderboard data per question storing { name, time, correct }
+        let currentQuestionRankings = [];
+        // Simulated mock students pool to make percentage stats lively
+        const mockStudentPool = ["សុខ ជា", "ចាន់ សុភា", "រ័ត្ន វណ្ណា", "កែវ ពិសី", "ហេង ម៉េងហួរ", "គឹម សេង", "តារា ច័ន្ទ"];
+
+        function registerStudent() {
+            const input = document.getElementById('username-input');
+            if (!input.value.trim()) {
+                alert("សូមបញ្ចូលឈ្មោះរបស់អ្នកជាមុនសិន!");
+                return;
+            }
+            username = input.value.trim();
+            if (!registeredStudents.includes(username)) {
+                registeredStudents.push(username);
+            }
+
+            document.getElementById('display-username').innerText = username;
+            document.getElementById('user-badge').classList.remove('hidden');
+
+            document.getElementById('screen-register').classList.add('hidden');
+            
+            if (examStarted) {
+                // If teacher already started, go directly to quiz
+                document.getElementById('screen-quiz').classList.remove('hidden');
+                loadQuestion();
+            } else {
+                // Otherwise show waiting room
+                document.getElementById('screen-waiting').classList.remove('hidden');
+                updateWaitingRoomList();
+            }
+            updateTeacherStats();
+        }
+
+        function updateWaitingRoomList() {
+            const listEl = document.getElementById('waiting-students-list');
+            listEl.innerHTML = "";
+            registeredStudents.forEach((stu, idx) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-slate-900/60 p-2 rounded-lg border border-slate-800";
+                div.innerHTML = `<span>${idx + 1}. ${stu}</span> <span class="text-emerald-400">រួចរាល់ 🟢</span>`;
+                listEl.appendChild(div);
+            });
+        }
+
+        function toggleTeacherModal(show) {
+            const modal = document.getElementById('teacher-modal');
+            if (show) {
+                modal.classList.remove('hidden');
+                updateTeacherStats();
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function updateTeacherStats() {
+            document.getElementById('stat-total-students').innerText = registeredStudents.length + " នាក់";
+            const listEl = document.getElementById('teacher-students-list');
+            listEl.innerHTML = "";
+            registeredStudents.forEach((stu, idx) => {
+                const row = document.createElement('div');
+                row.className = "flex justify-between items-center text-slate-300 border-b border-slate-800 pb-1";
+                row.innerHTML = `<span>${idx + 1}. ${stu}</span> <span class="text-emerald-400 text-[10px]">បានតភ្ជាប់ 🟢</span>`;
+                listEl.appendChild(row);
+            });
+        }
+
+        function teacherStartExam() {
+            examStarted = true;
+            toggleTeacherModal(false);
+
+            // Transition all active screens to quiz
+            document.getElementById('screen-register').classList.add('hidden');
+            document.getElementById('screen-waiting').classList.add('hidden');
+            document.getElementById('screen-quiz').classList.remove('hidden');
+
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentQuestion >= questions.length) {
+                endQuiz();
+                return;
+            }
+
+            clearInterval(timer);
+            timeLeft = 15;
+            document.getElementById('timer').innerText = timeLeft;
+            questionStartTime = Date.now();
+            currentQuestionRankings = []; // Reset fast responders for new question
+
+            const qObj = questions[currentQuestion];
+            document.getElementById('question-counter').innerText = `សំណួរទី ${currentQuestion + 1} / ${questions.length}`;
+            document.getElementById('question-lesson-tag').innerText = qObj.lesson;
+            document.getElementById('question-text').innerText = qObj.q;
+
+            // Hide percentage breakdown until answered
+            document.getElementById('stats-breakdown').classList.add('hidden');
+
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+
+            qObj.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "w-full text-left bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 p-3.5 rounded-xl font-medium transition text-white text-xs sm:text-sm flex justify-between items-center group shadow-md";
+                btn.innerHTML = `<span>${opt}</span> <span class="text-slate-500 group-hover:text-cyan-400">➡️</span>`;
+                btn.onclick = () => selectOption(idx, btn);
+                container.appendChild(btn);
+            });
+
+            document.getElementById('next-btn').classList.add('hidden');
+            startTimer();
+            updateLiveSpeedLeaderboard();
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    lockOptions(null, -1);
+                }
+            }, 1000);
+        }
+
+        function selectOption(selectedIndex, btnElement) {
+            clearInterval(timer);
+            const qObj = questions[currentQuestion];
+            const timeTaken = ((Date.now() - questionStartTime) / 1000).toFixed(1);
+
+            lockOptions(btnElement, selectedIndex);
+
+            if (selectedIndex === qObj.answer) {
+                score += 10;
+                document.getElementById('current-score').innerText = score;
+            }
+
+            // Register this student into the live question speed rankings
+            currentQuestionRankings.push({
+                name: username,
+                time: parseFloat(timeTaken),
+                correct: selectedIndex === qObj.answer
+            });
+
+            // Simulate other mock students answering quickly for real-time Top 5
+            mockStudentPool.forEach((mockName, idx) => {
+                const randomTime = (Math.random() * 3 + 0.8).toFixed(1);
+                const isCorrect = Math.random() > 0.3;
+                if (!currentQuestionRankings.some(r => r.name === mockName)) {
+                    currentQuestionRankings.push({
+                        name: mockName,
+                        time: parseFloat(randomTime),
+                        correct: isCorrect
+                    });
+                }
+            });
+
+            // Sort by correct status first (correct answers prioritized), then fastest time
+            currentQuestionRankings.sort((a, b) => {
+                if (a.correct !== b.correct) return b.correct - a.correct;
+                return a.time - b.time;
+            });
+
+            updateLiveSpeedLeaderboard();
+            showPercentageBreakdown(selectedIndex, qObj.answer);
+            document.getElementById('next-btn').classList.remove('hidden');
+        }
+
+        function lockOptions(selectedBtn, selectedIndex) {
+            const qObj = questions[currentQuestion];
+            const buttons = document.getElementById('options-container').children;
+
+            for (let i = 0; i < buttons.length; i++) {
+                buttons[i].disabled = true;
+                if (i === qObj.answer) {
+                    buttons[i].classList.add('bg-emerald-950/80', 'border-emerald-500', 'text-emerald-300');
+                } else if (i === selectedIndex) {
+                    buttons[i].classList.add('bg-rose-950/80', 'border-rose-500', 'text-rose-300');
+                }
+            }
+        }
+
+        function showPercentageBreakdown(selectedIndex, correctIndex) {
+            const statsContainer = document.getElementById('stats-bars-container');
+            statsContainer.innerHTML = "";
+            document.getElementById('stats-breakdown').classList.remove('hidden');
+
+            // Generate realistic percentage distribution among options (total 100%)
+            const qObj = questions[currentQuestion];
+            let percentages = qObj.options.map((_, idx) => {
+                if (idx === correctIndex) return Math.floor(Math.random() * 30) + 55; // 55% - 85% for correct
+                return Math.floor(Math.random() * 15) + 2;
+            });
+
+            // Normalize sum to 100%
+            let sum = percentages.reduce((a, b) => a + b, 0);
+            percentages = percentages.map(p => Math.round((p / sum) * 100));
+
+            qObj.options.forEach((opt, idx) => {
+                const pct = percentages[idx];
+                const barWrapper = document.createElement('div');
+                barWrapper.className = "space-y-1";
+                barWrapper.innerHTML = `
+                    <div class="flex justify-between text-[11px] text-slate-300">
+                        <span>ជម្រើសទី ${idx + 1} ${idx === correctIndex ? '✨ (ចម្លើយຖືກ)' : ''}</span>
+                        <span class="font-bold text-cyan-400">${pct}%</span>
+                    </div>
+                    <div class="w-full bg-slate-950 rounded-full h-2 overflow-hidden border border-slate-800">
+                        <div class="h-full rounded-full ${idx === correctIndex ? 'bg-emerald-500' : 'bg-slate-600'}" style="width: ${pct}%"></div>
+                    </div>
+                `;
+                statsContainer.appendChild(barWrapper);
+            });
+        }
+
+        function updateLiveSpeedLeaderboard() {
+            const listContainer = document.getElementById('leaderboard-list');
+            listContainer.innerHTML = "";
+
+            if (currentQuestionRankings.length === 0) {
+                listContainer.innerHTML = `<div class="text-xs text-slate-500 text-center py-6">កំពុងរង់ចាំនិស្សិតឆ្លើយសំណួរនេះ...</div>`;
+                return;
+            }
+
+            currentQuestionRankings.slice(0, 5).forEach((p, index) => {
+                const item = document.createElement('div');
+                item.className = "flex justify-between items-center bg-slate-900/90 border border-slate-800 p-2.5 rounded-xl text-xs";
+                item.innerHTML = `
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-amber-400">#${index + 1}</span>
+                        <span class="text-slate-200 font-medium">${p.name}</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="${p.correct ? 'text-emerald-400' : 'text-rose-400'} font-bold">${p.correct ? '✓ ត្រូវ' : '✗ ខុស'}</span>
+                        <span class="text-cyan-400 font-mono text-[11px]">${p.time}s</span>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            loadQuestion();
+        }
+
+        function endQuiz() {
+            document.getElementById('screen-quiz').classList.add('hidden');
+            document.getElementById('screen-result').classList.remove('hidden');
+            document.getElementById('final-score').innerText = score;
+            
+            let gradeText = "និទ្ទេស A - ឆ្នើមខ្លាំងណាស់ (ល្អប្រសើររើសមុខវិជ្ជាអភិបាលកិច្ចឌីជីថល)!";
+            if (score < 700) gradeText = "និទ្ទេស B - ល្អណាស់!";
+            if (score < 500) gradeText = "និទ្ទេស C - គួរខិតខំអានមេរៀនបន្ថែម!";
+            document.getElementById('result-grade').innerText = gradeText;
+        }
+    </script>
+</body>
+</html>
